@@ -9,11 +9,11 @@ import java.util.Arrays;
  * signature of the existing methods.
  */
 public class ChessBoard {
-    private ChessPiece[][] board;
+    private ChessPiece[][] structure;
 
     public ChessBoard() {
 
-        this.board = new ChessPiece[8][8];
+        this.structure = new ChessPiece[8][8];
     }
 
     /**
@@ -24,7 +24,7 @@ public class ChessBoard {
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
 
-        this.board[position.row][position.col] = piece;
+        this.structure[position.row][position.col] = piece;
     }
 
     @Override
@@ -32,12 +32,12 @@ public class ChessBoard {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessBoard that = (ChessBoard) o;
-        return Arrays.equals(board, that.board);
+        return Arrays.equals(structure, that.structure);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(board);
+        return Arrays.hashCode(structure);
     }
 
     /**
@@ -48,7 +48,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        return this.board[position.row][position.col];
+        return this.structure[position.row][position.col];
     }
 
     /**
@@ -57,6 +57,6 @@ public class ChessBoard {
      */
     public void resetBoard() {
         ChessPiece[][] reset_board = new ChessPiece[8][8];
-        this.board = reset_board;
+        this.structure = reset_board;
     }
 }
