@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Objects;
 
 /**
@@ -55,48 +56,25 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        Collection<ChessMove> valid_moves;
-        ChessMove[] all_moves = new ChessMove[10];
+        Collection<ChessMove> valid_moves = new LinkedList<>();
 
         if (this.type == PieceType.KING){
+            int[][] add_ups = {
+                    {1, 0}, {1, 1}, {1, -1},
+                    {-1, 0}, {-1, 1}, {-1, -1},
+                    {0, 1}, {0, -1}
+            };
 
-            for (int i = 0; i < 8; i++){
-                ChessPosition valid_new_position = myPosition.new_position(myPosition.getRow() + i, myPosition.getColumn() + j, board);
-            }
-            ChessPosition valid_new_position = myPosition.new_position(myPosition.getRow() + 1, myPosition.getColumn(), board);
-            ChessPosition valid_new_position_1 = myPosition.new_position(myPosition.getRow() + 1, myPosition.getColumn() + 1, board);
-            ChessPosition valid_new_position_2 = myPosition.new_position(myPosition.getRow() + 1, myPosition.getColumn() - 1, board);
-            ChessPosition valid_new_position_3 = myPosition.new_position(myPosition.getRow() - 1, myPosition.getColumn(), board);
-            ChessPosition valid_new_position_4 = myPosition.new_position(myPosition.getRow() - 1, myPosition.getColumn() + 1, board);
-            ChessPosition valid_new_position_5 = myPosition.new_position(myPosition.getRow() - 1, myPosition.getColumn() - 1, board);
-            ChessPosition valid_new_position_6 = myPosition.new_position(myPosition.getRow(), myPosition.getColumn() + 1, board);
-            ChessPosition valid_new_position_7 = myPosition.new_position(myPosition.getRow(), myPosition.getColumn() - 1, board);
-
-            for (int i = 0; i < 8; i++){
-                if ()
-
+            for (int i = 0; i < add_ups.length; i++) {
+                int newRow = myPosition.getRow() + add_ups[i][0];
+                int newColumn = myPosition.getColumn() + add_ups[i][1];
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                if (valid_New_Position != null) {
+                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.KING);
+                    valid_moves.add(move);
+                }
             }
 
-            ChessPosition end_position_2 = new ChessPosition(myPosition.row, myPosition.col + 1);
-            ChessPosition end_position_5 = new ChessPosition(myPosition.row + 1, myPosition.col - 1);
-            ChessPosition end_position_6 = new ChessPosition(myPosition.row - 1, myPosition.col + 1);
-            ChessPosition end_position_7 = new ChessPosition(myPosition.row - 1, myPosition.col + 1);
-
-
-
-            ChessMove move_2 = new ChessMove(myPosition, end_position_2,PieceType.KING);
-            ChessMove move_4 = new ChessMove(myPosition, end_position_4,PieceType.KING);
-            ChessMove move_5 = new ChessMove(myPosition, end_position_5,PieceType.KING);
-            ChessMove move_6 = new ChessMove(myPosition, end_position_6,PieceType.KING);
-            ChessMove move_7 = new ChessMove(myPosition, end_position_7,PieceType.KING);
-
-            all_moves[2] = move_2;
-            all_moves[4] = move_4;
-            all_moves[5] = move_5;
-            all_moves[6] = move_6;
-            all_moves[7] = move_7;
-
-            valid_moves.add();
         }
         else if (this.type == PieceType.QUEEN){
 
