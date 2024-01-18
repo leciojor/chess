@@ -9,8 +9,13 @@ import java.util.Collection;
  * signature of the existing methods.
  */
 public class ChessPiece {
+    ChessGame.TeamColor pieceColor;
+    ChessPiece.PieceType type;
+
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.pieceColor = pieceColor;
+        this.type = type;
     }
 
     /**
