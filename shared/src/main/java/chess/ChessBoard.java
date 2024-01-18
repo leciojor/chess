@@ -12,7 +12,6 @@ public class ChessBoard {
     private ChessPiece[][] structure;
 
     public ChessBoard() {
-
         this.structure = new ChessPiece[8][8];
     }
 
@@ -24,7 +23,7 @@ public class ChessBoard {
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
 
-        this.structure[position.row][position.col] = piece;
+        this.structure[position.getRow()][position.getColumn()] = piece;
     }
 
     @Override
@@ -48,7 +47,8 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        return this.structure[position.row][position.col];
+
+        return this.structure[position.getRow()][position.getColumn()];
     }
 
     /**
@@ -58,5 +58,11 @@ public class ChessBoard {
     public void resetBoard() {
         ChessPiece[][] reset_board = new ChessPiece[8][8];
         this.structure = reset_board;
+    }
+
+    public ChessPiece[][] getBoardStructure(){
+
+        return this.structure;
+
     }
 }
