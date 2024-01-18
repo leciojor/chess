@@ -76,9 +76,11 @@ public class ChessPiece {
             }
 
         }
+
         else if (this.type == PieceType.QUEEN){
 
         }
+
         else if (this.type == PieceType.PAWN){
             int[][] add_ups = {
                     {1, 0}, {1, 1}, {1, -1},
@@ -91,7 +93,7 @@ public class ChessPiece {
                 int newColumn = myPosition.getColumn() + add_ups[i][1];
                 ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
                 if (valid_New_Position != null) {
-                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.KING);
+                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.PAWN);
                     valid_moves.add(move);
                 }
             }
@@ -99,17 +101,44 @@ public class ChessPiece {
             if (extra_valid_New_Position != null){
                 ChessMove extra_move = new ChessMove(myPosition, extra_valid_New_Position,PieceType.PAWN);
                 valid_moves.add(extra_move);
-            }    
+            }
             }
 
         else if (this.type == PieceType.BISHOP){
 
         }
+
         else if (this.type == PieceType.KNIGHT){
 
         }
+
         else if (this.type == PieceType.ROOK){
+            int[] add_ups = {1, -1};
+
+            };
+
+            for (int i = 0; i < 4; i++) {
+                int[][] add_ups = {
+                        {1, 0}, {-1, 0}, {0, 1},
+                        {0, -1}
+                };
+                int newRow = myPosition.getRow() + add_ups[i][0];
+                int newColumn = myPosition.getColumn() + add_ups[i][1];
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+
+                while(valid_New_Position != null){
+                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.ROOK);
+                    valid_moves.add(move);
+                    int newRow_ = newRow + add_ups[i][0];
+                    int newColumn_ = newColumn + add_ups[i][1];
+                    valid_New_Position = myPosition.new_position(newRow_, newColumn_, board);
+                }
+                
+
+            }
 
         }
+
+
     }
 }
