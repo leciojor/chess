@@ -60,9 +60,20 @@ public class ChessPiece {
 
         if (this.type == PieceType.KING){
             //add another if statement that checks if its out of bounds and summarizes all of this with less code
-            ChessMove[] all_moves = new ChessMove[8];
-            ChessPosition end_position_0 = new ChessPosition(myPosition.row + 1, myPosition.col);
-            ChessPosition end_position_1 = new ChessPosition(myPosition.row - 1, myPosition.col);
+
+            for (int i = 0; i < 8; i++){
+                if (myPosition.row + 1 <= board.length){
+                    ChessPosition end_position_0 = new ChessPosition(myPosition.row + 1, myPosition.col);
+                    ChessMove move_0 = new ChessMove(myPosition, end_position_0, PieceType.KING);
+                    all_moves[0] = move_0;
+                }
+                if (myPosition.row - 1 > 0){
+                    ChessPosition end_position_1 = new ChessPosition(myPosition.row - 1, myPosition.col);
+                    ChessMove move_1 = new ChessMove(myPosition, end_position_1,PieceType.KING);
+                    all_moves[1] = move_1;
+                }
+            }
+
             ChessPosition end_position_2 = new ChessPosition(myPosition.row, myPosition.col + 1);
             ChessPosition end_position_3 = new ChessPosition(myPosition.row + 1, myPosition.col - 1);
             ChessPosition end_position_4 = new ChessPosition(myPosition.row + 1, myPosition.col + 1);
@@ -70,16 +81,15 @@ public class ChessPiece {
             ChessPosition end_position_6 = new ChessPosition(myPosition.row - 1, myPosition.col + 1);
             ChessPosition end_position_7 = new ChessPosition(myPosition.row - 1, myPosition.col + 1);
 
-            ChessMove move_0 = new ChessMove(myPosition, end_position_0, PieceType.KING);
+
+
             ChessMove move_2 = new ChessMove(myPosition, end_position_2,PieceType.KING);
             ChessMove move_3 = new ChessMove(myPosition, end_position_3,PieceType.KING);
             ChessMove move_4 = new ChessMove(myPosition, end_position_4,PieceType.KING)
             ChessMove move_5 = new ChessMove(myPosition, end_position_5,PieceType.KING);
             ChessMove move_6 = new ChessMove(myPosition, end_position_6,PieceType.KING);
             ChessMove move_7 = new ChessMove(myPosition, end_position_7,PieceType.KING);
-            ChessMove move_1 = new ChessMove(myPosition, end_position_1,PieceType.KING);
 
-            all_moves[0] = move_0;
             all_moves[1] = move_1;
             all_moves[2] = move_2;
             all_moves[3] = move_3;
@@ -90,27 +100,20 @@ public class ChessPiece {
 
             valid_moves.add();
         }
-        //needs to change array size for each if statement
         else if (this.type == PieceType.QUEEN){
-            ChessMove[] all_moves = new ChessMove[10];
 
         }
         else if (this.type == PieceType.PAWN){
-            ChessMove[] all_moves = new ChessMove[10];
 
         }
         else if (this.type == PieceType.BISHOP){
-            ChessMove[] all_moves = new ChessMove[10];
 
         }
         else if (this.type == PieceType.KNIGHT){
-            ChessMove[] all_moves = new ChessMove[10];
 
         }
         else if (this.type == PieceType.ROOK){
-            ChessMove[] all_moves = new ChessMove[10];
 
         }
-        //throw new RuntimeException("Not implemented");
     }
 }

@@ -12,7 +12,8 @@ public class ChessBoard {
     private ChessPiece[][] board;
 
     public ChessBoard() {
-    this.board = new ChessPiece[8][8];
+
+        this.board = new ChessPiece[8][8];
     }
 
     /**
@@ -22,6 +23,7 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
+
         this.board[position.row][position.col] = piece;
     }
 
