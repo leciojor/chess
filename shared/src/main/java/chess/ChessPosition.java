@@ -44,4 +44,14 @@ public class ChessPosition {
     public int getColumn() {
         return this.col;
     }
+
+    public ChessPosition new_position(int change_row, int change_col, ChessBoard board){
+        if (change_row <= board.getBoardStructure().length && change_row > 0 && change_col <= board.getBoardStructure()[0].length && change_col > 0){
+            ChessPosition position_new = new ChessPosition(change_row, change_col);
+            return position_new;
+        }
+        else{
+            return null;
+        }
+    }
 }

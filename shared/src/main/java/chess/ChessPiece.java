@@ -59,16 +59,22 @@ public class ChessPiece {
         ChessMove[] all_moves = new ChessMove[10];
 
         if (this.type == PieceType.KING){
+            for 
 
             for (int i = 0; i < 8; i++){
                 if (myPosition.getRow() + 1 <= board.getBoardStructure().length){
                     ChessPosition end_position_0 = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
                     ChessMove move_0 = new ChessMove(myPosition, end_position_0, PieceType.KING);
                     all_moves[0] = move_0;
-                    if (myPosition.getRow() + 1 <= board.getBoardStructure().length && myPosition.getColumn() - 1 > 0){
+                    if (end_position_0.getColumn() - 1 > 0){
                         ChessPosition end_position_3 = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1);
                         ChessMove move_3 = new ChessMove(myPosition, end_position_3,PieceType.KING);
                         all_moves[3] = move_3;
+                    }
+                    if (end_position_0.getColumn() + 1 <= board.getBoardStructure()[0].length){
+                        ChessPosition end_position_4 = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1);
+                        ChessMove move_4 = new ChessMove(myPosition, end_position_4, PieceType.KING);
+                        all_moves[4] = move_4;
                     }
                 }
                 if (myPosition.getRow() - 1 > 0){
@@ -76,11 +82,13 @@ public class ChessPiece {
                     ChessMove move_1 = new ChessMove(myPosition, end_position_1,PieceType.KING);
                     all_moves[1] = move_1;
                 }
-                if
+                    if(){
+
+                    }
+
             }
 
             ChessPosition end_position_2 = new ChessPosition(myPosition.row, myPosition.col + 1);
-            ChessPosition end_position_4 = new ChessPosition(myPosition.row + 1, myPosition.col + 1);
             ChessPosition end_position_5 = new ChessPosition(myPosition.row + 1, myPosition.col - 1);
             ChessPosition end_position_6 = new ChessPosition(myPosition.row - 1, myPosition.col + 1);
             ChessPosition end_position_7 = new ChessPosition(myPosition.row - 1, myPosition.col + 1);
