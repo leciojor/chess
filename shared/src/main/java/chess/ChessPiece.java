@@ -59,32 +59,21 @@ public class ChessPiece {
         ChessMove[] all_moves = new ChessMove[10];
 
         if (this.type == PieceType.KING){
-            for 
 
             for (int i = 0; i < 8; i++){
-                if (myPosition.getRow() + 1 <= board.getBoardStructure().length){
-                    ChessPosition end_position_0 = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn());
-                    ChessMove move_0 = new ChessMove(myPosition, end_position_0, PieceType.KING);
-                    all_moves[0] = move_0;
-                    if (end_position_0.getColumn() - 1 > 0){
-                        ChessPosition end_position_3 = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() - 1);
-                        ChessMove move_3 = new ChessMove(myPosition, end_position_3,PieceType.KING);
-                        all_moves[3] = move_3;
-                    }
-                    if (end_position_0.getColumn() + 1 <= board.getBoardStructure()[0].length){
-                        ChessPosition end_position_4 = new ChessPosition(myPosition.getRow() + 1, myPosition.getColumn() + 1);
-                        ChessMove move_4 = new ChessMove(myPosition, end_position_4, PieceType.KING);
-                        all_moves[4] = move_4;
-                    }
-                }
-                if (myPosition.getRow() - 1 > 0){
-                    ChessPosition end_position_1 = new ChessPosition(myPosition.getRow() - 1, myPosition.getColumn());
-                    ChessMove move_1 = new ChessMove(myPosition, end_position_1,PieceType.KING);
-                    all_moves[1] = move_1;
-                }
-                    if(){
+                ChessPosition valid_new_position = myPosition.new_position(myPosition.getRow() + i, myPosition.getColumn() + j, board);
+            }
+            ChessPosition valid_new_position = myPosition.new_position(myPosition.getRow() + 1, myPosition.getColumn(), board);
+            ChessPosition valid_new_position_1 = myPosition.new_position(myPosition.getRow() + 1, myPosition.getColumn() + 1, board);
+            ChessPosition valid_new_position_2 = myPosition.new_position(myPosition.getRow() + 1, myPosition.getColumn() - 1, board);
+            ChessPosition valid_new_position_3 = myPosition.new_position(myPosition.getRow() - 1, myPosition.getColumn(), board);
+            ChessPosition valid_new_position_4 = myPosition.new_position(myPosition.getRow() - 1, myPosition.getColumn() + 1, board);
+            ChessPosition valid_new_position_5 = myPosition.new_position(myPosition.getRow() - 1, myPosition.getColumn() - 1, board);
+            ChessPosition valid_new_position_6 = myPosition.new_position(myPosition.getRow(), myPosition.getColumn() + 1, board);
+            ChessPosition valid_new_position_7 = myPosition.new_position(myPosition.getRow(), myPosition.getColumn() - 1, board);
 
-                    }
+            for (int i = 0; i < 8; i++){
+                if ()
 
             }
 
