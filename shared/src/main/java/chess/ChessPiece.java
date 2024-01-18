@@ -80,8 +80,28 @@ public class ChessPiece {
 
         }
         else if (this.type == PieceType.PAWN){
+            int[][] add_ups = {
+                    {1, 0}, {1, 1}, {1, -1},
+                    {-1, 0}, {-1, 1}, {-1, -1},
+                    {0, 1}, {0, -1}
+            };
 
-        }
+            for (int i = 0; i < add_ups.length; i++) {
+                int newRow = myPosition.getRow() + add_ups[i][0];
+                int newColumn = myPosition.getColumn() + add_ups[i][1];
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                if (valid_New_Position != null) {
+                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.KING);
+                    valid_moves.add(move);
+                }
+            }
+            ChessPosition extra_valid_New_Position = myPosition.new_position(myPosition.getRow() + 2, myPosition.getColumn(), board);
+            if (extra_valid_New_Position != null){
+                ChessMove extra_move = new ChessMove(myPosition, extra_valid_New_Position,PieceType.PAWN);
+                valid_moves.add(extra_move);
+            }    
+            }
+
         else if (this.type == PieceType.BISHOP){
 
         }
