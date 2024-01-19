@@ -61,7 +61,7 @@ public class ChessPosition {
     }
 
     public ChessPosition new_position(int change_row, int change_col, ChessBoard board, ChessGame.TeamColor color){
-        //System.out.println(change_row + " " + change_col);
+        System.out.println(change_row + " " + change_col);
 
         ChessPosition position_new = new ChessPosition(change_row, change_col);
 
@@ -69,16 +69,18 @@ public class ChessPosition {
         //System.out.println(change_row > 0 );
         //System.out.println(change_col <= 8 );
         //System.out.println(change_col > 0 );
-        //System.out.println(board.getPiece(position_new) == null);
+
+
 
         if (change_row <= 8 && change_row > 0 && change_col <= 8 && change_col > 0){
             if (board.getPiece(position_new) == null) {
                 return position_new;
             }
             else if (board.getPiece(position_new).getTeamColor() != color){
-                killed_another_piece = true;
+                position_new.killed_another_piece = true;
                 return position_new;
             }
+
         }
         else{
             return null;
