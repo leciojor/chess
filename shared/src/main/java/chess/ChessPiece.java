@@ -16,6 +16,7 @@ public class ChessPiece {
 
 
 
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
@@ -62,6 +63,8 @@ public class ChessPiece {
 
     }
 
+
+
     /**
      * @return which type of chess piece this piece is
      */
@@ -89,7 +92,7 @@ public class ChessPiece {
             for (int i = 0; i < add_ups.length; i++) {
                 int newRow = myPosition.getRow() + add_ups[i][0];
                 int newColumn = myPosition.getColumn() + add_ups[i][1];
-                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor);
                 if (valid_New_Position != null) {
                     ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
                     valid_moves.add(move);
@@ -107,14 +110,14 @@ public class ChessPiece {
                 };
                 int newRow = myPosition.getRow() + add_ups[i][0];
                 int newColumn = myPosition.getColumn() + add_ups[i][1];
-                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor);
 
                 while(valid_New_Position != null){
                     ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
                     valid_moves.add(move);
                     newRow = newRow + add_ups[i][0];
                     newColumn = newColumn + add_ups[i][1];
-                    valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                    valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor);
                 }
 
 
@@ -130,13 +133,13 @@ public class ChessPiece {
             for (int i = 0; i < add_ups.length; i++) {
                 int newRow = myPosition.getRow() + add_ups[i][0];
                 int newColumn = myPosition.getColumn() + add_ups[i][1];
-                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor);
                 if (valid_New_Position != null) {
                     ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
                     valid_moves.add(move);
                 }
             }
-            ChessPosition extra_valid_New_Position = myPosition.new_position(myPosition.getRow() + 2, myPosition.getColumn(), board);
+            ChessPosition extra_valid_New_Position = myPosition.new_position(myPosition.getRow() + 2, myPosition.getColumn(), board, this.pieceColor);
             if (extra_valid_New_Position != null){
                 ChessMove extra_move = new ChessMove(myPosition, extra_valid_New_Position,null);
                 valid_moves.add(extra_move);
@@ -153,14 +156,14 @@ public class ChessPiece {
 
                 int newColumn = myPosition.getColumn() + add_ups[i][1];
 
-                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
-
-                while(valid_New_Position != null){
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor);
+                //System.out.println(valid_New_Position.GetKilledAnother());
+                while(valid_New_Position != null && !(valid_New_Position.GetKilledAnother())){
                     ChessMove move = new ChessMove(myPosition, valid_New_Position, null);
                     valid_moves.add(move);
                     newRow = newRow + add_ups[i][0];
                     newColumn = newColumn + add_ups[i][1];
-                    valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                    valid_New_Position = valid_New_Position.new_position(newRow, newColumn, board, this.pieceColor);
                 }
 
 
@@ -177,7 +180,7 @@ public class ChessPiece {
             for (int i = 0; i < add_ups.length; i++) {
                 int newRow = myPosition.getRow() + add_ups[i][0];
                 int newColumn = myPosition.getColumn() + add_ups[i][1];
-                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor);
                 if (valid_New_Position != null) {
                     ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
                     valid_moves.add(move);
@@ -197,14 +200,14 @@ public class ChessPiece {
                 };
                 int newRow = myPosition.getRow() + add_ups[i][0];
                 int newColumn = myPosition.getColumn() + add_ups[i][1];
-                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor);
 
                 while(valid_New_Position != null){
                     ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
                     valid_moves.add(move);
                     newRow = newRow + add_ups[i][0];
                     newColumn = newColumn + add_ups[i][1];
-                    valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                    valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor);
                 }
 
 

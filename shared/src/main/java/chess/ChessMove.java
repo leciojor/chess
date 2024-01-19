@@ -13,6 +13,7 @@ public class ChessMove {
     private ChessPosition start;
     private ChessPosition end;
     private ChessPiece.PieceType type;
+    private boolean killed_another_piece = false;
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
@@ -43,6 +44,8 @@ public class ChessMove {
         return Objects.hash(start, end, type);
     }
 
+
+
     /**
      * @return ChessPosition of starting location
      */
@@ -66,4 +69,6 @@ public class ChessMove {
     public ChessPiece.PieceType getPromotionPiece() {
         return this.type;
     }
+
+
 }

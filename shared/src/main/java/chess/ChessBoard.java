@@ -31,9 +31,9 @@ public class ChessBoard {
     public void addPiece(ChessPosition position, ChessPiece piece) {
 
 
-        if (position.getRow() < 8 && position.getRow() >= 0 && position.getColumn() < 8 && position.getColumn() >= 0){
+        if (position.getRow() <= 8 && position.getRow() > 0 && position.getColumn() <= 8 && position.getColumn() > 0){
             //System.out.println((position.getRow()) + " " + (position.getColumn()) );
-            this.structure[position.getRow()][position.getColumn()] = piece;
+            this.structure[position.getRow()-1][position.getColumn()-1] = piece;
             //System.out.println(this.structure[position.getRow()][position.getColumn()].getPieceType());
         }
 
@@ -62,8 +62,8 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-
-        return this.structure[position.getRow()][position.getColumn()];
+        //System.out.println(position.getRow());
+        return this.structure[position.getRow()-1][position.getColumn()-1];
 
     }
 
