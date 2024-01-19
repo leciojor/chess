@@ -22,8 +22,10 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
+        if (position.getRow() < structure.length && position.getColumn() >= 0){
+            this.structure[position.getRow()][position.getColumn()] = piece;
+        }
 
-        this.structure[position.getRow()][position.getColumn()] = piece;
     }
 
     @Override
