@@ -30,13 +30,15 @@ public class ChessBoard {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ChessBoard that = (ChessBoard) o;
-        return Arrays.equals(structure, that.structure);
+
+        return Arrays.deepEquals(structure, that.structure);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(structure);
+        return Arrays.deepHashCode(structure);
     }
 
     /**
