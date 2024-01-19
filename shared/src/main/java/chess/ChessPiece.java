@@ -22,6 +22,14 @@ public class ChessPiece {
     }
 
     @Override
+    public String toString() {
+        return "ChessPiece{" +
+                "pieceColor=" + pieceColor +
+                ", type=" + type +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -115,9 +123,8 @@ public class ChessPiece {
 
         else if (this.type == PieceType.PAWN){
             int[][] add_ups = {
-                    {1, 0}, {1, 1}, {1, -1},
-                    {-1, 0}, {-1, 1}, {-1, -1},
-                    {0, 1}, {0, -1}
+                    {1, 0}, {2, 0},
+                    {-1, 0},
             };
 
             for (int i = 0; i < add_ups.length; i++) {
@@ -143,7 +150,9 @@ public class ChessPiece {
                         {-1, -1}
                 };
                 int newRow = myPosition.getRow() + add_ups[i][0];
+
                 int newColumn = myPosition.getColumn() + add_ups[i][1];
+
                 ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
 
                 while(valid_New_Position != null){

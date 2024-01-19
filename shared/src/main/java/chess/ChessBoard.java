@@ -15,6 +15,13 @@ public class ChessBoard {
         this.structure = new ChessPiece[8][8];
     }
 
+    @Override
+    public String toString() {
+        return "ChessBoard{" +
+                "structure=" + Arrays.toString(structure) +
+                '}';
+    }
+
     /**
      * Adds a chess piece to the chessboard
      *
@@ -22,8 +29,12 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        if (position.getRow() < structure.length && position.getColumn() >= 0){
+
+
+        if (position.getRow() < 8 && position.getRow() >= 0 && position.getColumn() < 8 && position.getColumn() >= 0){
+            //System.out.println((position.getRow()) + " " + (position.getColumn()) );
             this.structure[position.getRow()][position.getColumn()] = piece;
+            //System.out.println(this.structure[position.getRow()][position.getColumn()].getPieceType());
         }
 
     }
@@ -53,6 +64,7 @@ public class ChessBoard {
     public ChessPiece getPiece(ChessPosition position) {
 
         return this.structure[position.getRow()][position.getColumn()];
+
     }
 
     /**

@@ -17,6 +17,14 @@ public class ChessPosition {
     }
 
     @Override
+    public String toString() {
+        return "ChessPosition{" +
+                "row=" + row +
+                ", col=" + col +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -50,7 +58,11 @@ public class ChessPosition {
 
         ChessPosition position_new = new ChessPosition(change_row, change_col);
 
-        System.out.println(change_row <= 8 && change_row > 0 && change_col <= 8 && change_col > 0 && board.getPiece(position_new) == null);
+        System.out.println(change_row <= 8);
+        System.out.println(change_row > 0 );
+        System.out.println(change_col <= 8 );
+        System.out.println(change_col > 0 );
+        System.out.println(board.getPiece(position_new) == null);
 
         if (change_row <= 8 && change_row > 0 && change_col <= 8 && change_col > 0 && board.getPiece(position_new) == null){
             return position_new;
