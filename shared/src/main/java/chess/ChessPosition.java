@@ -46,8 +46,13 @@ public class ChessPosition {
     }
 
     public ChessPosition new_position(int change_row, int change_col, ChessBoard board){
-        if (change_row < board.getBoardStructure().length && change_row >= 0 && change_col < board.getBoardStructure()[0].length && change_col >= 0){
-            ChessPosition position_new = new ChessPosition(change_row, change_col);
+        System.out.println(change_row + " " + change_col);
+
+        ChessPosition position_new = new ChessPosition(change_row, change_col);
+
+        System.out.println(change_row <= 8 && change_row > 0 && change_col <= 8 && change_col > 0 && board.getPiece(position_new) == null);
+
+        if (change_row <= 8 && change_row > 0 && change_col <= 8 && change_col > 0 && board.getPiece(position_new) == null){
             return position_new;
         }
         else{

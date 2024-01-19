@@ -1,7 +1,7 @@
 package chess;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -69,7 +69,7 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        Collection<ChessMove> valid_moves = new LinkedList<>();
+        Collection<ChessMove> valid_moves = new HashSet<>();
 
         if (this.type == PieceType.KING){
             int[][] add_ups = {
@@ -104,9 +104,9 @@ public class ChessPiece {
                 while(valid_New_Position != null){
                     ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
                     valid_moves.add(move);
-                    int newRow_ = newRow + add_ups[i][0];
-                    int newColumn_ = newColumn + add_ups[i][1];
-                    valid_New_Position = myPosition.new_position(newRow_, newColumn_, board);
+                    newRow = newRow + add_ups[i][0];
+                    newColumn = newColumn + add_ups[i][1];
+                    valid_New_Position = myPosition.new_position(newRow, newColumn, board);
                 }
 
 
@@ -149,9 +149,9 @@ public class ChessPiece {
                 while(valid_New_Position != null){
                     ChessMove move = new ChessMove(myPosition, valid_New_Position, null);
                     valid_moves.add(move);
-                    int newRow_ = newRow + add_ups[i][0];
-                    int newColumn_ = newColumn + add_ups[i][1];
-                    valid_New_Position = myPosition.new_position(newRow_, newColumn_, board);
+                    newRow = newRow + add_ups[i][0];
+                    newColumn = newColumn + add_ups[i][1];
+                    valid_New_Position = myPosition.new_position(newRow, newColumn, board);
                 }
 
 
@@ -193,9 +193,9 @@ public class ChessPiece {
                 while(valid_New_Position != null){
                     ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
                     valid_moves.add(move);
-                    int newRow_ = newRow + add_ups[i][0];
-                    int newColumn_ = newColumn + add_ups[i][1];
-                    valid_New_Position = myPosition.new_position(newRow_, newColumn_, board);
+                    newRow = newRow + add_ups[i][0];
+                    newColumn = newColumn + add_ups[i][1];
+                    valid_New_Position = myPosition.new_position(newRow, newColumn, board);
                 }
 
 

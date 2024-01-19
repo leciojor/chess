@@ -94,6 +94,7 @@ public class TestFactory {
                     var type = charToTypeMap.get(Character.toLowerCase(c));
                     var position = TestFactory.getNewPosition(row, column);
                     var piece = TestFactory.getNewPiece(color, type);
+                    //System.out.println(position.getRow() + " " + piece.getPieceType());
                     board.addPiece(position, piece);
                     column++;
                 }
