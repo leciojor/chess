@@ -21,6 +21,19 @@ public class ChessPiece {
         this.type = type;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessPiece that = (ChessPiece) o;
+        return pieceColor == that.pieceColor && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pieceColor, type);
+    }
+
     /**
      * The various different chess piece options
      */
@@ -89,7 +102,7 @@ public class ChessPiece {
                 ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
 
                 while(valid_New_Position != null){
-                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.ROOK);
+                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.QUEEN);
                     valid_moves.add(move);
                     int newRow_ = newRow + add_ups[i][0];
                     int newColumn_ = newColumn + add_ups[i][1];
@@ -134,7 +147,7 @@ public class ChessPiece {
                 ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
 
                 while(valid_New_Position != null){
-                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.ROOK);
+                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.BISHOP);
                     valid_moves.add(move);
                     int newRow_ = newRow + add_ups[i][0];
                     int newColumn_ = newColumn + add_ups[i][1];
@@ -146,7 +159,23 @@ public class ChessPiece {
         }
 
         else if (this.type == PieceType.KNIGHT){
-        
+            int[][] add_ups = {
+                    {2, -1}, {2, 1}, {-2, -1},
+                    {-2, 1}, {1, -2}, {-1, -2},
+                    {1, 2}, {-1, 2}
+            };
+
+            for (int i = 0; i < add_ups.length; i++) {
+                int newRow = myPosition.getRow() + add_ups[i][0];
+                int newColumn = myPosition.getColumn() + add_ups[i][1];
+                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board);
+                if (valid_New_Position != null) {
+                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.KNIGHT);
+                    valid_moves.add(move);
+                }
+            }
+
+
         }
 
         else if (this.type == PieceType.ROOK){
@@ -174,6 +203,6 @@ public class ChessPiece {
 
         }
 
-
+        return valid_moves;
     }
 }
