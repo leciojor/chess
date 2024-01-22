@@ -139,8 +139,21 @@ public class ChessPiece {
                     int newColumn = myPosition.getColumn() + add_ups[i][1];
                     ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor, PieceType.PAWN);
                     if (valid_New_Position != null) {
-                        ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
-                        valid_moves.add(move);
+                        if ((myPosition.getRow() == 7 && pieceColor == ChessGame.TeamColor.WHITE)|(myPosition.getRow() == 2 && pieceColor == ChessGame.TeamColor.BLACK)){
+                            ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.QUEEN);
+                            valid_moves.add(move);
+                            move = new ChessMove(myPosition, valid_New_Position,PieceType.ROOK);
+                            valid_moves.add(move);
+                            move = new ChessMove(myPosition, valid_New_Position,PieceType.BISHOP);
+                            valid_moves.add(move);
+                            move = new ChessMove(myPosition, valid_New_Position,PieceType.KNIGHT);
+                            valid_moves.add(move);
+                        }
+                        else{
+                            ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
+                            valid_moves.add(move);
+                        }
+
                     }
                 }
             }
@@ -154,13 +167,24 @@ public class ChessPiece {
                     int newColumn = myPosition.getColumn() + add_ups[i][1];
                     ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor, PieceType.PAWN);
                     if (valid_New_Position != null) {
-                        ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
-                        valid_moves.add(move);
+                        if ((myPosition.getRow() == 7 && pieceColor == ChessGame.TeamColor.WHITE)|(myPosition.getRow() == 2 && pieceColor == ChessGame.TeamColor.BLACK)){
+                            ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.QUEEN);
+                            valid_moves.add(move);
+                            move = new ChessMove(myPosition, valid_New_Position,PieceType.ROOK);
+                            valid_moves.add(move);
+                            move = new ChessMove(myPosition, valid_New_Position,PieceType.BISHOP);
+                            valid_moves.add(move);
+                            move = new ChessMove(myPosition, valid_New_Position,PieceType.KNIGHT);
+                            valid_moves.add(move);
+                        }
+                        else{
+                            ChessMove move = new ChessMove(myPosition, valid_New_Position,null);
+                            valid_moves.add(move);
+                        }
+
                     }
                 }
             }
-
-            //still needs to cover promotion and +2
 
         }
 
