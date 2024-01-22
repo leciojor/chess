@@ -84,10 +84,25 @@ public class ChessPosition {
             return null;
         }
 
+
+
         else {
+            ChessPosition position_middle_add_2_scenario_white = new ChessPosition(change_row - 1, change_col);
+            ChessPosition position_middle_add_2_scenario_black = new ChessPosition(change_row + 1, change_col);
             if (change_row <= 8 && change_row > 0 && change_col <= 8 && change_col > 0){
-                System.out.println(position_new);
-                if (board.getPiece(position_new) == null && change_col == this.col){
+                //System.out.println(position_new)
+
+                if ((change_row == this.row + 2) | (change_row == this.row -2)){
+                    if (((this.row == 2 && color == ChessGame.TeamColor.WHITE) | (this.row == 7 && color == ChessGame.TeamColor.BLACK) && (board.getPiece(position_middle_add_2_scenario_white) == null && board.getPiece(position_middle_add_2_scenario_black) == null) && board.getPiece(position_new) == null)){
+                        return position_new;
+                    }
+                    else{
+                        return null;
+                    }
+                }
+
+
+                else if (board.getPiece(position_new) == null && change_col == this.col){
                     return position_new;
                 }
 
@@ -97,6 +112,7 @@ public class ChessPosition {
                 }
 
             }
+
             else{
                 return null;
             }

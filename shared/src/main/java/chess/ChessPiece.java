@@ -131,7 +131,7 @@ public class ChessPiece {
         else if (this.type == PieceType.PAWN){
             if (this.pieceColor == ChessGame.TeamColor.WHITE){
                 int[][] add_ups = {
-                        {1, 0}, {1, 1}, {1, -1}//, {2, 0}
+                        {1, 0}, {1, 1}, {1, -1}, {2, 0}
                 };
 
                 for (int i = 0; i < add_ups.length; i++) {
@@ -146,7 +146,7 @@ public class ChessPiece {
             }
             else{
                 int[][] add_ups = {
-                        {-1,0},{-1,1}, {-1,-1}//, {-2,0}
+                        {-1,0},{-1,1}, {-1,-1}, {-2,0}
                 };
 
                 for (int i = 0; i < add_ups.length; i++) {
