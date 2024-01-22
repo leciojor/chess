@@ -86,10 +86,12 @@ public class ChessPosition {
 
         else {
             if (change_row <= 8 && change_row > 0 && change_col <= 8 && change_col > 0){
-                if (board.getPiece(position_new) == null) {
+                System.out.println(position_new);
+                if (board.getPiece(position_new) == null && change_col == this.col){
                     return position_new;
                 }
-                else if (board.getPiece(position_new).getTeamColor() != color && change_col != position_new.getColumn()){
+
+                else if (board.getPiece(position_new) != null && board.getPiece(position_new).getTeamColor() != color && change_col != this.col){
                     position_new.killed_another_piece = true;
                     return position_new;
                 }
