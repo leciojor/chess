@@ -129,19 +129,34 @@ public class ChessPiece {
         }
 
         else if (this.type == PieceType.PAWN){
+            if (this.pieceColor == ChessGame.TeamColor.WHITE){
+                int[][] add_ups = {
+                        {1, 0}, {1, 1}, {1, -1}
+                };
 
+                for (int i = 0; i < add_ups.length; i++) {
+                    int newRow = myPosition.getRow() + add_ups[i][0];
+                    int newColumn = myPosition.getColumn() + add_ups[i][1];
+                    ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor, PieceType.PAWN);
+                    if (valid_New_Position != null) {
+                        ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.PAWN);
+                        valid_moves.add(move);
+                    }
+                }
+            }
+            else{
+                int[][] add_ups = {
+                        {-1,0},{-1,1}, {-1,-1}
+                };
 
-            int[][] add_ups = {
-                    {1, 0}, {1, 1}, {1, -1},{-1,0},{-1,1}, {-1,-1}
-            };
-
-            for (int i = 0; i < add_ups.length; i++) {
-                int newRow = myPosition.getRow() + add_ups[i][0];
-                int newColumn = myPosition.getColumn() + add_ups[i][1];
-                ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor, PieceType.PAWN);
-                if (valid_New_Position != null) {
-                    ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.PAWN);
-                    valid_moves.add(move);
+                for (int i = 0; i < add_ups.length; i++) {
+                    int newRow = myPosition.getRow() + add_ups[i][0];
+                    int newColumn = myPosition.getColumn() + add_ups[i][1];
+                    ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor, PieceType.PAWN);
+                    if (valid_New_Position != null) {
+                        ChessMove move = new ChessMove(myPosition, valid_New_Position,PieceType.PAWN);
+                        valid_moves.add(move);
+                    }
                 }
             }
 
