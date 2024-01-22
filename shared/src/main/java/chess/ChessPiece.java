@@ -102,12 +102,13 @@ public class ChessPiece {
         }
 
         else if (this.type == PieceType.QUEEN){
-            for (int i = 0; i < 4; i++) {
-                int[][] add_ups = {
-                        {1, 0}, {-1, 0}, {0, 1},
-                        {0, -1},{1, 1}, {1, -1}, {-1, 1},
-                        {-1, -1}
-                };
+            int[][] add_ups = {
+                    {1, 0}, {-1, 0}, {0, 1},
+                    {0, -1},{1, 1}, {1, -1}, {-1, 1},
+                    {-1, -1}
+            };
+            for (int i = 0; i < add_ups.length; i++) {
+
                 int newRow = myPosition.getRow() + add_ups[i][0];
                 int newColumn = myPosition.getColumn() + add_ups[i][1];
                 ChessPosition valid_New_Position = myPosition.new_position(newRow, newColumn, board, this.pieceColor, PieceType.QUEEN);
@@ -119,10 +120,12 @@ public class ChessPiece {
                     newColumn = newColumn + add_ups[i][1];
                     valid_New_Position = valid_New_Position.new_position(newRow, newColumn, board, this.pieceColor, PieceType.QUEEN);
                 }
+
                 if (valid_New_Position != null && (valid_New_Position.GetKilledAnother())){
                     ChessMove move = new ChessMove(myPosition, valid_New_Position, null);
                     valid_moves.add(move);
                 }
+
 
 
             }
