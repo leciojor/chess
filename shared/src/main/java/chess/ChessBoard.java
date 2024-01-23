@@ -84,6 +84,7 @@ public class ChessBoard {
             ChessPosition position_black_pawn = new ChessPosition(7,i);
             addPiece(position_white_pawn, pawn_white);
             addPiece(position_black_pawn, pawn_black);
+
             ChessPiece piece_white = new ChessPiece(ChessGame.TeamColor.WHITE, piece_types[i-1]);
             ChessPosition position_white = new ChessPosition(1, i);
             ChessPiece piece_black = new ChessPiece(ChessGame.TeamColor.BLACK, piece_types[i-1]);
