@@ -9,11 +9,30 @@ import java.util.Arrays;
  * signature of the existing methods.
  */
 public class ChessBoard {
+
     private ChessPiece[][] structure;
 
     public ChessBoard() {
         this.structure = new ChessPiece[8][8];
     }
+
+    public ChessPiece[][] getStructure() {
+        return this.structure;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessBoard that = (ChessBoard) o;
+        return Arrays.deepEquals(structure, that.structure);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(structure);
+    }
+
 
     @Override
     public String toString() {
@@ -29,29 +48,8 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
+        this.structure[position.getRow() - 1][position.getColumn() - 1] = piece;
 
-
-        if (position.getRow() <= 8 && position.getRow() > 0 && position.getColumn() <= 8 && position.getColumn() > 0){
-            //System.out.println((position.getRow()) + " " + (position.getColumn()) );
-            this.structure[position.getRow()-1][position.getColumn()-1] = piece;
-            //System.out.println(this.structure[position.getRow()][position.getColumn()].getPieceType());
-        }
-
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ChessBoard that = (ChessBoard) o;
-
-        return Arrays.deepEquals(structure, that.structure);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.deepHashCode(structure);
     }
 
     /**
@@ -62,9 +60,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        //  System.out.println(position.getRow());
-        return this.structure[position.getRow()-1][position.getColumn()-1];
-
+        return this.structure[position.getRow() - 1][position.getColumn() - 1];
     }
 
     /**
@@ -72,33 +68,33 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
+        //ChessBoard reset_board = new ChessBoard();
+
         ChessPiece[][] reset_board = new ChessPiece[8][8];
-        this.structure = reset_board;
 
-        ChessPiece.PieceType[] piece_types = {ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK};
 
-        for (int i = 1; i <= 8; i++){
-            ChessPiece pawn_white = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
-            ChessPosition position_white_pawn = new ChessPosition(2, i);
-            ChessPiece pawn_black = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN);
-            ChessPosition position_black_pawn = new ChessPosition(7,i);
-            addPiece(position_white_pawn, pawn_white);
-            addPiece(position_black_pawn, pawn_black);
+        ChessPiece.PieceType[] piece_sequence = {ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK};
 
-            ChessPiece piece_white = new ChessPiece(ChessGame.TeamColor.WHITE, piece_types[i-1]);
-            ChessPosition position_white = new ChessPosition(1, i);
-            ChessPiece piece_black = new ChessPiece(ChessGame.TeamColor.BLACK, piece_types[i-1]);
-            ChessPosition position_black = new ChessPosition(8, i);
-            addPiece(position_white, piece_white);
-            addPiece(position_black, piece_black);
-            //System.out.print(position_black.getRow());
+        for (int i = 0; i < piece_sequence.length; i++) {
+            ChessPosition position_white = new ChessPosition(0, i);
+            ChessPiece piece_white = new ChessPiece(ChessGame.TeamColor.WHITE, piece_sequence[i]);
+            ChessPosition position_black = new ChessPosition(7, i);
+            ChessPiece piece_black = new ChessPiece(ChessGame.TeamColor.BLACK, piece_sequence[i]);
+            reset_board[position_white.getRow()][position_white.getColumn()] = piece_white;
+            reset_board[position_black.getRow()][position_black.getColumn()] = piece_black;
+
+
+            ChessPosition position_white_pawn = new ChessPosition(1, i);
+            ChessPiece piece_white_pawn = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
+            ChessPosition position_black_pawn = new ChessPosition(6, i);
+            ChessPiece piece_black_pawn = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN);
+            reset_board[position_white_pawn.getRow()][position_white_pawn.getColumn()] = piece_white_pawn;
+            reset_board[position_black_pawn.getRow()][position_black_pawn.getColumn()] = piece_black_pawn;
+
+
+            this.structure = reset_board;
+
         }
-
     }
 
-    public ChessPiece[][] getBoardStructure(){
-
-        return this.structure;
-
-    }
 }
