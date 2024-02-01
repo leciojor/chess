@@ -45,6 +45,8 @@ public class ChessGame {
      * @return Set of valid moves for requested piece, or null if no piece at
      * startPosition
      */
+
+    //A move is illegal if the chess piece cannot move there(use chessPiece pieceMoves), if the move leaves the team’s king in danger(use isInCheck), or if it’s not the corresponding team's turn.
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         throw new RuntimeException("Not implemented");
     }
@@ -56,7 +58,19 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        Collection<ChessMove> valid = validMoves(move.getStartPosition());
+        if (valid.contains(move)){
+            ChessBoard current_board = getBoard();
+            ChessPiece piece_to_move = current_board.getPiece(move.getStartPosition());
+            //removes piece from current position
+            current_board.addPiece(move.getStartPosition(), null);
+            //adds piece to new position
+            current_board.addPiece(move.getEndPosition(), piece_to_move);
+        }
+        else{
+            throw new InvalidMoveException("This move is not valid");
+        }
+
     }
 
     /**

@@ -2,7 +2,7 @@ package chess;
 
 import java.util.HashSet;
 
-public class ChessValidMovesGeneral {
+public class    ChessValidMovesGeneral {
     private int[][] add_ups;
 
     private String for_if_while;
