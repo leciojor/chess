@@ -52,9 +52,12 @@ public class ChessGame {
         HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
         ChessBoard current_board = getBoard();
         ChessPiece piece_to_move = current_board.getPiece(startPosition);
+        if (piece_to_move == null){
+            return null;
+        }
         Collection<ChessMove> valid_moves_piece = piece_to_move.pieceMoves(current_board, startPosition);
         for (int i = 0; i < valid_moves_piece.size(); i++){
-            if(!isInCheck(piece_to_move.getTeamColor()) && ){
+            if(){
 
             }
         }
@@ -111,7 +114,25 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        HashSet<ChessMove> moves = new HashSet<ChessMove>();
+        ChessBoard current_board = getBoard();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                ChessPosition temp_position = new ChessPosition(i, j);
+                if (current_board.getPiece(temp_position).getTeamColor() == teamColor){
+                    Collection<ChessMove> valid_moves = validMoves(temp_position);
+                    moves.addAll(valid_moves);
+                }
+
+            }
+
+        }
+        if (moves.isEmpty()){
+            return true;
+        }
+        return false;
+
+
     }
 
     /**
