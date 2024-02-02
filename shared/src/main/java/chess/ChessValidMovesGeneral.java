@@ -1,8 +1,11 @@
 package chess;
 
+import java.lang.String;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
-public class    ChessValidMovesGeneral {
+public class ChessValidMovesGeneral{
     private int[][] add_ups;
 
     private String for_if_while;
@@ -69,7 +72,7 @@ public class    ChessValidMovesGeneral {
 
         }
 
-            return valid_moves;
+        return valid_moves;
     }
 
 }

@@ -2,7 +2,7 @@ package chess;
 
 import java.util.HashSet;
 
-public class ChessValidMovesPawn {
+public class ChessValidMovesPawn{
 
     private int[][] add_ups_white;
 
@@ -136,10 +136,10 @@ public class ChessValidMovesPawn {
         return valid_moves;
     }
 
-        //normal cases (just walk one)
-        //kill other piece case
-        //+2 case
-        //promotion case
+    //normal cases (just walk one)
+    //kill other piece case
+    //+2 case
+    //promotion case
 
 
 }

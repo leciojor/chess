@@ -16,7 +16,7 @@ public class ChessBoard {
         this.structure = new ChessPiece[8][8];
     }
 
-    public ChessPiece[][] getStructure() {
+    public ChessPiece[][] getStructure(){
         return this.structure;
     }
 
@@ -48,7 +48,7 @@ public class ChessBoard {
      * @param piece    the piece to add
      */
     public void addPiece(ChessPosition position, ChessPiece piece) {
-        this.structure[position.getRow() - 1][position.getColumn() - 1] = piece;
+        this.structure[position.getRow()-1][position.getColumn()-1] = piece;
 
     }
 
@@ -60,7 +60,7 @@ public class ChessBoard {
      * position
      */
     public ChessPiece getPiece(ChessPosition position) {
-        return this.structure[position.getRow() - 1][position.getColumn() - 1];
+        return this.structure[position.getRow()-1][position.getColumn()-1];
     }
 
     /**
@@ -75,7 +75,7 @@ public class ChessBoard {
 
         ChessPiece.PieceType[] piece_sequence = {ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK};
 
-        for (int i = 0; i < piece_sequence.length; i++) {
+        for (int i = 0; i < piece_sequence.length; i++){
             ChessPosition position_white = new ChessPosition(0, i);
             ChessPiece piece_white = new ChessPiece(ChessGame.TeamColor.WHITE, piece_sequence[i]);
             ChessPosition position_black = new ChessPosition(7, i);
@@ -84,17 +84,22 @@ public class ChessBoard {
             reset_board[position_black.getRow()][position_black.getColumn()] = piece_black;
 
 
+
+
             ChessPosition position_white_pawn = new ChessPosition(1, i);
             ChessPiece piece_white_pawn = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
             ChessPosition position_black_pawn = new ChessPosition(6, i);
             ChessPiece piece_black_pawn = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN);
             reset_board[position_white_pawn.getRow()][position_white_pawn.getColumn()] = piece_white_pawn;
             reset_board[position_black_pawn.getRow()][position_black_pawn.getColumn()] = piece_black_pawn;
-
-
-            this.structure = reset_board;
-
+            System.out.println(position_black_pawn);
+            System.out.println(piece_black_pawn);
+            System.out.println(position_white_pawn);
+            System.out.println(piece_white_pawn);
         }
-    }
 
+
+        this.structure = reset_board;
+
+    }
 }

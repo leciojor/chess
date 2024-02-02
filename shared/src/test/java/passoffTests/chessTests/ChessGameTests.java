@@ -32,7 +32,7 @@ public class ChessGameTests {
         var kingEndPosition = getNewPosition(1, 1);
         game.makeMove(getNewMove(kingStartPosition, kingEndPosition, null));
 
-        Assertions.assertEquals(game.throw(), loadBoard("""
+        Assertions.assertEquals(game.getBoard(), loadBoard("""
                 | | | | | | | | |
                 | | | | | | | |q|
                 | | |n| | | |p| |

@@ -1,5 +1,7 @@
 package chess;
 
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -12,6 +14,7 @@ import java.util.HashSet;
 public class ChessGame {
 
     private ChessBoard game_board = new ChessBoard();
+    private TeamColor turn;
 
     public ChessGame() {
     }
@@ -20,7 +23,7 @@ public class ChessGame {
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        throw new RuntimeException("Not implemented");
+        return turn;
     }
 
     /**
@@ -29,7 +32,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        turn = team;
     }
 
     /**
@@ -50,23 +53,7 @@ public class ChessGame {
 
     //A move is illegal if the chess piece cannot move there(use chessPiece pieceMoves), if the move leaves the team’s king in danger(use isInCheck), or if it’s not the corresponding team's turn.
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
-        ChessBoard current_board = getBoard();
-        ChessPiece piece_to_move = current_board.getPiece(startPosition);
-        TeamColor piece_color = piece_to_move.getTeamColor();
-        if (piece_to_move == null){
-            return null;
-        }
-        Collection<ChessMove> valid_moves_piece = piece_to_move.pieceMoves(current_board, startPosition);
-        ChessBoard temp_copy = current_board;
-        for (int i = 0; i < valid_moves_piece.size(); i++){
-            ChessPosition temp_position = valid_moves_piece[i].getEndPosition;
-            temp_copy.addPiece(temp_position, piece_to_move);
-            // checkmate or just check
-            if(!isInCheckmate(piece_color)){
-                valid_moves.add(valid_moves_piece[i]);
-            }
-        }
+        throw new RuntimeException("Not implemented");
 
     }
 
