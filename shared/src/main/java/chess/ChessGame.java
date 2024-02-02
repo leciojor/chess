@@ -1,10 +1,7 @@
 package chess;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -106,6 +103,19 @@ public class ChessGame {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChessGame chessGame = (ChessGame) o;
+        return Objects.deepEquals(game_board, chessGame.game_board) && turn == chessGame.turn;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(game_board, turn);
+    }
+
     /**
      * Determines if the given team is in check
      *
@@ -115,15 +125,23 @@ public class ChessGame {
     public boolean isInCheck(TeamColor teamColor) {
         ChessBoard current_board = getBoard();
         ChessPosition king_position = getKingPosition(teamColor);
+        //System.out.println(king_position);
         HashSet<ArrayList<Object>> opposite_team_pieces = getOppositeTeamPieces(current_board, teamColor);
-
+        //System.out.print(opposite_team_pieces);
         for (ArrayList<Object> pair : opposite_team_pieces){
 
                 ChessPiece piece = (ChessPiece) pair.get(0);
+                //System.out.print(piece);
                 ChessPosition position = (ChessPosition) pair.get(1);
+                //System.out.print(position);
                 Collection<ChessMove> valid_moves_piece = piece.pieceMoves(current_board, position);
+                //System.out.print(valid_moves_piece);
                 for (ChessMove move : valid_moves_piece) {
-                    if (move.getEndPosition() == king_position) {
+                    //System.out.print(move.getEndPosition());
+                    //System.out.print(move.getEndPosition() == king_position);
+                    //System.out.print(move.getEndPosition());
+                    //System.out.print(king_position);
+                    if (move.getEndPosition().getRow() == king_position.getRow() && move.getEndPosition().getColumn() == king_position.getColumn()) {
                         return true;
                     }
                 }
