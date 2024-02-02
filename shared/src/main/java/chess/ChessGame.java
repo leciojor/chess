@@ -53,8 +53,23 @@ public class ChessGame {
 
     //A move is illegal if the chess piece cannot move there(use chessPiece pieceMoves), if the move leaves the team’s king in danger(use isInCheck), or if it’s not the corresponding team's turn.
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
-
+        java.util.ArrayList<ChessMove> valid_moves = new java.util.ArrayList<ChessMove>();
+        ChessBoard current_board = getBoard();
+        ChessPiece piece_to_move = current_board.getPiece(startPosition);
+        TeamColor piece_color = piece_to_move.getTeamColor();
+        if (piece_to_move == null){
+            return null;
+        }
+        Collection<ChessMove> valid_moves_piece = piece_to_move.pieceMoves(current_board, startPosition);
+        ChessBoard temp_copy = current_board;
+        for (int i = 0; i < valid_moves_piece.size(); i++){
+                ChessPosition temp_position = valid_moves_piece[i].getEndPosition;
+                temp_copy.addPiece(valid_moves_piece[i].getStartPosition(), null);
+                temp_copy.addPiece(temp_position, piece_to_move);
+                // checkmate or just check
+                if(!isInCheckmate(piece_color)){
+                    valid_moves.add(valid_moves_piece[i]);
+                }
     }
 
     /**
