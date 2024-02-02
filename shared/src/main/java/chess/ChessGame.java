@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -48,7 +49,16 @@ public class ChessGame {
 
     //A move is illegal if the chess piece cannot move there(use chessPiece pieceMoves), if the move leaves the team’s king in danger(use isInCheck), or if it’s not the corresponding team's turn.
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
+        ChessBoard current_board = getBoard();
+        ChessPiece piece_to_move = current_board.getPiece(startPosition);
+        Collection<ChessMove> valid_moves_piece = piece_to_move.pieceMoves(current_board, startPosition);
+        for (int i = 0; i < valid_moves_piece.size(); i++){
+            if(!isInCheck(piece_to_move.getTeamColor()) && ){
+
+            }
+        }
+
     }
 
     /**
