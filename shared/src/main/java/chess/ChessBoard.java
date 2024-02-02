@@ -102,4 +102,23 @@ public class ChessBoard {
         this.structure = reset_board;
 
     }
+
+
+    public ChessBoard boardDeepCopy(){
+        ChessBoard copy = new ChessBoard();
+        for (int i = 1; i <= 8; i++) {
+            for (int j = 1; j <= 8; j++) {
+                ChessPosition temp_position = new ChessPosition(i, j);
+                ChessPiece temp_piece = this.getPiece(temp_position);
+                if (temp_position != null && temp_piece != null){
+                    copy.addPiece(temp_position, temp_piece);
+                }
+
+
+            }
+        }
+        return copy;
+    }
+
+
 }
