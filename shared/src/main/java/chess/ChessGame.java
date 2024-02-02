@@ -11,8 +11,9 @@ import java.util.HashSet;
  */
 public class ChessGame {
 
-    public ChessGame() {
+    private ChessBoard game_board = new ChessBoard();
 
+    public ChessGame() {
     }
 
     /**
@@ -52,13 +53,18 @@ public class ChessGame {
         HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
         ChessBoard current_board = getBoard();
         ChessPiece piece_to_move = current_board.getPiece(startPosition);
+        TeamColor piece_color = piece_to_move.getTeamColor();
         if (piece_to_move == null){
             return null;
         }
         Collection<ChessMove> valid_moves_piece = piece_to_move.pieceMoves(current_board, startPosition);
+        ChessBoard temp_copy = current_board;
         for (int i = 0; i < valid_moves_piece.size(); i++){
-            if(){
-
+            ChessPosition temp_position = valid_moves_piece[i].getEndPosition;
+            temp_copy.addPiece(temp_position, piece_to_move);
+            // checkmate or just check
+            if(!isInCheckmate(piece_color)){
+                valid_moves.add(valid_moves_piece[i]);
             }
         }
 
@@ -141,7 +147,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        throw new RuntimeException("Not implemented");
+        game_board = board;
     }
 
     /**
@@ -150,6 +156,6 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
-        throw new RuntimeException("Not implemented");
+        return game_board;
     }
 }
