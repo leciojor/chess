@@ -93,10 +93,24 @@ public class ChessGame {
     public void makeMove(ChessMove move) throws InvalidMoveException {
         Collection<ChessMove> valid = validMoves(move.getStartPosition());
         if(valid != null){
+            //System.out.print(valid);
+            System.out.print(valid.contains(move));
             if (valid.contains(move)){
                 ChessBoard current_board = getBoard();
                 ChessPiece piece_to_move = current_board.getPiece(move.getStartPosition());
-                setBoard(game_board.boardDeepCopy());
+                if (move.getPromotionPiece() == ChessPiece.PieceType.QUEEN){
+                    piece_to_move = new ChessPiece(piece_to_move.getTeamColor(),ChessPiece.PieceType.QUEEN );
+                }
+                else if (move.getPromotionPiece() == ChessPiece.PieceType.ROOK){
+                    piece_to_move = new ChessPiece(piece_to_move.getTeamColor(),ChessPiece.PieceType.ROOK );
+                }
+                else if (move.getPromotionPiece() == ChessPiece.PieceType.KNIGHT){
+                    piece_to_move = new ChessPiece(piece_to_move.getTeamColor(),ChessPiece.PieceType.KNIGHT );
+                }
+                else if (move.getPromotionPiece() == ChessPiece.PieceType.BISHOP){
+                    piece_to_move = new ChessPiece(piece_to_move.getTeamColor(),ChessPiece.PieceType.BISHOP );
+                }
+                setBoard(current_board.boardDeepCopy());
                 getBoard().addPiece(move.getStartPosition(), null);
                 getBoard().addPiece(move.getEndPosition(), piece_to_move);
 
@@ -299,7 +313,7 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        HashSet<ChessMove> moves = new HashSet<ChessMove>();
+        HashSet<ChessMove> moves = new HashSet<>();
         ChessBoard current_board = getBoard();
         for (int i = 1; i <= 8; i++) {
             for (int j = 1; j <= 8; j++) {
@@ -309,6 +323,7 @@ public class ChessGame {
                         //System.out.print(temp_position);
                         Collection<ChessMove> valid_moves = validMoves(temp_position);
                         moves.addAll(valid_moves);
+                        System.out.print(moves);
                     }
                 }
 
