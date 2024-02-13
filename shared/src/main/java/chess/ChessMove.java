@@ -27,7 +27,7 @@ public class ChessMove {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessMove chessMove = (ChessMove) o;
-        return Objects.equals(start, chessMove.start) && Objects.equals(end, chessMove.end) && promotion == chessMove.promotion;
+        return Objects.deepEquals(start, chessMove.start) && Objects.deepEquals(end, chessMove.end) && promotion == chessMove.promotion;
     }
 
     @Override
