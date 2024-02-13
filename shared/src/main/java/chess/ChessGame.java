@@ -79,7 +79,7 @@ public class ChessGame {
             }
             temp_copy = current_board;
             temp_game.setBoard(temp_copy);
-
+            //
         }
         return valid_moves;
     }
