@@ -1,6 +1,9 @@
 package server;
 
+import services.RegisterService;
 import spark.*;
+import com.google.gson.Gson;
+
 
 public class Server {
 
@@ -10,8 +13,8 @@ public class Server {
         Spark.staticFiles.location("C:\\Users\\lecio\\CS240\\chess\\server\\src\\main\\resources\\web");
 
         // Register your endpoints and handle exceptions here.
-        Spark.delete("/db", (request, response) -> clearGameHandler(request, response));
-        //Spark.post("/user", (request, response) -> registerHandler(request, response));
+        //Spark.delete("/db", (request, response) -> clearGameHandler(request, response));
+        Spark.post("/user", (request, response) -> registerHandler(request, response));
         //Spark.post("/session", (request, response) -> loginHandler(request, response));
         //Spark.delete("/session", (request, response) -> logOutHandler(request, response));
         //Spark.get("/game", (request, response) -> listGamesHandler(request, response));
@@ -25,5 +28,24 @@ public class Server {
     public void stop() {
         Spark.stop();
         Spark.awaitStop();
+    }
+
+    //private Object clearGameHandler(Request req, Response res){
+       //return clearGameService(Request req, Response, res);
+    //}
+
+    private Object registerHandler(Request req, Response res){
+        Gson gson = new Gson();
+        registerRequest register = gson.fromJson(req.body(), registerRequest.class);
+        RegisterService service = new RegisterService(register);
+        service.register(register.getUsername(), register.getPassword(), register.getEmail());
+
+        //follow the diagram
+        //create Request and response classes to send the desialized objects
+        //create service classes, instanciate them here and use methods with the desiarlized objects
+
+
+
+        return //body of serialization BACK (response);
     }
 }
