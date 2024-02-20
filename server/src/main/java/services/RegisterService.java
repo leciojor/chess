@@ -18,6 +18,8 @@ public class RegisterService {
 
     public void register(String username, String password, String email){
         //check if user exists with UserDAO
+
+
         //If it doesnt, createone
         //return authtoken and username (will need to create the classes and objects from dataAccess and models)
 
