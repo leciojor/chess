@@ -7,11 +7,11 @@ import java.util.Vector;
 
 public class MemoryAuthDAO implements AuthDAO{
 
-    private AuthData current_auth;
+    private static AuthData current_auth;
 
     @Override
     public String getCurrentToken() {
-        return current_auth;
+        return current_auth.authToken();
     }
 
     @Override

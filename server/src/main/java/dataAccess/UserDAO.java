@@ -6,9 +6,7 @@ import java.util.Vector;
 
 public interface UserDAO {
 
-    Vector<UserData> getUserData();
-
-    Boolean userAlreadyExists(String username, String password, String email);
+    UserData getUser(String username);
 
     void createUser(String username, String password, String email);
 

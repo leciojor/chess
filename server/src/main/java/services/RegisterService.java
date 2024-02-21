@@ -20,14 +20,14 @@ public class RegisterService {
     }
 
     public RegisterResponse register(String username, String password, String email){
-        //needs to change logic so it is always the same instance
+        //needs to change logic so it is always the same instance (MAYBE INITIALIZE ON THE SERVER CLASS)
         UserDAO user = new MemoryUserDAO();
         AuthDAO auth = new MemoryAuthDAO();
         auth.createAuth(username);
         String current_token = auth.getCurrentToken();
 
         //check if user exists with UserDAO
-        if (user.userAlreadyExists(username, password, email)){
+        if (user.getUser(username) == null){
             return new RegisterResponse(username, current_token);
         }
         //If it doesnt, createone

@@ -6,23 +6,16 @@ import model.UserData;
 
 public class MemoryUserDAO implements UserDAO{
 
-    private Vector<UserData> user_list = new Vector<UserData>();
+    private static Vector<UserData> user_list = new Vector<UserData>();
 
     @Override
-    public Vector<UserData> getUserData(){
-        return user_list;
-    }
-
-
-
-    @Override
-    public Boolean userAlreadyExists(String username, String password, String email) {
-        UserData temp_user = new UserData(username, password, email);
-        //may need to override equals method on user_data
-        if (user_list.contains(temp_user)){
-            return true;
+    public UserData getUser(String username){
+        for (int i = 0; i < user_list.size(); i++){
+            if (user_list.get(i).username() == username){
+                return user_list.get(i);
+            }
         }
-        return false;
+        return null;
     }
 
 
