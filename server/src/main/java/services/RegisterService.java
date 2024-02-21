@@ -1,26 +1,41 @@
 package services;
 
-import server.registerRequest;
+import server.RegisterRequest;
+
+import dataAccess.*;
+import server.RegisterResponse;
 
 public class RegisterService {
 
-    private registerRequest request;
+    private final RegisterRequest request;
 
-    public RegisterService(registerRequest req){
+    public RegisterService(RegisterRequest req){
         this.request = req;
 
     }
 
-    public registerRequest getRequest(){
+    public RegisterRequest getRequest(){
         return this.request;
 
     }
 
-    public void register(String username, String password, String email){
+    public RegisterResponse register(String username, String password, String email){
+        //needs to change logic so it is always the same instance
+        UserDAO user = new MemoryUserDAO();
+        AuthDAO auth = new MemoryAuthDAO();
+        auth.createAuth(username);
+        String current_token = auth.getCurrentToken();
+
         //check if user exists with UserDAO
-
-
+        if (user.userAlreadyExists(username, password, email)){
+            return new RegisterResponse(username, current_token);
+        }
         //If it doesnt, createone
+        else{
+            user.createUser(username, password, email);
+            return new RegisterResponse(username, current_token);
+        }
+
         //return authtoken and username (will need to create the classes and objects from dataAccess and models)
 
         //DATAACCESS should think on WHAT YOU HIDE YOU CAN CHANGE

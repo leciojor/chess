@@ -35,19 +35,11 @@ public class Server {
     //}
 
     //USE INHERITANCE FOR THE HANDLERS FOR AVOIDING DUPLICATE CODE or just put the body code in the lambdas
-    private registerResponse registerHandler(Request req, Response res){
-        //follow the diagram
-        //create Request and response classes to send the desialized objects
-        //create service classes, instanciate them here and use methods with the desiarlized objects
+    private String registerHandler(Request req, Response res){
         Gson gson = new Gson();
-        registerRequest register = gson.fromJson(req.body(), registerRequest.class);
+        RegisterRequest register = gson.fromJson(req.body(), RegisterRequest.class);
         RegisterService service = new RegisterService(register);
-        service.register(register.getUsername(), register.getPassword(), register.getEmail());
-
-        //register should return authtoken and username
-        //serialize the response and then
-        //STORE EVERYTHING IN MEMORY (DATAACCESS CLASSES)
-
-        //return //body of serialization BACK (response);
+        RegisterResponse response = service.register(register.getUsername(), register.getPassword(), register.getEmail());
+        return gson.toJson(response);
     }
 }
