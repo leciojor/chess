@@ -26,14 +26,12 @@ public class RegisterService {
         auth.createAuth(username);
         String current_token = auth.getCurrentToken();
 
-        //check if user exists with UserDAO
         if (user.getUser(username) == null){
-            return new RegisterResponse(username, current_token);
-        }
-        //If it doesnt, createone
-        else{
             user.createUser(username, password, email);
             return new RegisterResponse(username, current_token);
+        }
+        else{
+            throw new DataAccessException("Error: already taken");
         }
 
         //return authtoken and username (will need to create the classes and objects from dataAccess and models)
