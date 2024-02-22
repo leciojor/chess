@@ -17,10 +17,6 @@ public class LoginService {
 
     }
 
-    public LoginRequest getRequest(){
-        return this.request;
-
-    }
 
     public LoginResponse login(String username, String password) {
         UserDAO user = new MemoryUserDAO();
@@ -29,9 +25,12 @@ public class LoginService {
         String current_token = auth.getCurrentToken();
         UserData user_data = user.getUser(username);
 
+
         if (user_data != null){
             if (Objects.equals(user_data.password(), password)){
-                return new LoginResponse(username, current_token);
+                LoginResponse response = new LoginResponse(username, current_token);
+                response.setStatus(200);
+                return response;
             }
             else{
                 Err error = new Err(401);

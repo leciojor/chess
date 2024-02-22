@@ -1,6 +1,5 @@
 package server;
 
-import com.google.gson.annotations.Expose;
 import services.Err;
 
 public class LoginResponse {
@@ -10,8 +9,7 @@ public class LoginResponse {
 
     private String message;
 
-    @Expose(serialize = false)
-    private int status;
+    private transient int status;
 
     public LoginResponse(String username, String authToken){
         this.username = username;
@@ -31,6 +29,10 @@ public class LoginResponse {
 
     public int getStatus(){
         return this.status;
+    }
+
+    public void setStatus(int status_){
+        this.status = status_;
     }
 
 

@@ -17,10 +17,6 @@ public class RegisterService {
 
     }
 
-    public RegisterRequest getRequest(){
-        return this.request;
-
-    }
 
     public RegisterResponse register(String username, String password, String email)  {
         UserDAO user = new MemoryUserDAO();
@@ -30,11 +26,8 @@ public class RegisterService {
         UserData user_data = user.getUser(username);
 
 
+
         if (user_data == null){
-            if(Objects.equals(user_data.password(), "") | Objects.equals(user_data.username(), "") | Objects.equals(user_data.email(), "")){
-                Err error = new Err(400);
-                return new RegisterResponse(error);
-            }
             user.createUser(username, password, email);
             RegisterResponse response = new RegisterResponse(username, current_token);
             response.setStatus(200);
@@ -42,10 +35,14 @@ public class RegisterService {
         }
 
         else if (user_data != null){
+            if(Objects.equals(user_data.password(), "") | Objects.equals(user_data.username(), "") | Objects.equals(user_data.email(), "")){
+                Err error = new Err(400);
+                return new RegisterResponse(error);
+            }
             Err error = new Err(403);
             return new RegisterResponse(error);
-
         }
+
         else{
             Err error = new Err(500);
             return new RegisterResponse(error);

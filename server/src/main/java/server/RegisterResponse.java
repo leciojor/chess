@@ -1,6 +1,5 @@
 package server;
 
-import com.google.gson.annotations.Expose;
 import services.*;
 
 public class RegisterResponse {
@@ -9,8 +8,7 @@ public class RegisterResponse {
 
     private String authToken;
     private String message;
-    @Expose(serialize = false)
-    private int status;
+    private transient int status;
 
 
 
