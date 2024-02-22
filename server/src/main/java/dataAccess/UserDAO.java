@@ -10,7 +10,6 @@ public interface UserDAO {
 
     void createUser(String username, String password, String email);
 
-    void readUser();
 
     void updateUser();
 

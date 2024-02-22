@@ -1,5 +1,6 @@
 package dataAccess;
 
+import java.util.Objects;
 import java.util.Vector;
 
 import model.UserData;
@@ -11,7 +12,7 @@ public class MemoryUserDAO implements UserDAO{
     @Override
     public UserData getUser(String username){
         for (int i = 0; i < user_list.size(); i++){
-            if (user_list.get(i).username() == username){
+            if (Objects.equals(user_list.get(i).username(), username)){
                 return user_list.get(i);
             }
         }
@@ -25,10 +26,6 @@ public class MemoryUserDAO implements UserDAO{
         user_list.add(user);
     }
 
-    @Override
-    public void readUser() {
-
-    }
 
     @Override
     public void updateUser() {

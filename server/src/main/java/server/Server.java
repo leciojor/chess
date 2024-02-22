@@ -17,7 +17,7 @@ public class Server {
         //Spark.delete("/db", (request, response) -> clearGameHandler(request, response));
         Spark.post("/user", (request, response) -> registerHandler(request, response));
         Spark.post("/session", (request, response) -> loginHandler(request, response));
-        Spark.delete("/session", (request, response) -> logOutHandler(request, response));
+        //Spark.delete("/session", (request, response) -> logOutHandler(request, response));
         //Spark.get("/game", (request, response) -> listGamesHandler(request, response));
         //Spark.post("/game", (request, response) -> createGameHandler(request, response));
         //Spark.put("/game", (request, response) -> joinGameHandler(request, response));
@@ -36,23 +36,41 @@ public class Server {
     //}
 
     //USE INHERITANCE FOR THE HANDLERS FOR AVOIDING DUPLICATE CODE or just put the body code in the lambdas
-    private String registerHandler(Request req, Response res) throws DataAccessException {
+    private String registerHandler(Request req, Response res) {
+        res.header("Content-Type", "application/json");
         Gson gson = new Gson();
         RegisterRequest register = gson.fromJson(req.body(), RegisterRequest.class);
         RegisterService service = new RegisterService(register);
         RegisterResponse response = service.register(register.getUsername(), register.getPassword(), register.getEmail());
-        return gson.toJson(response);
+        if (response.getStatus() == 200){
+            res.status(200);
+            return gson.toJson(response);
+        }
+        else{
+            res.status(response.getStatus());
+            return gson.toJson(response);
+        }
     }
 
-    private String loginHandler(Request req, Response res) throws DataAccessException {
+    private String loginHandler(Request req, Response res) {
+        res.header("Content-Type", "application/json");
         Gson gson = new Gson();
         LoginRequest login = gson.fromJson(req.body(), LoginRequest.class);
         LoginService service = new LoginService(login);
         LoginResponse response = service.login(login.getUsername(), login.getPassword());
-        return gson.toJson(response);
+        if (response.getStatus() == 200){
+            res.status(200);
+            return gson.toJson(response);
+        }
+        else{
+            res.status(response.getStatus());
+            return gson.toJson(response);
+        }
     }
 
-    private String logOutHandler(Request req, Response res) throws DataAccessException {
-
-    }
+//    private String logOutHandler(Request req, Response res) throws DataAccessException {
+        //res.header("Content-Type", "application/json");
+//
+//    }
 }
+

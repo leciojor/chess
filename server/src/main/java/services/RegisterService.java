@@ -1,9 +1,12 @@
 package services;
 
+import model.UserData;
 import server.RegisterRequest;
 
 import dataAccess.*;
 import server.RegisterResponse;
+
+import java.util.Objects;
 
 public class RegisterService {
 
@@ -19,19 +22,33 @@ public class RegisterService {
 
     }
 
-    public RegisterResponse register(String username, String password, String email) throws DataAccessException {
-        //needs to change logic so it is always the same instance (MAYBE INITIALIZE ON THE SERVER CLASS)
+    public RegisterResponse register(String username, String password, String email)  {
         UserDAO user = new MemoryUserDAO();
         AuthDAO auth = new MemoryAuthDAO();
         auth.createAuth(username);
         String current_token = auth.getCurrentToken();
+        UserData user_data = user.getUser(username);
 
-        if (user.getUser(username) == null){
+
+        if (user_data == null){
+            if(Objects.equals(user_data.password(), "") | Objects.equals(user_data.username(), "") | Objects.equals(user_data.email(), "")){
+                Err error = new Err(400);
+                return new RegisterResponse(error);
+            }
             user.createUser(username, password, email);
-            return new RegisterResponse(username, current_token);
+            RegisterResponse response = new RegisterResponse(username, current_token);
+            response.setStatus(200);
+            return response;
+        }
+
+        else if (user_data != null){
+            Err error = new Err(403);
+            return new RegisterResponse(error);
+
         }
         else{
-            throw new DataAccessException("Error: already taken");
+            Err error = new Err(500);
+            return new RegisterResponse(error);
         }
 
         //return authtoken and username (will need to create the classes and objects from dataAccess and models)

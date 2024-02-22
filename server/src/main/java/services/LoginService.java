@@ -7,6 +7,8 @@ import server.LoginResponse;
 import server.RegisterRequest;
 import server.RegisterResponse;
 
+import java.util.Objects;
+
 public class LoginService {
     private final LoginRequest request;
 
@@ -20,7 +22,7 @@ public class LoginService {
 
     }
 
-    public LoginResponse login(String username, String password) throws DataAccessException {
+    public LoginResponse login(String username, String password) {
         UserDAO user = new MemoryUserDAO();
         AuthDAO auth = new MemoryAuthDAO();
         auth.createAuth(username);
@@ -28,15 +30,17 @@ public class LoginService {
         UserData user_data = user.getUser(username);
 
         if (user_data != null){
-            if (user_data.password() == password){
+            if (Objects.equals(user_data.password(), password)){
                 return new LoginResponse(username, current_token);
             }
             else{
-                throw new DataAccessException("Error: unauthorized");
+                Err error = new Err(401);
+                return new LoginResponse(error);
             }
         }
         else{
-            throw new DataAccessException("Error: There is no account registered with this username");
+            Err error = new Err(500);
+            return new LoginResponse(error);
         }
 
     }
