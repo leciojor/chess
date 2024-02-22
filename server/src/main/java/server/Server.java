@@ -36,7 +36,7 @@ public class Server {
     //}
 
     //USE INHERITANCE FOR THE HANDLERS FOR AVOIDING DUPLICATE CODE or just put the body code in the lambdas
-    private String registerHandler(Request req, Response res){
+    private String registerHandler(Request req, Response res) throws DataAccessException {
         Gson gson = new Gson();
         RegisterRequest register = gson.fromJson(req.body(), RegisterRequest.class);
         RegisterService service = new RegisterService(register);
@@ -53,10 +53,6 @@ public class Server {
     }
 
     private String logOutHandler(Request req, Response res) throws DataAccessException {
-        Gson gson = new Gson();
-        LoginRequest login = gson.fromJson(req.body(), LoginRequest.class);
-        LoginService service = new LoginService(login);
-        LoginResponse response = service.login(login.getUsername(), login.getPassword());
-        return gson.toJson(response);
+
     }
 }

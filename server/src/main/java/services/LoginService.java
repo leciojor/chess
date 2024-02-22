@@ -1,6 +1,7 @@
 package services;
 
 import dataAccess.*;
+import model.UserData;
 import server.LoginRequest;
 import server.LoginResponse;
 import server.RegisterRequest;
@@ -24,12 +25,18 @@ public class LoginService {
         AuthDAO auth = new MemoryAuthDAO();
         auth.createAuth(username);
         String current_token = auth.getCurrentToken();
+        UserData user_data = user.getUser(username);
 
-        if (user.getUser(username) != null){
-            return new LoginResponse(username, current_token);
+        if (user_data != null){
+            if (user_data.password() == password){
+                return new LoginResponse(username, current_token);
+            }
+            else{
+                throw new DataAccessException("Error: unauthorized");
+            }
         }
         else{
-            throw new DataAccessException("There is no account registered with this username");
+            throw new DataAccessException("Error: There is no account registered with this username");
         }
 
     }

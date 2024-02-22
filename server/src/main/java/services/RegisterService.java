@@ -19,7 +19,7 @@ public class RegisterService {
 
     }
 
-    public RegisterResponse register(String username, String password, String email){
+    public RegisterResponse register(String username, String password, String email) throws DataAccessException {
         //needs to change logic so it is always the same instance (MAYBE INITIALIZE ON THE SERVER CLASS)
         UserDAO user = new MemoryUserDAO();
         AuthDAO auth = new MemoryAuthDAO();
