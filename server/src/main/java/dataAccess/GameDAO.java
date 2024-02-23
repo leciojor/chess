@@ -11,6 +11,10 @@ public interface GameDAO {
 
     GameData getGame(String game_name);
 
+    void addUser(GameData old_game, GameData new_game);
+
+    GameData getGameByID(String game_Id);
+
     Vector<GameData> getListGames();
 
     void updateGame();

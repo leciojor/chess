@@ -20,9 +20,30 @@ public class MemoryGameDAO implements GameDAO{
 
     @Override
     public GameData getGame(String game_name) {
-        for (int i = 0; i < game_list.size(); i++){
-            if (Objects.equals(game_list.get(i).gameName(), game_name)){
-                return game_list.get(i);
+        if (game_list != null){
+            for (int i = 0; i < game_list.size(); i++){
+                if (Objects.equals(game_list.get(i).gameName(), game_name)){
+                    return game_list.get(i);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public void addUser(GameData old_game, GameData new_game) {
+        game_list.remove(old_game);
+        game_list.add(new_game);
+    }
+
+    @Override
+    public GameData getGameByID(String game_Id) {
+        if (game_list != null){
+            for (int i = 0; i < game_list.size(); i++){
+                if (Objects.equals(game_list.get(i).gameID(), Integer.parseInt(game_Id))){
+                    return game_list.get(i);
+                }
             }
         }
 
@@ -41,6 +62,6 @@ public class MemoryGameDAO implements GameDAO{
 
     @Override
     public void deleteGame() {
-
+        game_list.clear();
     }
 }

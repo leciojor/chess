@@ -11,9 +11,11 @@ public class MemoryUserDAO implements UserDAO{
 
     @Override
     public UserData getUser(String username){
-        for (int i = 0; i < user_list.size(); i++){
-            if (Objects.equals(user_list.get(i).username(), username)){
-                return user_list.get(i);
+        if (user_list != null){
+            for (int i = 0; i < user_list.size(); i++){
+                if (Objects.equals(user_list.get(i).username(), username)){
+                    return user_list.get(i);
+                }
             }
         }
 
@@ -35,7 +37,7 @@ public class MemoryUserDAO implements UserDAO{
     }
 
     @Override
-    public void deleteUser() {
-
+    public void deleteUser() throws DataAccessException{
+        user_list.clear();
     }
 }

@@ -14,13 +14,13 @@ public class Server {
         Spark.staticFiles.location("/web");
 
         // Register your endpoints and handle exceptions here.
-        //Spark.delete("/db", (request, response) -> clearGameHandler(request, response));
+        Spark.delete("/db", (request, response) -> clearGameHandler(request, response));
         Spark.post("/user", (request, response) -> registerHandler(request, response));
         Spark.post("/session", (request, response) -> loginHandler(request, response));
         Spark.delete("/session", (request, response) -> logoutHandler(request, response));
         Spark.get("/game", (request, response) -> listGamesHandler(request, response));
         Spark.post("/game", (request, response) -> createGameHandler(request, response));
-        //Spark.put("/game", (request, response) -> joinGameHandler(request, response));
+        Spark.put("/game", (request, response) -> joinGameHandler(request, response));
 
         Spark.awaitInitialization();
         return Spark.port();
@@ -109,6 +109,39 @@ public class Server {
         CreateGameRequest createGame = gson.fromJson(req.body(), CreateGameRequest.class);
         CreateGameService service = new CreateGameService(createGame);
         CreateGameResponse response = service.createGame(createGame.getName(), req.headers("Authorization"));
+        if (response.getStatus() == 200){
+            res.status(200);
+            return gson.toJson(response);
+        }
+        else{
+            res.status(response.getStatus());
+            return gson.toJson(response);
+        }
+
+    }
+
+    private String joinGameHandler(Request req, Response res){
+        res.header("Content-Type", "application/json");
+        Gson gson = new Gson();
+        JoinGameRequest joinGame = gson.fromJson(req.body(), JoinGameRequest.class);
+        JoinGameService service = new JoinGameService(joinGame);
+        JoinGameResponse response = service.joinGame(joinGame.getColor(), joinGame.getid(), req.headers("Authorization"));
+        if (response.getStatus() == 200){
+            res.status(200);
+            return gson.toJson(response);
+        }
+        else{
+            res.status(response.getStatus());
+            return gson.toJson(response);
+        }
+
+    }
+
+    private String clearGameHandler(Request req, Response res){
+        res.header("Content-Type", "application/json");
+        Gson gson = new Gson();
+        ClearService service = new ClearService();
+        ClearResponse response = service.clear();
         if (response.getStatus() == 200){
             res.status(200);
             return gson.toJson(response);

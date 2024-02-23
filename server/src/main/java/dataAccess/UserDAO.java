@@ -13,7 +13,7 @@ public interface UserDAO {
 
     void updateUser(UserData old_user, UserData new_user);
 
-    void deleteUser();
+    void deleteUser() throws DataAccessException;
 
 
 }
