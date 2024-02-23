@@ -12,6 +12,10 @@ public class RegisterService {
 
     private final RegisterRequest request;
 
+    private UserDAO user = new MemoryUserDAO();
+
+    private AuthDAO auth = new MemoryAuthDAO();
+
     public RegisterService(RegisterRequest req){
         this.request = req;
 
@@ -19,16 +23,12 @@ public class RegisterService {
 
 
     public RegisterResponse register(String username, String password, String email)  {
-        UserDAO user = new MemoryUserDAO();
-        AuthDAO auth = new MemoryAuthDAO();
-        auth.createAuth(username);
-        String current_token = auth.getCurrentToken();
         UserData user_data = user.getUser(username);
 
-
-
         if (user_data == null){
-            user.createUser(username, password, email);
+            auth.createAuth(username);
+            String current_token = auth.getCurrentToken().authToken();
+            user.createUser(username, password, email, current_token);
             RegisterResponse response = new RegisterResponse(username, current_token);
             response.setStatus(200);
             return response;

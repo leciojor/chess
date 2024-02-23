@@ -16,20 +16,22 @@ public class MemoryUserDAO implements UserDAO{
                 return user_list.get(i);
             }
         }
+
         return null;
     }
 
 
     @Override
-    public void createUser(String username, String password, String email) {
-        UserData user = new UserData(username, password, email);
+    public void createUser(String username, String password, String email, String authToken) {
+        UserData user = new UserData(username, password, email, authToken);
         user_list.add(user);
     }
 
 
     @Override
-    public void updateUser() {
-
+    public void updateUser(UserData old_user, UserData new_user) {
+        user_list.remove(old_user);
+        user_list.add(new_user);
     }
 
     @Override

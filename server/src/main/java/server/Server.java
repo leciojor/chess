@@ -17,9 +17,9 @@ public class Server {
         //Spark.delete("/db", (request, response) -> clearGameHandler(request, response));
         Spark.post("/user", (request, response) -> registerHandler(request, response));
         Spark.post("/session", (request, response) -> loginHandler(request, response));
-        //Spark.delete("/session", (request, response) -> logOutHandler(request, response));
-        //Spark.get("/game", (request, response) -> listGamesHandler(request, response));
-        //Spark.post("/game", (request, response) -> createGameHandler(request, response));
+        Spark.delete("/session", (request, response) -> logoutHandler(request, response));
+        Spark.get("/game", (request, response) -> listGamesHandler(request, response));
+        Spark.post("/game", (request, response) -> createGameHandler(request, response));
         //Spark.put("/game", (request, response) -> joinGameHandler(request, response));
 
         Spark.awaitInitialization();
@@ -55,6 +55,7 @@ public class Server {
     private String loginHandler(Request req, Response res) {
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();
+        //System.out.print(req.body());
         LoginRequest login = gson.fromJson(req.body(), LoginRequest.class);
         LoginService service = new LoginService(login);
         LoginResponse response = service.login(login.getUsername(), login.getPassword());
@@ -68,9 +69,56 @@ public class Server {
         }
     }
 
-//    private String logOutHandler(Request req, Response res) throws DataAccessException {
-        //res.header("Content-Type", "application/json");
-//
-//    }
+    private String logoutHandler(Request req, Response res) {
+        res.header("Content-Type", "application/json");
+        Gson gson = new Gson();
+        String token = "{" + "\"Authorization\":" + req.headers("Authorization") + "}";
+        LogoutRequest logout = gson.fromJson(token, LogoutRequest.class);
+        LogoutService service = new LogoutService(logout);
+        LogoutResponse response = service.logout(req.headers("Authorization"));
+        if (response.getStatus() == 200){
+            res.status(200);
+            return gson.toJson(response);
+        }
+        else{
+            res.status(response.getStatus());
+            return gson.toJson(response);
+        }
+    }
+
+    private String listGamesHandler(Request req, Response res){
+        res.header("Content-Type", "application/json");
+        Gson gson = new Gson();
+        String token = "{" + "\"Authorization\":" + req.headers("Authorization") + "}";
+        ListGamesRequest listGames = gson.fromJson(token, ListGamesRequest.class);
+        ListGamesService service = new ListGamesService(listGames);
+        ListGamesResponse response = service.listGames(req.headers("Authorization"));
+        if (response.getStatus() == 200){
+            res.status(200);
+            return gson.toJson(response);
+        }
+        else{
+            res.status(response.getStatus());
+            return gson.toJson(response);
+        }
+    }
+
+    private String createGameHandler(Request req, Response res){
+        res.header("Content-Type", "application/json");
+        Gson gson = new Gson();
+        //System.out.print(req.body());
+        CreateGameRequest createGame = gson.fromJson(req.body(), CreateGameRequest.class);
+        CreateGameService service = new CreateGameService(createGame);
+        CreateGameResponse response = service.createGame();
+        if (response.getStatus() == 200){
+            res.status(200);
+            return gson.toJson(response);
+        }
+        else{
+            res.status(response.getStatus());
+            return gson.toJson(response);
+        }
+
+    }
 }
 

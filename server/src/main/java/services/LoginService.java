@@ -4,13 +4,15 @@ import dataAccess.*;
 import model.UserData;
 import server.LoginRequest;
 import server.LoginResponse;
-import server.RegisterRequest;
-import server.RegisterResponse;
 
 import java.util.Objects;
 
 public class LoginService {
     private final LoginRequest request;
+
+    private UserDAO user = new MemoryUserDAO();
+
+    private AuthDAO auth = new MemoryAuthDAO();
 
     public LoginService(LoginRequest req){
         this.request = req;
@@ -19,15 +21,13 @@ public class LoginService {
 
 
     public LoginResponse login(String username, String password) {
-        UserDAO user = new MemoryUserDAO();
-        AuthDAO auth = new MemoryAuthDAO();
-        auth.createAuth(username);
-        String current_token = auth.getCurrentToken();
         UserData user_data = user.getUser(username);
 
 
         if (user_data != null){
             if (Objects.equals(user_data.password(), password)){
+                auth.createAuth(username);
+                String current_token = auth.getCurrentToken().authToken();
                 LoginResponse response = new LoginResponse(username, current_token);
                 response.setStatus(200);
                 return response;

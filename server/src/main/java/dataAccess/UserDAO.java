@@ -8,10 +8,10 @@ public interface UserDAO {
 
     UserData getUser(String username);
 
-    void createUser(String username, String password, String email);
+    void createUser(String username, String password, String email, String authToken);
 
 
-    void updateUser();
+    void updateUser(UserData old_user, UserData new_user);
 
     void deleteUser();
 
