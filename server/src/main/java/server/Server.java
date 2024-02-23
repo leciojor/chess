@@ -106,10 +106,9 @@ public class Server {
     private String createGameHandler(Request req, Response res){
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();
-        //System.out.print(req.body());
         CreateGameRequest createGame = gson.fromJson(req.body(), CreateGameRequest.class);
         CreateGameService service = new CreateGameService(createGame);
-        CreateGameResponse response = service.createGame();
+        CreateGameResponse response = service.createGame(createGame.getName(), req.headers("Authorization"));
         if (response.getStatus() == 200){
             res.status(200);
             return gson.toJson(response);

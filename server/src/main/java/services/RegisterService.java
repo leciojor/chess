@@ -33,16 +33,14 @@ public class RegisterService {
             response.setStatus(200);
             return response;
         }
-
+        else if(Objects.equals(user_data.password(), null) | Objects.equals(user_data.username(), null) | Objects.equals(user_data.email(), null)){
+            Err error = new Err(400);
+            return new RegisterResponse(error);
+        }
         else if (user_data != null){
-            if(Objects.equals(user_data.password(), "") | Objects.equals(user_data.username(), "") | Objects.equals(user_data.email(), "")){
-                Err error = new Err(400);
-                return new RegisterResponse(error);
-            }
             Err error = new Err(403);
             return new RegisterResponse(error);
         }
-
         else{
             Err error = new Err(500);
             return new RegisterResponse(error);

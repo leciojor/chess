@@ -19,9 +19,9 @@ public class MemoryGameDAO implements GameDAO{
 
 
     @Override
-    public GameData getGame(int gameId) {
+    public GameData getGame(String game_name) {
         for (int i = 0; i < game_list.size(); i++){
-            if (Objects.equals(game_list.get(i).gameID(), gameId)){
+            if (Objects.equals(game_list.get(i).gameName(), game_name)){
                 return game_list.get(i);
             }
         }

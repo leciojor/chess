@@ -9,7 +9,7 @@ public interface GameDAO {
 
     void createGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game);
 
-    GameData getGame(int gameId);
+    GameData getGame(String game_name);
 
     Vector<GameData> getListGames();
 
