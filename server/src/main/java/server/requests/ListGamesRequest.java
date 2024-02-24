@@ -9,8 +9,4 @@ public class ListGamesRequest {
 
     }
 
-    public String getAuthToken(){
-        return authToken;
-    }
-
 }
