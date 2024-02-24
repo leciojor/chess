@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class ChessGame {
 
-    private ChessBoard game_board = new ChessBoard();
+    private ChessBoard gameboard = new ChessBoard();
     private TeamColor turn;
 
     public ChessGame() {
@@ -130,12 +130,12 @@ public class ChessGame {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChessGame chessGame = (ChessGame) o;
-        return Objects.deepEquals(game_board, chessGame.game_board) && turn == chessGame.turn;
+        return Objects.deepEquals(gameboard, chessGame.gameboard) && turn == chessGame.turn;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(game_board, turn);
+        return Objects.hash(gameboard, turn);
     }
 
     /**
@@ -221,10 +221,10 @@ public class ChessGame {
 
 
 
-    private HashSet<ArrayList<Object>> getOppositeTeamPieces(ChessBoard board, TeamColor current_color){
+    private HashSet<ArrayList<Object>> getOppositeTeamPieces(ChessBoard board, TeamColor currentColor){
         HashSet<ArrayList<Object>> teamPieces = new HashSet<ArrayList<Object>>();
         TeamColor color;
-        if(current_color == TeamColor.WHITE){
+        if(currentColor == TeamColor.WHITE){
             color = TeamColor.BLACK;
         }
         else{
@@ -249,14 +249,14 @@ public class ChessGame {
     }
 
 
-    private HashSet<ArrayList<Object>> getTeamPieces(ChessBoard board, TeamColor current_color){
+    private HashSet<ArrayList<Object>> getTeamPieces(ChessBoard board, TeamColor currentColor){
         HashSet<ArrayList<Object>> teamPieces = new HashSet<ArrayList<Object>>();
         TeamColor color;
         for (int i = 1; i <= 8; i++) {
             for (int j = 1; j <= 8; j++) {
                 ChessPosition tempPosition = new ChessPosition(i, j);
                 ChessPiece tempPiece = board.getPiece(tempPosition);
-                if(tempPiece != null && tempPiece.getTeamColor() == current_color){
+                if(tempPiece != null && tempPiece.getTeamColor() == currentColor){
                     ArrayList<Object> piecePair = new ArrayList<Object>();
                     piecePair.add(tempPiece);
                     piecePair.add(tempPosition);
@@ -313,7 +313,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        game_board = board;
+        gameboard = board;
     }
 
     /**
@@ -322,6 +322,6 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
-        return game_board;
+        return gameboard;
     }
 }

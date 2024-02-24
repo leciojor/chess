@@ -11,7 +11,7 @@ public interface UserDAO {
     void createUser(String username, String password, String email, String authToken);
 
 
-    void updateUser(UserData old_user, UserData new_user);
+    void updateUser(UserData oldUser, UserData newUser);
 
     void deleteUser() throws DataAccessException;
 

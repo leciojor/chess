@@ -22,8 +22,8 @@ public class LogoutResponse {
         return this.status;
     }
 
-    public void setStatus(int status_){
-        this.status = status_;
+    public void setStatus(int status){
+        this.status = status;
     }
 
 

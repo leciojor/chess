@@ -20,8 +20,8 @@ public class ListGamesService {
         this.request = request;
     }
 
-    public ListGamesResponse listGames(String current_token){
-        AuthData userData = auth.getCurrentToken(current_token);
+    public ListGamesResponse listGames(String currentToken){
+        AuthData userData = auth.getCurrentToken(currentToken);
 
         if (userData != null){
                 ListGamesResponse response = new ListGamesResponse(game.getListGames());

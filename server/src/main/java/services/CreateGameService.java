@@ -21,28 +21,28 @@ public class CreateGameService {
 
     private GameDAO game = new MemoryGameDAO();
 
-    private Vector<Integer> random_ids = new Vector<Integer>();
+    private Vector<Integer> randomIds = new Vector<Integer>();
 
     public CreateGameService(CreateGameRequest req){
         this.request = req;
 
     }
 
-    public CreateGameResponse createGame(String game_name, String current_token){
-        GameData gameData = game.getGame(game_name);
-        AuthData userData = auth.getCurrentToken(current_token);
+    public CreateGameResponse createGame(String gameName, String currentToken){
+        GameData gameData = game.getGame(gameName);
+        AuthData userData = auth.getCurrentToken(currentToken);
 
         if (gameData == null & userData != null){
                 Random random = new Random();
                 int randomNumber = random.nextInt(9000) + 1000;
-                while (random_ids.contains(randomNumber)){
+                while (randomIds.contains(randomNumber)){
                     randomNumber = random.nextInt(9000) + 1000;
                 }
-                random_ids.add(randomNumber);
+                randomIds.add(randomNumber);
 
                 ChessGame chessGame = new ChessGame();
 
-                game.createGame(randomNumber, "", "", game_name, chessGame);
+                game.createGame(randomNumber, "", "", gameName, chessGame);
                 CreateGameResponse response = new CreateGameResponse(String.valueOf(randomNumber));
                 response.setStatus(200);
                 return response;
@@ -52,7 +52,7 @@ public class CreateGameService {
 
 
         }
-        else if(game_name == null | current_token == null){
+        else if(gameName == null | currentToken == null){
             Err error = new Err(400);
             return new CreateGameResponse(error);
         }

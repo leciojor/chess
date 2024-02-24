@@ -63,15 +63,15 @@ public class ChessPosition {
         return this.col;
     }
 
-    public ChessPosition validPosition(int position_row, int position_col, ChessBoard board, ChessGame.TeamColor color){
+    public ChessPosition validPosition(int positionRow, int positionCol, ChessBoard board, ChessGame.TeamColor color){
         //if out of bounds
         //if no one here
         //if else someone but enemy
 
-        ChessPosition new_valid_position = new ChessPosition(position_row, position_col);
+        ChessPosition new_valid_position = new ChessPosition(positionRow, positionCol);
 
 
-        if ((position_row <= 8 && position_row > 0)&&(position_col <= 8 && position_col > 0)){
+        if ((positionRow <= 8 && positionRow > 0)&&(positionCol <= 8 && positionCol > 0)){
             if (board.getPiece(new_valid_position) == null){
                 return new_valid_position;
             }

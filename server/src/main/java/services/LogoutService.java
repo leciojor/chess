@@ -26,9 +26,9 @@ public class LogoutService {
         this.request = request;
     }
 
-    public LogoutResponse logout(String current_token){
+    public LogoutResponse logout(String currentToken){
 
-        AuthData userData = auth.getCurrentToken(current_token);
+        AuthData userData = auth.getCurrentToken(currentToken);
 
         if (userData != null){
                 auth.deleteAuth(userData);

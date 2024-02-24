@@ -10,11 +10,11 @@ public interface GameDAO {
 
     void createGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game);
 
-    GameData getGame(String game_name);
+    GameData getGame(String gameName);
 
-    void addUser(GameData old_game, GameData new_game);
+    void addUser(GameData oldGame, GameData newGame);
 
-    GameData getGameByID(String game_Id);
+    GameData getGameByID(String gameId);
 
     HashSet<GameData> getListGames();
 

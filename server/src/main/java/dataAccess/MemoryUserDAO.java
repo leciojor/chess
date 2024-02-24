@@ -31,9 +31,9 @@ public class MemoryUserDAO implements UserDAO{
 
 
     @Override
-    public void updateUser(UserData old_user, UserData new_user) {
-        userList.remove(old_user);
-        userList.add(new_user);
+    public void updateUser(UserData oldUser, UserData newUser) {
+        userList.remove(oldUser);
+        userList.add(newUser);
     }
 
     @Override
