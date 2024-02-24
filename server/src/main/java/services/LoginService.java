@@ -38,7 +38,7 @@ public class LoginService {
             }
         }
         else{
-            Err error = new Err(500);
+            Err error = new Err(401);
             return new LoginResponse(error);
         }
 

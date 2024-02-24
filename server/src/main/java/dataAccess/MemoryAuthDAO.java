@@ -2,6 +2,7 @@ package dataAccess;
 
 import model.*;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -17,6 +18,7 @@ public class MemoryAuthDAO implements AuthDAO{
     @Override
     public void createAuth(String username) {
         UserDAO user = new MemoryUserDAO();
+        //may eventually generate the same token from before
         String random_token = UUID.randomUUID().toString();
         UserData data = user.getUser(username);
         if (data != null){

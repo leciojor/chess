@@ -39,7 +39,7 @@ public class MemoryGameDAO implements GameDAO{
 
     @Override
     public GameData getGameByID(String game_Id) {
-        if (game_list != null){
+        if (game_list != null & game_Id != null){
             for (int i = 0; i < game_list.size(); i++){
                 if (Objects.equals(game_list.get(i).gameID(), Integer.parseInt(game_Id))){
                     return game_list.get(i);
