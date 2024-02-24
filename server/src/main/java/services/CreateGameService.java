@@ -32,7 +32,7 @@ public class CreateGameService {
 
     public CreateGameResponse createGame(String game_name, String current_token){
         GameData game_data = game.getGame(game_name);
-        AuthData user_data = auth.getCurrentToken();
+        AuthData user_data = auth.getCurrentToken(current_token);
 
         if (game_data == null & user_data != null){
                 Random random = new Random();

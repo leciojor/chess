@@ -7,7 +7,9 @@ import java.util.Vector;
 public interface AuthDAO {
 
 
-    AuthData getCurrentToken();
+    AuthData getCurrentToken(String token);
+
+    Vector<AuthData> getCurrent_auths();
 
     void createAuth(String username);
 

@@ -27,7 +27,7 @@ public class LoginService {
         if (user_data != null){
             if (Objects.equals(user_data.password(), password)){
                 auth.createAuth(username);
-                String current_token = auth.getCurrentToken().authToken();
+                String current_token = auth.getCurrentToken(user_data.authToken()).authToken();
                 LoginResponse response = new LoginResponse(username, current_token);
                 response.setStatus(200);
                 return response;

@@ -3,6 +3,7 @@ package server;
 import model.GameData;
 import services.Err;
 
+import java.util.HashSet;
 import java.util.Vector;
 
 public class ListGamesResponse {
@@ -11,7 +12,7 @@ public class ListGamesResponse {
 
     private transient int status;
 
-    private Vector<GameData> game_list;
+    private HashSet<GameData> games;
 
 
     public ListGamesResponse(Err error){
@@ -19,8 +20,8 @@ public class ListGamesResponse {
         this.status = error.getError().status();
     }
 
-    public ListGamesResponse(Vector<GameData> game_list){
-        this.game_list = game_list;
+    public ListGamesResponse(HashSet<GameData> games){
+        this.games = games;
     }
 
     public int getStatus(){

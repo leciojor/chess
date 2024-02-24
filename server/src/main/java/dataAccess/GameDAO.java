@@ -3,6 +3,7 @@ package dataAccess;
 import chess.ChessGame;
 import model.GameData;
 
+import java.util.HashSet;
 import java.util.Vector;
 
 public interface GameDAO {
@@ -15,7 +16,7 @@ public interface GameDAO {
 
     GameData getGameByID(String game_Id);
 
-    Vector<GameData> getListGames();
+    HashSet<GameData> getListGames();
 
     void updateGame();
 

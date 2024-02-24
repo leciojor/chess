@@ -26,12 +26,14 @@ public class JoinGameService {
     }
 
     public JoinGameResponse joinGame(String color, String gameid, String authtoken){
-        AuthData user_data = auth.getCurrentToken();
+        AuthData user_data = auth.getCurrentToken(authtoken);
         GameData game_data = game.getGameByID(gameid);
+
         if (game_data != null & user_data != null){
-            if (Objects.equals(user_data.authToken(), authtoken)){
-                if (Objects.equals(color, "WHITE") | Objects.equals(color, "BLACK")){
-                    if (Objects.equals(color, "WHITE") && game_data.whiteUsername() == "" ){
+
+//            if (Objects.equals(user_data.authToken(), authtoken)){
+                if (Objects.equals(color, "WHITE") || Objects.equals(color, "BLACK")){
+                    if (Objects.equals(color, "WHITE") && Objects.equals(game_data.whiteUsername(), null)){
                         GameData new_user_game_data = new GameData(Integer.parseInt(gameid), user_data.username(),
                                 game_data.blackUsername(), game_data.gameName(), game_data.game());
                         game.addUser(game_data, new_user_game_data);
@@ -40,7 +42,7 @@ public class JoinGameService {
                         response.setStatus(200);
                         return response;
                     }
-                    else if (Objects.equals(color, "BLACK") && game_data.blackUsername() == "" ){
+                    else if (Objects.equals(color, "BLACK") && Objects.equals(game_data.blackUsername(), null)){
                         GameData new_user_game_data = new GameData(Integer.parseInt(gameid), game_data.whiteUsername(),
                                 user_data.username(), game_data.gameName(), game_data.game());
                         game.addUser(game_data, new_user_game_data);
@@ -61,12 +63,17 @@ public class JoinGameService {
                     response.setStatus(200);
                     return response;
                 }
-            }
-            Err error = new Err(401);
-            return new JoinGameResponse(error);
+            //}
+//            Err error = new Err(401);
+//            return new JoinGameResponse(error);
 
         }
-        Err error = new Err(400);
+        else if (game_data == null){
+            Err error = new Err(400);
+            return new JoinGameResponse(error);
+        }
+
+        Err error = new Err(401);
         return new JoinGameResponse(error);
 
 

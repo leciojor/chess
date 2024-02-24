@@ -1,5 +1,6 @@
 package services;
 
+import model.AuthData;
 import model.UserData;
 import server.RegisterRequest;
 
@@ -7,6 +8,7 @@ import dataAccess.*;
 import server.RegisterResponse;
 
 import java.util.Objects;
+import java.util.Vector;
 
 public class RegisterService {
 
@@ -27,7 +29,8 @@ public class RegisterService {
 
         if (user_data == null & username != null & password != null & email != null){
             auth.createAuth(username);
-            String current_token = auth.getCurrentToken().authToken();
+            Vector<AuthData> auths_list = auth.getCurrent_auths();
+            String current_token = auth.getCurrentToken(auths_list.get(auths_list.size() - 1 ).authToken()).authToken();
             user.createUser(username, password, email, current_token);
             RegisterResponse response = new RegisterResponse(username, current_token);
             response.setStatus(200);

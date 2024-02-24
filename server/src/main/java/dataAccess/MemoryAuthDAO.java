@@ -8,11 +8,19 @@ import java.util.Vector;
 
 public class MemoryAuthDAO implements AuthDAO{
 
-    private static AuthData current_auth;
+    private static Vector<AuthData> current_auths = new Vector<AuthData>();
 
     @Override
-    public AuthData getCurrentToken() {
-        return current_auth;
+    public AuthData getCurrentToken(String token) {
+        if (current_auths != null){
+            for (int i = 0; i < current_auths.size(); i++){
+                if (Objects.equals(current_auths.get(i).authToken(), token)){
+                    return current_auths.get(i);
+                }
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -26,7 +34,8 @@ public class MemoryAuthDAO implements AuthDAO{
             user.updateUser(data, temp_user);
         }
 
-        current_auth = new AuthData(random_token, username);
+        AuthData current_auth = new AuthData(random_token, username);
+        current_auths.add(current_auth);
 
     }
 
@@ -36,8 +45,12 @@ public class MemoryAuthDAO implements AuthDAO{
 
     }
 
+    public Vector<AuthData> getCurrent_auths(){
+        return current_auths;
+    }
+
     @Override
     public void deleteAuth() {
-        current_auth = null;
+        current_auths = new Vector<AuthData>();
     }
 }
