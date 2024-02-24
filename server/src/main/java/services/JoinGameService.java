@@ -28,7 +28,7 @@ public class JoinGameService {
     public JoinGameResponse joinGame(String color, String gameid, String authtoken){
         AuthData user_data = auth.getCurrentToken();
         GameData game_data = game.getGameByID(gameid);
-        if (game_data != null){
+        if (game_data != null & user_data != null){
             if (Objects.equals(user_data.authToken(), authtoken)){
                 if (Objects.equals(color, "WHITE") | Objects.equals(color, "BLACK")){
                     if (Objects.equals(color, "WHITE") && game_data.whiteUsername() == "" ){
@@ -66,7 +66,7 @@ public class JoinGameService {
             return new JoinGameResponse(error);
 
         }
-        Err error = new Err(500);
+        Err error = new Err(400);
         return new JoinGameResponse(error);
 
 

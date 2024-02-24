@@ -62,6 +62,6 @@ public class MemoryGameDAO implements GameDAO{
 
     @Override
     public void deleteGame() {
-        game_list.clear();
+        game_list = new Vector<GameData>();
     }
 }

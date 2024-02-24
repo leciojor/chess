@@ -35,7 +35,6 @@ public class CreateGameService {
         AuthData user_data = auth.getCurrentToken();
 
         if (game_data == null & user_data != null){
-            if (Objects.equals(user_data.authToken(), current_token)){
                 Random random = new Random();
                 int random_number = random.nextInt(9000) + 1000;
                 while (random_ids.contains(random_number)){
@@ -51,9 +50,8 @@ public class CreateGameService {
                 return response;
 
 
-            }
-            Err error = new Err(401);
-            return new CreateGameResponse(error);
+
+
 
         }
         else if(game_name == null | current_token == null){

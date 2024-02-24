@@ -38,6 +38,6 @@ public class MemoryUserDAO implements UserDAO{
 
     @Override
     public void deleteUser() throws DataAccessException{
-        user_list.clear();
+        user_list = new Vector<UserData>();
     }
 }

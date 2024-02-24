@@ -25,7 +25,7 @@ public class RegisterService {
     public RegisterResponse register(String username, String password, String email)  {
         UserData user_data = user.getUser(username);
 
-        if (user_data == null){
+        if (user_data == null & username != null & password != null & email != null){
             auth.createAuth(username);
             String current_token = auth.getCurrentToken().authToken();
             user.createUser(username, password, email, current_token);
@@ -33,7 +33,7 @@ public class RegisterService {
             response.setStatus(200);
             return response;
         }
-        else if(Objects.equals(user_data.password(), null) | Objects.equals(user_data.username(), null) | Objects.equals(user_data.email(), null)){
+        else if(Objects.equals(password, null) | Objects.equals(username, null) | Objects.equals(email, null)){
             Err error = new Err(400);
             return new RegisterResponse(error);
         }

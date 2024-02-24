@@ -33,7 +33,7 @@ public class ListGamesService {
             return new ListGamesResponse(error);
         }
         else{
-            Err error = new Err(500);
+            Err error = new Err(401);
             return new ListGamesResponse(error);
         }
 

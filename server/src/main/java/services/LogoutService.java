@@ -30,17 +30,14 @@ public class LogoutService {
         AuthData user_data = auth.getCurrentToken();
 
         if (user_data != null){
-            if (Objects.equals(user_data.authToken(), current_token)){
                 auth.deleteAuth();
                 LogoutResponse response = new LogoutResponse();
                 response.setStatus(200);
                 return response;
-            }
-            Err error = new Err(401);
-            return new LogoutResponse(error);
+
         }
         else{
-            Err error = new Err(500);
+            Err error = new Err(401);
             return new LogoutResponse(error);
         }
 
