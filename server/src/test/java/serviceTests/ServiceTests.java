@@ -63,6 +63,8 @@ public class ServiceTests {
     ListGamesRequest request_list_games;
 
     ListGamesResponse response_list_games;
+
+    ClearResponse response_clear;
     
 
     @BeforeEach
@@ -221,8 +223,13 @@ public class ServiceTests {
 
     }
 
-//    @Test
-//    @Order(13)
-//    @DisplayName("Static Files")
+    @Test
+    @Order(13)
+    @DisplayName("Clear")
+    public void clear() throws Exception{
+        ClearService service_clear = new ClearService();
+        response_clear = service_clear.clear();
+        Assertions.assertEquals(200, response_clear.getStatus());
+    }
 
 }
