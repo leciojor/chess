@@ -31,7 +31,7 @@ public class LogoutService {
         AuthData user_data = auth.getCurrentToken(current_token);
 
         if (user_data != null){
-                auth.deleteAuth();
+                auth.deleteAuth(user_data);
                 LogoutResponse response = new LogoutResponse();
                 response.setStatus(200);
                 return response;

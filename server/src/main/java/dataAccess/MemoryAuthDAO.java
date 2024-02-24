@@ -50,7 +50,12 @@ public class MemoryAuthDAO implements AuthDAO{
     }
 
     @Override
-    public void deleteAuth() {
+    public void deleteAuth(AuthData token) {
+        current_auths.remove(token);
+    }
+
+    @Override
+    public void deleteAuthList() {
         current_auths = new Vector<AuthData>();
     }
 }

@@ -15,5 +15,7 @@ public interface AuthDAO {
 
     void updateAuth();
 
-    void deleteAuth();
+    void deleteAuth(AuthData token);
+
+    void deleteAuthList();
 }

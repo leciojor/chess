@@ -19,7 +19,7 @@ public class ClearService {
     public ClearResponse clear(){
         try{
             user.deleteUser();
-            auth.deleteAuth();
+            auth.deleteAuthList();
             game.deleteGame();
 
             ClearResponse response = new ClearResponse();

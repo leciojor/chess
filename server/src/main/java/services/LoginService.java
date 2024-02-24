@@ -1,11 +1,13 @@
 package services;
 
 import dataAccess.*;
+import model.AuthData;
 import model.UserData;
 import server.LoginRequest;
 import server.LoginResponse;
 
 import java.util.Objects;
+import java.util.Vector;
 
 public class LoginService {
     private final LoginRequest request;
@@ -27,7 +29,8 @@ public class LoginService {
         if (user_data != null){
             if (Objects.equals(user_data.password(), password)){
                 auth.createAuth(username);
-                String current_token = auth.getCurrentToken(user_data.authToken()).authToken();
+                Vector<AuthData> auths_list = auth.getCurrent_auths();
+                String current_token = auth.getCurrentToken(auths_list.get(auths_list.size() - 1 ).authToken()).authToken();
                 LoginResponse response = new LoginResponse(username, current_token);
                 response.setStatus(200);
                 return response;
