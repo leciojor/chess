@@ -46,8 +46,9 @@ public class ChessValidMovesPawn{
                         if (newValidPosition.getRow() == 8){
                             addingLogic(validMoves, startPosition, newValidPosition);
                         }
-                        else{
+                        else if (newValidPosition.getRow() != 8){
                             ChessMove newMove = new ChessMove(startPosition, newValidPosition, null);
+                            
                             validMoves.add(newMove);
                         }
                     }
