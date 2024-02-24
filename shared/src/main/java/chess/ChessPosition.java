@@ -68,17 +68,17 @@ public class ChessPosition {
         //if no one here
         //if else someone but enemy
 
-        ChessPosition new_valid_position = new ChessPosition(positionRow, positionCol);
+        ChessPosition newValidPosition = new ChessPosition(positionRow, positionCol);
 
 
         if ((positionRow <= 8 && positionRow > 0)&&(positionCol <= 8 && positionCol > 0)){
-            if (board.getPiece(new_valid_position) == null){
-                return new_valid_position;
+            if (board.getPiece(newValidPosition) == null){
+                return newValidPosition;
             }
 
-            else if(board.getPiece(new_valid_position) != null && board.getPiece(new_valid_position).getTeamColor() != color){
-                new_valid_position.killed = true;
-                return new_valid_position;
+            else if(board.getPiece(newValidPosition) != null && board.getPiece(newValidPosition).getTeamColor() != color){
+                newValidPosition.killed = true;
+                return newValidPosition;
             }
         }
         else{

@@ -3,8 +3,8 @@ package services;
 import dataAccess.*;
 import model.AuthData;
 import model.UserData;
-import server.LoginRequest;
-import server.LoginResponse;
+import server.requests.LoginRequest;
+import server.responses.LoginResponse;
 
 import java.util.Objects;
 import java.util.Vector;

@@ -1,8 +1,7 @@
 package services;
 
 import dataAccess.*;
-import server.ClearResponse;
-import server.JoinGameResponse;
+import server.responses.ClearResponse;
 
 public class ClearService {
 

@@ -1,20 +1,20 @@
-package server;
+package server.responses;
 
 import services.Err;
 
-public class ClearResponse {
+public class JoinGameResponse {
 
     private String message;
 
     private transient int status;
 
 
-    public ClearResponse(Err error){
+    public JoinGameResponse(Err error){
         this.message = error.getError().message();
         this.status = error.getError().status();
     }
 
-    public ClearResponse(){
+    public JoinGameResponse(){
 
     }
 

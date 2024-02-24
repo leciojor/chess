@@ -2,10 +2,10 @@ package services;
 
 import model.AuthData;
 import model.UserData;
-import server.RegisterRequest;
+import server.requests.RegisterRequest;
 
 import dataAccess.*;
-import server.RegisterResponse;
+import server.responses.RegisterResponse;
 
 import java.util.Objects;
 import java.util.Vector;

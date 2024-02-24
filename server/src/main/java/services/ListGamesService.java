@@ -2,9 +2,8 @@ package services;
 
 import dataAccess.*;
 import model.AuthData;
-import server.*;
-
-import java.util.Objects;
+import server.requests.ListGamesRequest;
+import server.responses.ListGamesResponse;
 
 public class ListGamesService {
 

@@ -1,4 +1,4 @@
-package server;
+package server.requests;
 
 public class LogoutRequest {
 
@@ -10,8 +10,5 @@ public class LogoutRequest {
 
     }
 
-    public String getAuthToken(){
-        return authToken;
-    }
 
 }

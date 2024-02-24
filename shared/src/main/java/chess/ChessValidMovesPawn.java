@@ -36,6 +36,7 @@ public class ChessValidMovesPawn{
                 int newCol = startPosition.getColumn() + this.addUpsWhite[i][1];
                 if ((newRow <= 8 && newRow > 0) && (newCol <= 8 && newCol > 0)) {
                     ChessPosition newValidPosition = new ChessPosition(newRow, newCol);
+                    boolean booleanOne = board.getPiece(newValidPosition) != null && this.addUpsWhite[i][1] != 0 && board.getPiece(newValidPosition).getTeamColor() != color && this.addUpsWhite[i][0] != 2;
                     ChessPosition newValidPositionPlusTwoCase = new ChessPosition(newRow - 1, newCol);
                     if (this.addUpsWhite[i][0] == 2 && startPosition.getRow() == 2 && board.getPiece(newValidPosition) == null && board.getPiece(newValidPositionPlusTwoCase) == null){
                         ChessMove newMove = new ChessMove(startPosition, newValidPosition, null);
@@ -50,7 +51,7 @@ public class ChessValidMovesPawn{
                             validMoves.add(newMove);
                         }
                     }
-                    else if (board.getPiece(newValidPosition) != null && this.addUpsWhite[i][1] != 0 && board.getPiece(newValidPosition).getTeamColor() != color && this.addUpsWhite[i][0] != 2){
+                    else if (booleanOne){
                         if (newValidPosition.getRow() == 8){
                             addingLogic(validMoves, startPosition, newValidPosition);
                         }
@@ -63,11 +64,13 @@ public class ChessValidMovesPawn{
             }
         }
         else {
+
             for (int i = 0; i < this.addUpsBlack.length; i++) {
                 int newRow = startPosition.getRow() + this.addUpsBlack[i][0];
                 int newCol = startPosition.getColumn() + this.addUpsBlack[i][1];
                 if ((newRow <= 8 && newRow > 0) && (newCol <= 8 && newCol > 0)) {
                     ChessPosition newValidPosition = new ChessPosition(newRow, newCol);
+                    boolean booleanTwo = board.getPiece(newValidPosition) != null && this.addUpsBlack[i][1] != 0 && board.getPiece(newValidPosition).getTeamColor() != color && this.addUpsBlack[i][0] != -2;
                     ChessPosition newValidPositionPlusTwoCase = new ChessPosition(newRow + 1, newCol);
                     if (this.addUpsBlack[i][0] == -2 && startPosition.getRow() == 7 && board.getPiece(newValidPosition) == null && board.getPiece(newValidPositionPlusTwoCase) == null){
                         ChessMove newMove = new ChessMove(startPosition, newValidPosition, null);
@@ -82,7 +85,7 @@ public class ChessValidMovesPawn{
                             validMoves.add(newMove);
                         }
                     }
-                    else if (board.getPiece(newValidPosition) != null && this.addUpsBlack[i][1] != 0 && board.getPiece(newValidPosition).getTeamColor() != color && this.addUpsBlack[i][0] != -2){
+                    else if (booleanTwo){
                         if (newValidPosition.getRow() == 1){
                             addingLogic(validMoves, startPosition, newValidPosition);
                         }

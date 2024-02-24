@@ -1,8 +1,9 @@
 package serviceTests;
 
 import dataAccess.*;
+import server.requests.*;
+import server.responses.*;
 import services.*;
-import server.*;
 import org.junit.jupiter.api.*;
 
 

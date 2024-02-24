@@ -1,4 +1,4 @@
-package server;
+package server.responses;
 
 import services.Err;
 

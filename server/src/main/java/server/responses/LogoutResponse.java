@@ -1,27 +1,21 @@
-package server;
+package server.responses;
 
-import model.GameData;
 import services.Err;
 
-import java.util.HashSet;
-import java.util.Vector;
-
-public class ListGamesResponse {
+public class LogoutResponse {
 
     private String message;
 
     private transient int status;
 
-    private HashSet<GameData> games;
 
-
-    public ListGamesResponse(Err error){
+    public LogoutResponse(Err error){
         this.message = error.getError().message();
         this.status = error.getError().status();
     }
 
-    public ListGamesResponse(HashSet<GameData> games){
-        this.games = games;
+    public LogoutResponse(){
+
     }
 
     public int getStatus(){
@@ -31,5 +25,6 @@ public class ListGamesResponse {
     public void setStatus(int status){
         this.status = status;
     }
+
 
 }

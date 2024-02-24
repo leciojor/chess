@@ -5,12 +5,8 @@ import dataAccess.MemoryAuthDAO;
 import dataAccess.MemoryUserDAO;
 import dataAccess.UserDAO;
 import model.AuthData;
-import model.UserData;
-import server.LogoutRequest;
-import server.LogoutResponse;
-import services.Err;
-
-import java.util.Objects;
+import server.requests.LogoutRequest;
+import server.responses.LogoutResponse;
 
 public class LogoutService {
 
