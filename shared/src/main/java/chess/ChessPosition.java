@@ -63,7 +63,7 @@ public class ChessPosition {
         return this.col;
     }
 
-    public ChessPosition valid_position(int position_row, int position_col, ChessBoard board, ChessGame.TeamColor color){
+    public ChessPosition validPosition(int position_row, int position_col, ChessBoard board, ChessGame.TeamColor color){
         //if out of bounds
         //if no one here
         //if else someone but enemy

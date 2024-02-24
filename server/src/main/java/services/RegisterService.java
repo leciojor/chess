@@ -25,14 +25,14 @@ public class RegisterService {
 
 
     public RegisterResponse register(String username, String password, String email)  {
-        UserData user_data = user.getUser(username);
+        UserData userData = user.getUser(username);
 
-        if (user_data == null & username != null & password != null & email != null){
+        if (userData == null & username != null & password != null & email != null){
             auth.createAuth(username);
-            Vector<AuthData> auths_list = auth.getCurrent_auths();
-            String current_token = auth.getCurrentToken(auths_list.get(auths_list.size() - 1 ).authToken()).authToken();
-            user.createUser(username, password, email, current_token);
-            RegisterResponse response = new RegisterResponse(username, current_token);
+            Vector<AuthData> authsList = auth.getCurrentAuths();
+            String currentToken = auth.getCurrentToken(authsList.get(authsList.size() - 1 ).authToken()).authToken();
+            user.createUser(username, password, email, currentToken);
+            RegisterResponse response = new RegisterResponse(username, currentToken);
             response.setStatus(200);
             return response;
         }
@@ -40,7 +40,7 @@ public class RegisterService {
             Err error = new Err(400);
             return new RegisterResponse(error);
         }
-        else if (user_data != null){
+        else if (userData != null){
             Err error = new Err(403);
             return new RegisterResponse(error);
         }

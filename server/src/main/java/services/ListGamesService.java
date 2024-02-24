@@ -21,16 +21,13 @@ public class ListGamesService {
     }
 
     public ListGamesResponse listGames(String current_token){
-        AuthData user_data = auth.getCurrentToken(current_token);
+        AuthData userData = auth.getCurrentToken(current_token);
 
-        if (user_data != null){
-//            if (Objects.equals(user_data.authToken(), current_token)){
+        if (userData != null){
                 ListGamesResponse response = new ListGamesResponse(game.getListGames());
                 response.setStatus(200);
                 return response;
-//            }
-//            Err error = new Err(401);
-//            return new ListGamesResponse(error);
+
         }
         else{
             Err error = new Err(401);

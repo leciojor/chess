@@ -1,7 +1,6 @@
 package chess;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
 
 
@@ -79,58 +78,58 @@ public class ChessPiece {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
 
         if (this.type_ == PieceType.KING){
-            int[][] add_ups = {{1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}};
-            String for_while_if = "for_if";
+            int[][] addUps = {{1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}};
+            String forWhileIf = "for_if";
 
-            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(add_ups, for_while_if);
-            Collection<ChessMove> valid_moves = validMoves.getValidMoves(myPosition, board, this.color);
-            return valid_moves;
+            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(addUps, forWhileIf);
+            Collection<ChessMove> moves = validMoves.getValidMoves(myPosition, board, this.color);
+            return moves;
         }
 
         else if (this.type_ == PieceType.QUEEN){
-            int[][] add_ups = {{1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}};
-            String for_while_if = "for_while_if";
+            int[][] addUps = {{1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}};
+            String forWhileIf = "for_while_if";
 
-            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(add_ups, for_while_if);
-            Collection<ChessMove> valid_moves = validMoves.getValidMoves(myPosition, board, this.color);
-            return valid_moves;
+            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(addUps, forWhileIf);
+            Collection<ChessMove> moves = validMoves.getValidMoves(myPosition, board, this.color);
+            return moves;
 
         }
 
         else if (this.type_ == PieceType.BISHOP){
-            int[][] add_ups = {{1,1},{1,-1},{-1,1},{-1,-1}};
-            String for_while_if = "for_while_if";
+            int[][] addUps = {{1,1},{1,-1},{-1,1},{-1,-1}};
+            String forWhileIf = "for_while_if";
 
-            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(add_ups, for_while_if);
-            Collection<ChessMove> valid_moves = validMoves.getValidMoves(myPosition, board, this.color);
-            return valid_moves;
+            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(addUps, forWhileIf);
+            Collection<ChessMove> moves = validMoves.getValidMoves(myPosition, board, this.color);
+            return moves;
         }
 
         else if (this.type_ == PieceType.ROOK){
-            int[][] add_ups = {{1,0},{-1,0},{0,1},{0,-1}};
-            String for_while_if = "for_while_if";
+            int[][] addUps = {{1,0},{-1,0},{0,1},{0,-1}};
+            String forWhileIf = "for_while_if";
 
-            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(add_ups, for_while_if);
-            Collection<ChessMove> valid_moves = validMoves.getValidMoves(myPosition, board, this.color);
-            return valid_moves;
+            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(addUps, forWhileIf);
+            Collection<ChessMove> moves = validMoves.getValidMoves(myPosition, board, this.color);
+            return moves;
         }
 
         else if (this.type_ == PieceType.KNIGHT){
-            int[][] add_ups = {{2,1},{2,-1},{1,2},{-1,2},{-2,1},{-2,-1},{-1,-2},{1,-2}};
-            String for_while_if = "for_if";
+            int[][] addUps = {{2,1},{2,-1},{1,2},{-1,2},{-2,1},{-2,-1},{-1,-2},{1,-2}};
+            String forWhileIf = "for_if";
 
-            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(add_ups, for_while_if);
-            Collection<ChessMove> valid_moves = validMoves.getValidMoves(myPosition, board, this.color);
-            return valid_moves;
+            ChessValidMovesGeneral validMoves = new ChessValidMovesGeneral(addUps, forWhileIf);
+            Collection<ChessMove> moves = validMoves.getValidMoves(myPosition, board, this.color);
+            return moves;
         }
 
         else if (this.type_ == PieceType.PAWN){
-            int[][] add_ups_black = {{-1,0}, {-2,0}, {-1,1}, {-1,-1}};
-            int[][] add_ups_white = {{1,0}, {2,0}, {1,1}, {1,-1}};
+            int[][] addUpsBlack = {{-1,0}, {-2,0}, {-1,1}, {-1,-1}};
+            int[][] addUpsWhite = {{1,0}, {2,0}, {1,1}, {1,-1}};
 
-            ChessValidMovesPawn validMoves = new ChessValidMovesPawn(add_ups_white, add_ups_black);
-            Collection<ChessMove> valid_moves = validMoves.getValidMoves(myPosition, board, this.color);
-            return valid_moves;
+            ChessValidMovesPawn validMoves = new ChessValidMovesPawn(addUpsWhite, addUpsBlack);
+            Collection<ChessMove> moves = validMoves.getValidMoves(myPosition, board, this.color);
+            return moves;
         }
 
         return null;

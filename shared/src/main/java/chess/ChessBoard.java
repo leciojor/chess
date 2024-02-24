@@ -16,9 +16,6 @@ public class ChessBoard {
         this.structure = new ChessPiece[8][8];
     }
 
-    public ChessPiece[][] getStructure(){
-        return this.structure;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -68,38 +65,37 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
-        //ChessBoard reset_board = new ChessBoard();
 
-        ChessPiece[][] reset_board = new ChessPiece[8][8];
+        ChessPiece[][] resetBoard = new ChessPiece[8][8];
 
 
-        ChessPiece.PieceType[] piece_sequence = {ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK};
+        ChessPiece.PieceType[] pieceSequence = {ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK};
 
-        for (int i = 0; i < piece_sequence.length; i++){
-            ChessPosition position_white = new ChessPosition(0, i);
-            ChessPiece piece_white = new ChessPiece(ChessGame.TeamColor.WHITE, piece_sequence[i]);
-            ChessPosition position_black = new ChessPosition(7, i);
-            ChessPiece piece_black = new ChessPiece(ChessGame.TeamColor.BLACK, piece_sequence[i]);
-            reset_board[position_white.getRow()][position_white.getColumn()] = piece_white;
-            reset_board[position_black.getRow()][position_black.getColumn()] = piece_black;
-
+        for (int i = 0; i < pieceSequence.length; i++){
+            ChessPosition positionWhite = new ChessPosition(0, i);
+            ChessPiece pieceWhite = new ChessPiece(ChessGame.TeamColor.WHITE, pieceSequence[i]);
+            ChessPosition positionBlack = new ChessPosition(7, i);
+            ChessPiece pieceBlack = new ChessPiece(ChessGame.TeamColor.BLACK, pieceSequence[i]);
+            resetBoard[positionWhite.getRow()][positionWhite.getColumn()] = pieceWhite;
+            resetBoard[positionBlack.getRow()][positionBlack.getColumn()] = pieceBlack;
 
 
 
-            ChessPosition position_white_pawn = new ChessPosition(1, i);
-            ChessPiece piece_white_pawn = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
-            ChessPosition position_black_pawn = new ChessPosition(6, i);
-            ChessPiece piece_black_pawn = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN);
-            reset_board[position_white_pawn.getRow()][position_white_pawn.getColumn()] = piece_white_pawn;
-            reset_board[position_black_pawn.getRow()][position_black_pawn.getColumn()] = piece_black_pawn;
-            System.out.println(position_black_pawn);
-            System.out.println(piece_black_pawn);
-            System.out.println(position_white_pawn);
-            System.out.println(piece_white_pawn);
+
+            ChessPosition positionWhitePawn = new ChessPosition(1, i);
+            ChessPiece pieceWhitePawn = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
+            ChessPosition positionBlackPawn = new ChessPosition(6, i);
+            ChessPiece pieceBlackPawn = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN);
+            resetBoard[positionWhitePawn.getRow()][positionWhitePawn.getColumn()] = pieceWhitePawn;
+            resetBoard[positionBlackPawn.getRow()][positionBlackPawn.getColumn()] = pieceBlackPawn;
+            System.out.println(positionBlackPawn);
+            System.out.println(pieceBlackPawn);
+            System.out.println(positionWhitePawn);
+            System.out.println(pieceWhitePawn);
         }
 
 
-        this.structure = reset_board;
+        this.structure = resetBoard;
 
     }
 
@@ -108,10 +104,10 @@ public class ChessBoard {
         ChessBoard copy = new ChessBoard();
         for (int i = 1; i <= 8; i++) {
             for (int j = 1; j <= 8; j++) {
-                ChessPosition temp_position = new ChessPosition(i, j);
-                ChessPiece temp_piece = this.getPiece(temp_position);
-                if (temp_position != null && temp_piece != null){
-                    copy.addPiece(temp_position, temp_piece);
+                ChessPosition tempPosition = new ChessPosition(i, j);
+                ChessPiece tempPiece = this.getPiece(tempPosition);
+                if (tempPosition != null && tempPiece != null){
+                    copy.addPiece(tempPosition, tempPiece);
                 }
 
 

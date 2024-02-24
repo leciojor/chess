@@ -5,8 +5,6 @@ import dataAccess.*;
 import model.*;
 import server.*;
 
-import java.util.Objects;
-
 import java.util.Random;
 import java.util.Vector;
 
@@ -31,21 +29,21 @@ public class CreateGameService {
     }
 
     public CreateGameResponse createGame(String game_name, String current_token){
-        GameData game_data = game.getGame(game_name);
-        AuthData user_data = auth.getCurrentToken(current_token);
+        GameData gameData = game.getGame(game_name);
+        AuthData userData = auth.getCurrentToken(current_token);
 
-        if (game_data == null & user_data != null){
+        if (gameData == null & userData != null){
                 Random random = new Random();
-                int random_number = random.nextInt(9000) + 1000;
-                while (random_ids.contains(random_number)){
-                    random_number = random.nextInt(9000) + 1000;
+                int randomNumber = random.nextInt(9000) + 1000;
+                while (random_ids.contains(randomNumber)){
+                    randomNumber = random.nextInt(9000) + 1000;
                 }
-                random_ids.add(random_number);
+                random_ids.add(randomNumber);
 
-                ChessGame chess_game = new ChessGame();
+                ChessGame chessGame = new ChessGame();
 
-                game.createGame(random_number, "", "", game_name, chess_game);
-                CreateGameResponse response = new CreateGameResponse(String.valueOf(random_number));
+                game.createGame(randomNumber, "", "", game_name, chessGame);
+                CreateGameResponse response = new CreateGameResponse(String.valueOf(randomNumber));
                 response.setStatus(200);
                 return response;
 

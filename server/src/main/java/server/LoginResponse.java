@@ -36,8 +36,5 @@ public class LoginResponse {
     }
 
 
-    public String getAuthToken(){
-        return authToken;
-    }
 
 }

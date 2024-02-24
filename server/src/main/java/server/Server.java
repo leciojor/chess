@@ -31,9 +31,6 @@ public class Server {
         Spark.awaitStop();
     }
 
-    //private Object clearGameHandler(Request req, Response res){
-       //return clearGameService(Request req, Response, res);
-    //}
 
     //USE INHERITANCE FOR THE HANDLERS FOR AVOIDING DUPLICATE CODE or just put the body code in the lambdas
     private String registerHandler(Request req, Response res) {

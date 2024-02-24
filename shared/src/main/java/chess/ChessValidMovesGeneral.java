@@ -1,43 +1,34 @@
 package chess;
 
 import java.lang.String;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 
 public class ChessValidMovesGeneral{
-    private int[][] add_ups;
+    private int[][] addUps;
 
-    private String for_if_while;
+    private String forIfWhile;
     //for if
     //for while if
 
-    public ChessValidMovesGeneral(int[][] positions, String for_if_while){
-        this.add_ups = positions;
-        this.for_if_while = for_if_while;
+    public ChessValidMovesGeneral(int[][] positions, String forIfWhile){
+        this.addUps = positions;
+        this.forIfWhile = forIfWhile;
     }
 
-    public String getForIfWhile(){
-        return this.for_if_while;
-    }
-
-    public int[][] getPositions(){
-        return this.add_ups;
-    }
 
     public HashSet<ChessMove> getValidMoves(ChessPosition start_position, ChessBoard board, ChessGame.TeamColor color){
-        HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
+        HashSet<ChessMove> validMoves = new HashSet<ChessMove>();
 
-        if (this.for_if_while == "for_if"){
-            for (int i = 0; i < this.add_ups.length; i++){
-                int new_row = start_position.getRow() + this.add_ups[i][0];
-                int new_col = start_position.getColumn() + this.add_ups[i][1];
-                ChessPosition new_position = start_position.valid_position(new_row, new_col, board, color);
+        if (this.forIfWhile == "for_if"){
+            for (int i = 0; i < this.addUps.length; i++){
+                int newRow = start_position.getRow() + this.addUps[i][0];
+                int newCol = start_position.getColumn() + this.addUps[i][1];
+                ChessPosition newPosition = start_position.validPosition(newRow, newCol, board, color);
 
 
-                if(new_position != null){
-                    ChessMove new_move = new ChessMove(start_position, new_position, null);
-                    valid_moves.add(new_move);
+                if(newPosition != null){
+                    ChessMove newMove = new ChessMove(start_position, newPosition, null);
+                    validMoves.add(newMove);
                 }
             }
 
@@ -45,34 +36,34 @@ public class ChessValidMovesGeneral{
 
 
 
-        else if (this.for_if_while == "for_while_if"){
-            for (int i = 0; i < this.add_ups.length; i++){
-                int new_row = start_position.getRow() + this.add_ups[i][0];
-                int new_col = start_position.getColumn() + this.add_ups[i][1];
-                ChessPosition new_position = start_position.valid_position(new_row, new_col, board, color);
+        else if (this.forIfWhile == "for_while_if"){
+            for (int i = 0; i < this.addUps.length; i++){
+                int newRow = start_position.getRow() + this.addUps[i][0];
+                int newCol = start_position.getColumn() + this.addUps[i][1];
+                ChessPosition newPosition = start_position.validPosition(newRow, newCol, board, color);
 
 
-                while(new_position != null && (!new_position.getKilled())){
-                    //System.out.println(new_position);
-                    ChessMove new_move = new ChessMove(start_position, new_position, null);
-                    valid_moves.add(new_move);
+                while(newPosition != null && (!newPosition.getKilled())){
+                    //System.out.println(newPosition);
+                    ChessMove newMove = new ChessMove(start_position, newPosition, null);
+                    validMoves.add(newMove);
 
-                    new_row = new_position.getRow() + this.add_ups[i][0];
-                    new_col = new_position.getColumn() + this.add_ups[i][1];
-                    ChessPosition updated_position = new_position.valid_position(new_row, new_col, board, color);
-                    new_position = updated_position;
+                    newRow = newPosition.getRow() + this.addUps[i][0];
+                    newCol = newPosition.getColumn() + this.addUps[i][1];
+                    ChessPosition updatedPosition = newPosition.validPosition(newRow, newCol, board, color);
+                    newPosition = updatedPosition;
                 }
 
-                if (new_position != null && new_position.getKilled()){
-                    ChessMove exception_move = new ChessMove(start_position, new_position, null);
-                    valid_moves.add(exception_move);
+                if (newPosition != null && newPosition.getKilled()){
+                    ChessMove exceptionMove = new ChessMove(start_position, newPosition, null);
+                    validMoves.add(exceptionMove);
                 }
             }
 
 
         }
 
-        return valid_moves;
+        return validMoves;
     }
 
 }

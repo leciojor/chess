@@ -4,71 +4,69 @@ import java.util.HashSet;
 
 public class ChessValidMovesPawn{
 
-    private int[][] add_ups_white;
+    private int[][] addUpsWhite;
 
-    private int[][] add_ups_black;
+    private int[][] addUpsBlack;
 
 
     public ChessValidMovesPawn(int[][] positions_white, int[][] positions_black){
-        this.add_ups_white = positions_white;
-        this.add_ups_black = positions_black;
+        this.addUpsWhite = positions_white;
+        this.addUpsBlack = positions_black;
 
     };
 
+    private void addingLogic(HashSet<ChessMove> validMoves, ChessPosition start_position, ChessPosition newValidPosition){
+        ChessMove newMove = new ChessMove(start_position, newValidPosition, ChessPiece.PieceType.QUEEN);
+        validMoves.add(newMove);
+        newMove = new ChessMove(start_position, newValidPosition, ChessPiece.PieceType.ROOK);
+        validMoves.add(newMove);
+        newMove = new ChessMove(start_position, newValidPosition, ChessPiece.PieceType.BISHOP);
+        validMoves.add(newMove);
+        newMove = new ChessMove(start_position, newValidPosition, ChessPiece.PieceType.KNIGHT);
+        validMoves.add(newMove);
+
+    }
+
 
     public HashSet<ChessMove> getValidMoves(ChessPosition start_position, ChessBoard board, ChessGame.TeamColor color) {
-        HashSet<ChessMove> valid_moves = new HashSet<ChessMove>();
+        HashSet<ChessMove> validMoves = new HashSet<ChessMove>();
 
         if (color == ChessGame.TeamColor.WHITE){
-            for (int i = 0; i < this.add_ups_white.length; i++) {
-                int new_row = start_position.getRow() + this.add_ups_white[i][0];
-                int new_col = start_position.getColumn() + this.add_ups_white[i][1];
+            for (int i = 0; i < this.addUpsWhite.length; i++) {
+                int newRow = start_position.getRow() + this.addUpsWhite[i][0];
+                int newCol = start_position.getColumn() + this.addUpsWhite[i][1];
 
 
 
-                if ((new_row <= 8 && new_row > 0) && (new_col <= 8 && new_col > 0)) {
-                    ChessPosition new_valid_position = new ChessPosition(new_row, new_col);
-                    ChessPosition new_valid_position_plus_two_case = new ChessPosition(new_row - 1, new_col);
+                if ((newRow <= 8 && newRow > 0) && (newCol <= 8 && newCol > 0)) {
+                    ChessPosition newValidPosition = new ChessPosition(newRow, newCol);
+                    ChessPosition newValidPositionPlusTwoCase = new ChessPosition(newRow - 1, newCol);
 
 
-                    if (this.add_ups_white[i][0] == 2 && start_position.getRow() == 2 && board.getPiece(new_valid_position) == null && board.getPiece(new_valid_position_plus_two_case) == null){
-                        ChessMove new_move = new ChessMove(start_position, new_valid_position, null);
-                        valid_moves.add(new_move);
+                    if (this.addUpsWhite[i][0] == 2 && start_position.getRow() == 2 && board.getPiece(newValidPosition) == null && board.getPiece(newValidPositionPlusTwoCase) == null){
+                        ChessMove newMove = new ChessMove(start_position, newValidPosition, null);
+                        validMoves.add(newMove);
                     }
 
-                    else if (board.getPiece(new_valid_position) == null && this.add_ups_white[i][1] == 0 && this.add_ups_white[i][0] != 2){
-                        if (new_valid_position.getRow() == 8){
-                            ChessMove new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.QUEEN);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.ROOK);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.BISHOP);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.KNIGHT);
-                            valid_moves.add(new_move);
+                    else if (board.getPiece(newValidPosition) == null && this.addUpsWhite[i][1] == 0 && this.addUpsWhite[i][0] != 2){
+                        if (newValidPosition.getRow() == 8){
+                            addingLogic(validMoves, start_position, newValidPosition);
 
                         }
                         else{
-                            ChessMove new_move = new ChessMove(start_position, new_valid_position, null);
-                            valid_moves.add(new_move);
+                            ChessMove newMove = new ChessMove(start_position, newValidPosition, null);
+                            validMoves.add(newMove);
                         }
 
                     }
 
-                    else if (board.getPiece(new_valid_position) != null && this.add_ups_white[i][1] != 0 && board.getPiece(new_valid_position).getTeamColor() != color && this.add_ups_white[i][0] != 2){
-                        if (new_valid_position.getRow() == 8){
-                            ChessMove new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.QUEEN);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.ROOK);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.BISHOP);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.KNIGHT);
-                            valid_moves.add(new_move);
+                    else if (board.getPiece(newValidPosition) != null && this.addUpsWhite[i][1] != 0 && board.getPiece(newValidPosition).getTeamColor() != color && this.addUpsWhite[i][0] != 2){
+                        if (newValidPosition.getRow() == 8){
+                            addingLogic(validMoves, start_position, newValidPosition);
                         }
                         else{
-                            ChessMove new_move = new ChessMove(start_position, new_valid_position, null);
-                            valid_moves.add(new_move);
+                            ChessMove newMove = new ChessMove(start_position, newValidPosition, null);
+                            validMoves.add(newMove);
                         }
 
                     }
@@ -79,53 +77,39 @@ public class ChessValidMovesPawn{
         }
 
         else {
-            for (int i = 0; i < this.add_ups_black.length; i++) {
-                int new_row = start_position.getRow() + this.add_ups_black[i][0];
-                int new_col = start_position.getColumn() + this.add_ups_black[i][1];
+            for (int i = 0; i < this.addUpsBlack.length; i++) {
+                int newRow = start_position.getRow() + this.addUpsBlack[i][0];
+                int newCol = start_position.getColumn() + this.addUpsBlack[i][1];
 
 
-                if ((new_row <= 8 && new_row > 0) && (new_col <= 8 && new_col > 0)) {
-                    ChessPosition new_valid_position = new ChessPosition(new_row, new_col);
-                    ChessPosition new_valid_position_plus_two_case = new ChessPosition(new_row + 1, new_col);
+                if ((newRow <= 8 && newRow > 0) && (newCol <= 8 && newCol > 0)) {
+                    ChessPosition newValidPosition = new ChessPosition(newRow, newCol);
+                    ChessPosition newValidPositionPlusTwoCase = new ChessPosition(newRow + 1, newCol);
 
 
-                    if (this.add_ups_black[i][0] == -2 && start_position.getRow() == 7 && board.getPiece(new_valid_position) == null && board.getPiece(new_valid_position_plus_two_case) == null){
-                        ChessMove new_move = new ChessMove(start_position, new_valid_position, null);
-                        valid_moves.add(new_move);
+                    if (this.addUpsBlack[i][0] == -2 && start_position.getRow() == 7 && board.getPiece(newValidPosition) == null && board.getPiece(newValidPositionPlusTwoCase) == null){
+                        ChessMove newMove = new ChessMove(start_position, newValidPosition, null);
+                        validMoves.add(newMove);
                     }
 
-                    else if (board.getPiece(new_valid_position) == null && this.add_ups_black[i][1] == 0 && this.add_ups_black[i][0] != -2){
-                        if (new_valid_position.getRow() == 1){
-                            ChessMove new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.QUEEN);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.ROOK);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.BISHOP);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.KNIGHT);
-                            valid_moves.add(new_move);
+                    else if (board.getPiece(newValidPosition) == null && this.addUpsBlack[i][1] == 0 && this.addUpsBlack[i][0] != -2){
+                        if (newValidPosition.getRow() == 1){
+                            addingLogic(validMoves, start_position, newValidPosition);
                         }
                         else{
-                            ChessMove new_move = new ChessMove(start_position, new_valid_position, null);
-                            valid_moves.add(new_move);
+                            ChessMove newMove = new ChessMove(start_position, newValidPosition, null);
+                            validMoves.add(newMove);
                         }
 
                     }
 
-                    else if (board.getPiece(new_valid_position) != null && this.add_ups_black[i][1] != 0 && board.getPiece(new_valid_position).getTeamColor() != color && this.add_ups_black[i][0] != -2){
-                        if (new_valid_position.getRow() == 1){
-                            ChessMove new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.QUEEN);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.ROOK);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.BISHOP);
-                            valid_moves.add(new_move);
-                            new_move = new ChessMove(start_position, new_valid_position, ChessPiece.PieceType.KNIGHT);
-                            valid_moves.add(new_move);
+                    else if (board.getPiece(newValidPosition) != null && this.addUpsBlack[i][1] != 0 && board.getPiece(newValidPosition).getTeamColor() != color && this.addUpsBlack[i][0] != -2){
+                        if (newValidPosition.getRow() == 1){
+                            addingLogic(validMoves, start_position, newValidPosition);
                         }
                         else{
-                            ChessMove new_move = new ChessMove(start_position, new_valid_position, null);
-                            valid_moves.add(new_move);
+                            ChessMove newMove = new ChessMove(start_position, newValidPosition, null);
+                            validMoves.add(newMove);
                         }
 
                     }
@@ -133,7 +117,7 @@ public class ChessValidMovesPawn{
                 }
             }
         }
-        return valid_moves;
+        return validMoves;
     }
 
     //normal cases (just walk one)

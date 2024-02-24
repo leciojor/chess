@@ -2,33 +2,31 @@ package dataAccess;
 
 import chess.ChessGame;
 import model.GameData;
-import model.UserData;
 
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Vector;
 
 public class MemoryGameDAO implements GameDAO{
 
-    private static HashSet<GameData> game_list = new HashSet<GameData>();
+    private static HashSet<GameData> gameList = new HashSet<GameData>();
 
     @Override
-    public void createGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) {
+    public void createGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame chessGame) {
         if (whiteUsername == ""){
             whiteUsername = null;
         }
         if (blackUsername == ""){
             blackUsername = null;
         }
-        GameData game_ = new GameData(gameID, whiteUsername, blackUsername, gameName, game);
-        game_list.add(game_);
+        GameData game = new GameData(gameID, whiteUsername, blackUsername, gameName, chessGame);
+        gameList.add(game);
     }
 
 
     @Override
     public GameData getGame(String game_name) {
-        if (game_list != null){;
-            for (GameData game : game_list){
+        if (gameList != null){;
+            for (GameData game : gameList){
                 if (Objects.equals(game.gameName(), game_name)){
                     return game;
                 }
@@ -40,14 +38,14 @@ public class MemoryGameDAO implements GameDAO{
 
     @Override
     public void addUser(GameData old_game, GameData new_game) {
-        game_list.remove(old_game);
-        game_list.add(new_game);
+        gameList.remove(old_game);
+        gameList.add(new_game);
     }
 
     @Override
     public GameData getGameByID(String game_Id) {
-        if (game_list != null & game_Id != null){
-            for (GameData game : game_list){
+        if (gameList != null & game_Id != null){
+            for (GameData game : gameList){
                 if (Objects.equals(game.gameID(), Integer.parseInt(game_Id))){
                     return game;
                 }
@@ -59,16 +57,12 @@ public class MemoryGameDAO implements GameDAO{
 
     @Override
     public HashSet<GameData> getListGames() {
-        return game_list;
+        return gameList;
     }
 
-    @Override
-    public void updateGame() {
-
-    }
 
     @Override
     public void deleteGame() {
-        game_list = new HashSet<GameData>();
+        gameList = new HashSet<GameData>();
     }
 }

@@ -7,14 +7,14 @@ import model.UserData;
 
 public class MemoryUserDAO implements UserDAO{
 
-    private static Vector<UserData> user_list = new Vector<UserData>();
+    private static Vector<UserData> userList = new Vector<UserData>();
 
     @Override
     public UserData getUser(String username){
-        if (user_list != null){
-            for (int i = 0; i < user_list.size(); i++){
-                if (Objects.equals(user_list.get(i).username(), username)){
-                    return user_list.get(i);
+        if (userList != null){
+            for (int i = 0; i < userList.size(); i++){
+                if (Objects.equals(userList.get(i).username(), username)){
+                    return userList.get(i);
                 }
             }
         }
@@ -26,18 +26,18 @@ public class MemoryUserDAO implements UserDAO{
     @Override
     public void createUser(String username, String password, String email, String authToken) {
         UserData user = new UserData(username, password, email, authToken);
-        user_list.add(user);
+        userList.add(user);
     }
 
 
     @Override
     public void updateUser(UserData old_user, UserData new_user) {
-        user_list.remove(old_user);
-        user_list.add(new_user);
+        userList.remove(old_user);
+        userList.add(new_user);
     }
 
     @Override
     public void deleteUser() throws DataAccessException{
-        user_list = new Vector<UserData>();
+        userList = new Vector<UserData>();
     }
 }

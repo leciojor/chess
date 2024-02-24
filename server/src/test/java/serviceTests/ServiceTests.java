@@ -4,7 +4,6 @@ import dataAccess.*;
 import services.*;
 import server.*;
 import org.junit.jupiter.api.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -85,7 +84,7 @@ public class ServiceTests {
         response_login = service_login.login(username_created, password);
 
         auth.createAuth(username);
-        within_token = auth.getCurrent_auths().get(auth.getCurrent_auths().size() - 1).authToken();
+        within_token = auth.getCurrentAuths().get(auth.getCurrentAuths().size() - 1).authToken();
 
         game.createGame(gameID_right, "", "", game_name, null);
 

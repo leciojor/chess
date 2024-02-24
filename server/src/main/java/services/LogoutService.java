@@ -28,10 +28,10 @@ public class LogoutService {
 
     public LogoutResponse logout(String current_token){
 
-        AuthData user_data = auth.getCurrentToken(current_token);
+        AuthData userData = auth.getCurrentToken(current_token);
 
-        if (user_data != null){
-                auth.deleteAuth(user_data);
+        if (userData != null){
+                auth.deleteAuth(userData);
                 LogoutResponse response = new LogoutResponse();
                 response.setStatus(200);
                 return response;

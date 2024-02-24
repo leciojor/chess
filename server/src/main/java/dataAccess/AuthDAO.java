@@ -9,11 +9,11 @@ public interface AuthDAO {
 
     AuthData getCurrentToken(String token);
 
-    Vector<AuthData> getCurrent_auths();
+    Vector<AuthData> getCurrentAuths();
 
     void createAuth(String username);
 
-    void updateAuth();
+
 
     void deleteAuth(AuthData token);
 

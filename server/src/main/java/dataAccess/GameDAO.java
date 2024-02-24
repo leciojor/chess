@@ -18,7 +18,7 @@ public interface GameDAO {
 
     HashSet<GameData> getListGames();
 
-    void updateGame();
+
 
     void deleteGame();
 }

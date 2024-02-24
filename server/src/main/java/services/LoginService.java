@@ -23,15 +23,15 @@ public class LoginService {
 
 
     public LoginResponse login(String username, String password) {
-        UserData user_data = user.getUser(username);
+        UserData userData = user.getUser(username);
 
 
-        if (user_data != null){
-            if (Objects.equals(user_data.password(), password)){
+        if (userData != null){
+            if (Objects.equals(userData.password(), password)){
                 auth.createAuth(username);
-                Vector<AuthData> auths_list = auth.getCurrent_auths();
-                String current_token = auth.getCurrentToken(auths_list.get(auths_list.size() - 1 ).authToken()).authToken();
-                LoginResponse response = new LoginResponse(username, current_token);
+                Vector<AuthData> authsList = auth.getCurrentAuths();
+                String currentToken = auth.getCurrentToken(authsList.get(authsList.size() - 1 ).authToken()).authToken();
+                LoginResponse response = new LoginResponse(username, currentToken);
                 response.setStatus(200);
                 return response;
             }

@@ -8,14 +8,14 @@ import java.util.Vector;
 
 public class MemoryAuthDAO implements AuthDAO{
 
-    private static Vector<AuthData> current_auths = new Vector<AuthData>();
+    private static Vector<AuthData> currentAuths = new Vector<AuthData>();
 
     @Override
     public AuthData getCurrentToken(String token) {
-        if (current_auths != null){
-            for (int i = 0; i < current_auths.size(); i++){
-                if (Objects.equals(current_auths.get(i).authToken(), token)){
-                    return current_auths.get(i);
+        if (currentAuths != null){
+            for (int i = 0; i < currentAuths.size(); i++){
+                if (Objects.equals(currentAuths.get(i).authToken(), token)){
+                    return currentAuths.get(i);
                 }
             }
         }
@@ -27,35 +27,31 @@ public class MemoryAuthDAO implements AuthDAO{
     public void createAuth(String username) {
         UserDAO user = new MemoryUserDAO();
         //may eventually generate the same token from before
-        String random_token = UUID.randomUUID().toString();
+        String randomToken = UUID.randomUUID().toString();
         UserData data = user.getUser(username);
         if (data != null){
-            UserData temp_user = new UserData(username, data.password(), data.email(), random_token);
-            user.updateUser(data, temp_user);
+            UserData tempUser = new UserData(username, data.password(), data.email(), randomToken);
+            user.updateUser(data, tempUser);
         }
 
-        AuthData current_auth = new AuthData(random_token, username);
-        current_auths.add(current_auth);
+        AuthData currentAuth = new AuthData(randomToken, username);
+        currentAuths.add(currentAuth);
 
     }
 
 
-    @Override
-    public void updateAuth() {
 
-    }
-
-    public Vector<AuthData> getCurrent_auths(){
-        return current_auths;
+    public Vector<AuthData> getCurrentAuths(){
+        return currentAuths;
     }
 
     @Override
     public void deleteAuth(AuthData token) {
-        current_auths.remove(token);
+        currentAuths.remove(token);
     }
 
     @Override
     public void deleteAuthList() {
-        current_auths = new Vector<AuthData>();
+        currentAuths = new Vector<AuthData>();
     }
 }
