@@ -35,9 +35,6 @@ public class RegisterResponse {
         this.status = status;
     }
 
-    public String getAuthToken(){
-        return authToken;
-    }
 
 
 }

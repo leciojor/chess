@@ -77,10 +77,12 @@ public class ChessValidMovesPawn{
                     }
                     else if (board.getPiece(newValidPosition) == null && this.addUpsBlack[i][1] == 0 && this.addUpsBlack[i][0] != -2){
                         if (newValidPosition.getRow() == 1){
+
                             addingLogic(validMoves, startPosition, newValidPosition);
                         }
-                        else{
+                        else if (newValidPosition.getRow() != 1){
                             ChessMove newMove = new ChessMove(startPosition, newValidPosition, null);
+
                             validMoves.add(newMove);
                         }
                     }
