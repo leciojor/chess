@@ -8,6 +8,7 @@ import server.requests.RegisterRequest;
 
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -18,10 +19,10 @@ public class SQLGameDAO implements GameDAO{
             try (var preparedStatement = conn.prepareStatement("INSERT INTO Game (gameid, whiteUsername, blackUsername, gameName, game) VALUES(?, ?, ?, ?, ?)")) {
                 String randomToken = UUID.randomUUID().toString();
                 preparedStatement.setInt(1, gameID);
-                if (whiteUsername == ""){
+                if (Objects.equals(whiteUsername, "")){
                     whiteUsername = null;
                 }
-                if (blackUsername == ""){
+                if (Objects.equals(blackUsername, "")){
                     blackUsername = null;
                 }
                 preparedStatement.setString(2, whiteUsername);

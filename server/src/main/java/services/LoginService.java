@@ -26,13 +26,11 @@ public class LoginService {
 
     public LoginResponse login(String username, String password) throws SQLException, DataAccessException {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String hashedPassword = encoder.encode(password);
 
         UserData userData = user.getUser(username);
 
-
         if (userData != null){
-            if (Objects.equals(userData.password(), hashedPassword)){
+            if (encoder.matches(password, userData.password())){
                 auth.createAuth(username);
                 Vector<AuthData> authsList = auth.getCurrentAuths();
                 String currentToken = auth.getCurrentToken(authsList.get(authsList.size() - 1 ).authToken()).authToken();

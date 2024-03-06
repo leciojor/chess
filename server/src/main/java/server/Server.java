@@ -1,18 +1,21 @@
 package server;
 
 import dataAccess.DataAccessException;
+import dataAccess.DatabaseManager;
 import server.requests.*;
 import server.responses.*;
 import services.*;
 import spark.*;
 import com.google.gson.Gson;
 
+
 import java.sql.SQLException;
 
 
 public class Server {
 
-    public int run(int desiredPort) {
+    public int run(int desiredPort){
+
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("/web");
@@ -36,7 +39,7 @@ public class Server {
     }
 
 
-    //USE INHERITANCE FOR THE HANDLERS FOR AVOIDING DUPLICATE CODE or just put the body code in the lambdas
+
     private String registerHandler(Request req, Response res) throws SQLException, DataAccessException {
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();

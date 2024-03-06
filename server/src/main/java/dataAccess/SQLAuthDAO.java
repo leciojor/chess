@@ -7,7 +7,11 @@ import java.sql.SQLException;
 import java.util.UUID;
 import java.util.Vector;
 
+import dataAccess.DatabaseManager;
+
 public class SQLAuthDAO implements AuthDAO{
+
+
     @Override
     public AuthData getCurrentToken(String token) throws DataAccessException, SQLException {
         try (var conn = DatabaseManager.getConnection()){
@@ -47,6 +51,14 @@ public class SQLAuthDAO implements AuthDAO{
     @Override
     public void createAuth(String username) throws DataAccessException, SQLException {
         try (var conn = DatabaseManager.getConnection()){
+            try (var preparedStatement = conn.prepareStatement("UPDATE User SET authtoken = null WHERE username = ?")){
+                preparedStatement.setString(1, username);
+                preparedStatement.executeUpdate();
+            }
+            try (var preparedStatement = conn.prepareStatement("DELETE FROM Auth WHERE username=?")) {
+                preparedStatement.setString(1, username);
+                preparedStatement.executeUpdate();
+            }
             try (var preparedStatement = conn.prepareStatement("INSERT INTO Auth (authtoken, username) VALUES(?, ?)")) {
                 String randomToken = UUID.randomUUID().toString();
                 preparedStatement.setString(1, randomToken);
@@ -55,14 +67,17 @@ public class SQLAuthDAO implements AuthDAO{
                 preparedStatement.executeUpdate();
 
             }
-
         }
     }
 
     @Override
     public void deleteAuth(AuthData token) throws DataAccessException, SQLException {
         try (var conn = DatabaseManager.getConnection()) {
-            try (var preparedStatement = conn.prepareStatement("DELETE FROM User WHERE authtoken=?")) {
+            try (var preparedStatement = conn.prepareStatement("UPDATE User SET authtoken = null WHERE authtoken = ?")){
+                preparedStatement.setString(1, token.authToken());
+                preparedStatement.executeUpdate();
+            }
+            try (var preparedStatement = conn.prepareStatement("DELETE FROM Auth WHERE authtoken=?")) {
                 preparedStatement.setString(1, token.authToken());
                 preparedStatement.executeUpdate();
             }

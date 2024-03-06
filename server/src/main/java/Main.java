@@ -24,7 +24,7 @@ public class Main {
                 username VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
-                authtoken VARCHAR(255) NOT NULL,
+                authtoken VARCHAR(255),
                 FOREIGN KEY (authtoken) REFERENCES Auth(authtoken),
                 PRIMARY KEY (id)
             )""";

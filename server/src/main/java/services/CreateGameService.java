@@ -33,7 +33,6 @@ public class CreateGameService {
     public CreateGameResponse createGame(String gameName, String currentToken) throws SQLException, DataAccessException {
         GameData gameData = game.getGame(gameName);
         AuthData userData = auth.getCurrentToken(currentToken);
-
         if (gameData == null & userData != null){
                 Random random = new Random();
                 int randomNumber = random.nextInt(9000) + 1000;
