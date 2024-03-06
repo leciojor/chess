@@ -14,9 +14,9 @@ import java.util.Vector;
 public class LoginService {
     private final LoginRequest request;
 
-    private UserDAO user = new MemoryUserDAO();
+    private UserDAO user = new SQLUserDAO();
 
-    private AuthDAO auth = new MemoryAuthDAO();
+    private AuthDAO auth = new SQLAuthDAO();
 
     public LoginService(LoginRequest req){
         this.request = req;

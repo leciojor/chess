@@ -1,20 +1,19 @@
 package services;
 
-import dataAccess.AuthDAO;
-import dataAccess.MemoryAuthDAO;
-import dataAccess.MemoryUserDAO;
-import dataAccess.UserDAO;
+import dataAccess.*;
 import model.AuthData;
 import server.requests.LogoutRequest;
 import server.responses.LogoutResponse;
+
+import java.sql.SQLException;
 
 public class LogoutService {
 
     private LogoutRequest request;
 
-    private UserDAO user = new MemoryUserDAO();
+    private UserDAO user = new SQLUserDAO();
 
-    private AuthDAO auth = new MemoryAuthDAO();
+    private AuthDAO auth = new SQLAuthDAO();
 
 
 
@@ -22,7 +21,7 @@ public class LogoutService {
         this.request = request;
     }
 
-    public LogoutResponse logout(String currentToken){
+    public LogoutResponse logout(String currentToken) throws SQLException, DataAccessException {
 
         AuthData userData = auth.getCurrentToken(currentToken);
 

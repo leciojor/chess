@@ -7,17 +7,18 @@ import model.*;
 import server.requests.JoinGameRequest;
 import server.responses.JoinGameResponse;
 
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class JoinGameService {
 
     private JoinGameRequest request;
 
-    private UserDAO user = new MemoryUserDAO();
+    private UserDAO user = new SQLUserDAO();
 
-    private AuthDAO auth = new MemoryAuthDAO();
+    private AuthDAO auth = new SQLAuthDAO();
 
-    private GameDAO game = new MemoryGameDAO();
+    private GameDAO game = new SQLGameDAO();
 
 
 
@@ -25,7 +26,7 @@ public class JoinGameService {
         this.request = request;
     }
 
-    public JoinGameResponse joinGame(String color, String gameid, String authtoken){
+    public JoinGameResponse joinGame(String color, String gameid, String authtoken) throws SQLException, DataAccessException {
         AuthData userData = auth.getCurrentToken(authtoken);
         GameData gameData = game.getGameByID(gameid);
 

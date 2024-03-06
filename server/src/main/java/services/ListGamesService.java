@@ -5,21 +5,23 @@ import model.AuthData;
 import server.requests.ListGamesRequest;
 import server.responses.ListGamesResponse;
 
+import java.sql.SQLException;
+
 public class ListGamesService {
 
     private ListGamesRequest request;
 
-    private UserDAO user = new MemoryUserDAO();
+    private UserDAO user = new SQLUserDAO();
 
-    private AuthDAO auth = new MemoryAuthDAO();
+    private AuthDAO auth = new SQLAuthDAO();
 
-    private GameDAO game = new MemoryGameDAO();
+    private GameDAO game = new SQLGameDAO();
 
     public ListGamesService(ListGamesRequest request){
         this.request = request;
     }
 
-    public ListGamesResponse listGames(String currentToken){
+    public ListGamesResponse listGames(String currentToken) throws SQLException, DataAccessException {
         AuthData userData = auth.getCurrentToken(currentToken);
 
         if (userData != null){

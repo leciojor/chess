@@ -3,19 +3,21 @@ package services;
 import dataAccess.*;
 import server.responses.ClearResponse;
 
+import java.sql.SQLException;
+
 public class ClearService {
 
-    private UserDAO user = new MemoryUserDAO();
+    private UserDAO user = new SQLUserDAO();
 
-    private AuthDAO auth = new MemoryAuthDAO();
+    private AuthDAO auth = new SQLAuthDAO();
 
-    private GameDAO game = new MemoryGameDAO();
+    private GameDAO game = new SQLGameDAO();
 
     public ClearService(){
 
     }
 
-    public ClearResponse clear(){
+    public ClearResponse clear() throws SQLException {
         try{
             user.deleteUser();
             auth.deleteAuthList();

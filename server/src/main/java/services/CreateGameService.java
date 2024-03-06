@@ -4,6 +4,7 @@ package services;
 import dataAccess.*;
 import model.*;
 
+import java.sql.SQLException;
 import java.util.Random;
 import java.util.Vector;
 
@@ -16,11 +17,11 @@ public class CreateGameService {
 
     private final CreateGameRequest request;
 
-    private UserDAO user = new MemoryUserDAO();
+    private UserDAO user = new SQLUserDAO();
 
-    private AuthDAO auth = new MemoryAuthDAO();
+    private AuthDAO auth = new SQLAuthDAO();
 
-    private GameDAO game = new MemoryGameDAO();
+    private GameDAO game = new SQLGameDAO();
 
     private Vector<Integer> randomIds = new Vector<Integer>();
 
@@ -29,7 +30,7 @@ public class CreateGameService {
 
     }
 
-    public CreateGameResponse createGame(String gameName, String currentToken){
+    public CreateGameResponse createGame(String gameName, String currentToken) throws SQLException, DataAccessException {
         GameData gameData = game.getGame(gameName);
         AuthData userData = auth.getCurrentToken(currentToken);
 
