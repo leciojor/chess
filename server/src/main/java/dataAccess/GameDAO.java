@@ -13,13 +13,13 @@ public interface GameDAO {
 
     GameData getGame(String gameName) throws DataAccessException, SQLException;
 
-    void addUser(GameData oldGame, GameData newGame);
+    void addUser(GameData oldGame, GameData newGame) throws DataAccessException, SQLException;
 
-    GameData getGameByID(String gameId);
+    GameData getGameByID(String gameId) throws DataAccessException, SQLException;
 
-    HashSet<GameData> getListGames();
+    HashSet<GameData> getListGames() throws DataAccessException, SQLException;
 
 
 
-    void deleteGame();
+    void deleteGame() throws DataAccessException, SQLException;
 }
