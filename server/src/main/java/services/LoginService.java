@@ -3,6 +3,7 @@ package services;
 import dataAccess.*;
 import model.AuthData;
 import model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import server.requests.LoginRequest;
 import server.responses.LoginResponse;
 
@@ -24,11 +25,14 @@ public class LoginService {
 
 
     public LoginResponse login(String username, String password) throws SQLException, DataAccessException {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode(password);
+
         UserData userData = user.getUser(username);
 
 
         if (userData != null){
-            if (Objects.equals(userData.password(), password)){
+            if (Objects.equals(userData.password(), hashedPassword)){
                 auth.createAuth(username);
                 Vector<AuthData> authsList = auth.getCurrentAuths();
                 String currentToken = auth.getCurrentToken(authsList.get(authsList.size() - 1 ).authToken()).authToken();
