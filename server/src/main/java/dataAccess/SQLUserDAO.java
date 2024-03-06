@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 public class SQLUserDAO implements UserDAO{
 
-
     @Override
     public UserData getUser(String username) throws DataAccessException, SQLException {
         try (var conn = DatabaseManager.getConnection()){
@@ -34,16 +33,41 @@ public class SQLUserDAO implements UserDAO{
 
     @Override
     public void createUser(String username, String password, String email, String authToken) throws DataAccessException, SQLException {
+        try (var conn = DatabaseManager.getConnection()){
+            try (var preparedStatement = conn.prepareStatement("INSERT INTO User (username, password, email, authtoken) VALUES(?, ?, ?, ?)")) {
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+                preparedStatement.setString(3, email);
+                preparedStatement.setString(4, authToken);
 
+                preparedStatement.executeUpdate();
+
+            }
+
+        }
     }
 
     @Override
     public void updateUser(UserData oldUser, UserData newUser) throws DataAccessException, SQLException{
+        try (var conn = DatabaseManager.getConnection()){
+            try (var preparedStatement = conn.prepareStatement("UPDATE User SET username=?, password = ?, email = ?, WHERE authtoken=?")) {
+                preparedStatement.setString(1, newUser.username());
+                preparedStatement.setString(2, newUser.password());
+                preparedStatement.setString(3, newUser.email());
+                preparedStatement.setString(4, oldUser.authToken());
 
+                preparedStatement.executeUpdate();
+            }
+
+        }
     }
 
     @Override
-    public void deleteUser() throws DataAccessException throws DataAccessException{
-
+    public void deleteUser() throws DataAccessException, SQLException {
+        try (var conn = DatabaseManager.getConnection()) {
+            try (var preparedStatement = conn.prepareStatement("DELETE FROM User")) {
+                preparedStatement.executeUpdate();
+            }
+        }
     }
 }

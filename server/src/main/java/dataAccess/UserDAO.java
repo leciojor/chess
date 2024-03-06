@@ -14,7 +14,7 @@ public interface UserDAO {
 
     void updateUser(UserData oldUser, UserData newUser) throws DataAccessException, SQLException;
 
-    void deleteUser() throws DataAccessException;
+    void deleteUser() throws DataAccessException, SQLException;
 
 
 }
