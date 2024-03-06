@@ -2,6 +2,7 @@ package dataAccess;
 
 import model.*;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.Vector;
@@ -24,7 +25,7 @@ public class MemoryAuthDAO implements AuthDAO{
     }
 
     @Override
-    public void createAuth(String username) {
+    public void createAuth(String username) throws SQLException, DataAccessException {
         UserDAO user = new MemoryUserDAO();
         //may eventually generate the same token from before
         String randomToken = UUID.randomUUID().toString();

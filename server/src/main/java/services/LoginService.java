@@ -6,6 +6,7 @@ import model.UserData;
 import server.requests.LoginRequest;
 import server.responses.LoginResponse;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -22,7 +23,7 @@ public class LoginService {
     }
 
 
-    public LoginResponse login(String username, String password) {
+    public LoginResponse login(String username, String password) throws SQLException, DataAccessException {
         UserData userData = user.getUser(username);
 
 

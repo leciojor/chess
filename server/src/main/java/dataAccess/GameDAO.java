@@ -8,7 +8,7 @@ import java.util.Vector;
 
 public interface GameDAO {
 
-    void createGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game);
+    void createGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) ;
 
     GameData getGame(String gameName);
 

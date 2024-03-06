@@ -2,6 +2,7 @@ package dataAccess;
 
 import model.AuthData;
 
+import java.sql.SQLException;
 import java.util.Vector;
 
 public interface AuthDAO {
@@ -11,7 +12,7 @@ public interface AuthDAO {
 
     Vector<AuthData> getCurrentAuths();
 
-    void createAuth(String username);
+    void createAuth(String username) throws SQLException, DataAccessException;
 
 
 

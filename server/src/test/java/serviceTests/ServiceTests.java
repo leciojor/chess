@@ -6,6 +6,8 @@ import server.responses.*;
 import services.*;
 import org.junit.jupiter.api.*;
 
+import java.sql.SQLException;
+
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
@@ -68,7 +70,7 @@ public class ServiceTests {
     
 
     @BeforeEach
-    public void setup(){
+    public void setup() throws SQLException, DataAccessException {
         user = new MemoryUserDAO();
 
         auth = new MemoryAuthDAO();

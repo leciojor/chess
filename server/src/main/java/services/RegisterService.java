@@ -7,6 +7,7 @@ import server.requests.RegisterRequest;
 import dataAccess.*;
 import server.responses.RegisterResponse;
 
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -24,7 +25,7 @@ public class RegisterService {
     }
 
 
-    public RegisterResponse register(String username, String password, String email)  {
+    public RegisterResponse register(String username, String password, String email) throws SQLException, DataAccessException {
         UserData userData = user.getUser(username);
 
         if (userData == null & username != null & password != null & email != null){

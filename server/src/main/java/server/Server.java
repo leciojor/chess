@@ -1,10 +1,13 @@
 package server;
 
+import dataAccess.DataAccessException;
 import server.requests.*;
 import server.responses.*;
 import services.*;
 import spark.*;
 import com.google.gson.Gson;
+
+import java.sql.SQLException;
 
 
 public class Server {
@@ -34,7 +37,7 @@ public class Server {
 
 
     //USE INHERITANCE FOR THE HANDLERS FOR AVOIDING DUPLICATE CODE or just put the body code in the lambdas
-    private String registerHandler(Request req, Response res) {
+    private String registerHandler(Request req, Response res) throws SQLException, DataAccessException {
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();
         RegisterRequest register = gson.fromJson(req.body(), RegisterRequest.class);
@@ -50,7 +53,7 @@ public class Server {
         }
     }
 
-    private String loginHandler(Request req, Response res) {
+    private String loginHandler(Request req, Response res) throws SQLException, DataAccessException{
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();
         //System.out.print(req.body());
@@ -67,7 +70,7 @@ public class Server {
         }
     }
 
-    private String logoutHandler(Request req, Response res) {
+    private String logoutHandler(Request req, Response res) throws SQLException, DataAccessException{
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();
         String token = "{" + "\"Authorization\":" + req.headers("Authorization") + "}";
@@ -84,7 +87,7 @@ public class Server {
         }
     }
 
-    private String listGamesHandler(Request req, Response res){
+    private String listGamesHandler(Request req, Response res) throws SQLException, DataAccessException{
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();
         String token = "{" + "\"Authorization\":" + req.headers("Authorization") + "}";
@@ -101,7 +104,7 @@ public class Server {
         }
     }
 
-    private String createGameHandler(Request req, Response res){
+    private String createGameHandler(Request req, Response res) throws SQLException, DataAccessException{
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();
         CreateGameRequest createGame = gson.fromJson(req.body(), CreateGameRequest.class);
@@ -118,7 +121,7 @@ public class Server {
 
     }
 
-    private String joinGameHandler(Request req, Response res){
+    private String joinGameHandler(Request req, Response res) throws SQLException, DataAccessException{
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();
         JoinGameRequest joinGame = gson.fromJson(req.body(), JoinGameRequest.class);
@@ -135,7 +138,7 @@ public class Server {
 
     }
 
-    private String clearGameHandler(Request req, Response res){
+    private String clearGameHandler(Request req, Response res) throws SQLException, DataAccessException{
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();
         ClearService service = new ClearService();

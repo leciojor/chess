@@ -6,7 +6,7 @@ import dataAccess.DatabaseManager;
 import java.sql.SQLException;
 
 public class Main {
-    public static void main(String[] args) throws DataAccessException {
+    public static void main(String[] args) throws DataAccessException, SQLException {
         DatabaseManager.createDatabase();
         createTables();
         Server server = new Server();
@@ -24,6 +24,7 @@ public class Main {
                 username VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
+                authtoken VARCHAR(255) NOT NULL,
                 FOREIGN KEY (authtoken) REFERENCES Auth(authtoken),
                 PRIMARY KEY (id)
             )""";
@@ -44,12 +45,11 @@ public class Main {
                 PRIMARY KEY (gameid)
             )""";
 
-
-            try (var createTableStatement = conn.prepareStatement(createUserTable)) {
+            try (var createTableStatement = conn.prepareStatement(createAuthTable)) {
                 createTableStatement.executeUpdate();
             }
 
-            try (var createTableStatement = conn.prepareStatement(createAuthTable)) {
+            try (var createTableStatement = conn.prepareStatement(createUserTable)) {
                 createTableStatement.executeUpdate();
             }
 
