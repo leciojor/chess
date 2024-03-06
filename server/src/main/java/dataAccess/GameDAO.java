@@ -11,7 +11,7 @@ public interface GameDAO {
 
     void createGame(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) throws DataAccessException, SQLException;
 
-    GameData getGame(String gameName);
+    GameData getGame(String gameName) throws DataAccessException, SQLException;
 
     void addUser(GameData oldGame, GameData newGame);
 

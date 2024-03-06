@@ -4,6 +4,7 @@ import chess.ChessGame;
 import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
+import server.requests.RegisterRequest;
 
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -40,13 +41,35 @@ public class SQLGameDAO implements GameDAO{
     }
 
     @Override
-    public GameData getGame(String gameName) {
+    public GameData getGame(String gameName) throws DataAccessException, SQLException {
+        try (var conn = DatabaseManager.getConnection()){
+            try (var preparedStatement = conn.prepareStatement("SELECT gameid, whiteUsername, blackUsername, gameName, game FROM Game WHERE gameName=?")) {
+                preparedStatement.setString(1, gameName);
+                try (var rs = preparedStatement.executeQuery()) {
+                    if (!rs.next()){
+                        return null;
+                    }
+                    while (rs.next()) {
+                        var gameID = rs.getInt("gameid");
+                        var whiteUsername = rs.getString("whiteUsername");
+                        var blackUsername = rs.getString("blackUsername");
+                        var game = rs.getString("game");
+
+                        Gson gson = new Gson();
+                        ChessGame deserializedGame = gson.fromJson(game, ChessGame.class);
+
+
+                        return new GameData(gameID, whiteUsername, blackUsername, gameName, deserializedGame);
+                    }
+                }
+            }
+        }
         return null;
     }
 
     @Override
     public void addUser(GameData oldGame, GameData newGame) {
-
+        
     }
 
     @Override
