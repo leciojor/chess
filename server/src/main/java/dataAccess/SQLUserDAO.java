@@ -28,7 +28,7 @@ public class SQLUserDAO implements UserDAO{
                 }
             }
         }
-
+        return null;
     }
 
     @Override

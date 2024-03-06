@@ -8,15 +8,15 @@ import java.util.Vector;
 public interface AuthDAO {
 
 
-    AuthData getCurrentToken(String token);
+    AuthData getCurrentToken(String token) throws DataAccessException, SQLException;
 
-    Vector<AuthData> getCurrentAuths();
+    Vector<AuthData> getCurrentAuths() throws DataAccessException, SQLException;
 
     void createAuth(String username) throws SQLException, DataAccessException;
 
 
 
-    void deleteAuth(AuthData token);
+    void deleteAuth(AuthData token) throws DataAccessException, SQLException;
 
-    void deleteAuthList();
+    void deleteAuthList() throws DataAccessException, SQLException;
 }
