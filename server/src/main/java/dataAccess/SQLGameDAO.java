@@ -46,10 +46,8 @@ public class SQLGameDAO implements GameDAO{
             try (var preparedStatement = conn.prepareStatement("SELECT gameid, whiteUsername, blackUsername, gameName, game FROM Game WHERE gameName=?")) {
                 preparedStatement.setString(1, gameName);
                 try (var rs = preparedStatement.executeQuery()) {
-                    if (!rs.next()){
-                        return null;
-                    }
-                    while (rs.next()) {
+
+                    if (rs.next()) {
                         var gameID = rs.getInt("gameid");
                         var whiteUsername = rs.getString("whiteUsername");
                         var blackUsername = rs.getString("blackUsername");
@@ -94,10 +92,8 @@ public class SQLGameDAO implements GameDAO{
             try (var preparedStatement = conn.prepareStatement("SELECT gameid, whiteUsername, blackUsername, gameName, game FROM Game WHERE gameid=?")) {
                 preparedStatement.setInt(1, Integer.parseInt(gameId));
                 try (var rs = preparedStatement.executeQuery()) {
-                    if (!rs.next()){
-                        return null;
-                    }
-                    while (rs.next()) {
+
+                    if (rs.next()) {
                         var gameID = rs.getInt("gameid");
                         var whiteUsername = rs.getString("whiteUsername");
                         var blackUsername = rs.getString("blackUsername");

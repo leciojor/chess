@@ -39,9 +39,9 @@ public class Main {
             var createGameTable = """
             CREATE TABLE  IF NOT EXISTS Game (
                 gameid INT NOT NULL,
-                whiteUsername VARCHAR(255) NOT NULL,
-                blackUsername VARCHAR(255) NOT NULL,
-                gameName VARCHAR(255) NOT NULL,
+                whiteUsername VARCHAR(255),
+                blackUsername VARCHAR(255),
+                gameName VARCHAR(255),
                 game TEXT NOT NULL,
                 PRIMARY KEY (gameid)
             )""";

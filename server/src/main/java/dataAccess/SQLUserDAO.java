@@ -15,10 +15,8 @@ public class SQLUserDAO implements UserDAO{
             try (var preparedStatement = conn.prepareStatement("SELECT id, username, password, email, authtoken FROM User WHERE username=?")) {
                 preparedStatement.setString(1, username);
                 try (var rs = preparedStatement.executeQuery()) {
-                    if (!rs.next()){
-                        return null;
-                    }
-                    while (rs.next()) {
+
+                    if (rs.next()) {
                         var name = rs.getString("username");
                         var password = rs.getString("password");
                         var email = rs.getString("email");
