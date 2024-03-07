@@ -30,8 +30,7 @@ public class RegisterService {
 
         if (userData == null & username != null & password != null & email != null){
             auth.createAuth(username);
-            Vector<AuthData> authsList = auth.getCurrentAuths();
-            String currentToken = auth.getCurrentToken(authsList.get(authsList.size() - 1 ).authToken()).authToken();
+            String currentToken = auth.getTokenValue(username);
             user.createUser(username, password, email, currentToken);
             RegisterResponse response = new RegisterResponse(username, currentToken);
             response.setStatus(200);

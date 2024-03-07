@@ -10,6 +10,8 @@ public interface AuthDAO {
 
     AuthData getCurrentToken(String token) throws DataAccessException, SQLException;
 
+    String getTokenValue(String username) throws DataAccessException, SQLException;
+
     Vector<AuthData> getCurrentAuths() throws DataAccessException, SQLException;
 
     void createAuth(String username) throws SQLException, DataAccessException;

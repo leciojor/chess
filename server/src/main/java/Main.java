@@ -32,6 +32,7 @@ public class Main {
             var createAuthTable = """
             CREATE TABLE  IF NOT EXISTS Auth (
                 authtoken VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3),
                 username VARCHAR(255) NOT NULL,
                 PRIMARY KEY (authtoken)
             )""";

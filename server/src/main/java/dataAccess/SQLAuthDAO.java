@@ -1,13 +1,10 @@
 package dataAccess;
 
 import model.AuthData;
-import model.UserData;
 
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.Vector;
-
-import dataAccess.DatabaseManager;
 
 public class SQLAuthDAO implements AuthDAO{
 
@@ -20,14 +17,35 @@ public class SQLAuthDAO implements AuthDAO{
                 try (var rs = preparedStatement.executeQuery()) {
                     if (rs.next()) {
                         var name = rs.getString("username");
+                        var authtoken = rs.getString("authtoken");
 
-                        return new AuthData(token, name);
+                        return new AuthData(authtoken, name);
                     }
                 }
             }
         }
         return null;
     }
+
+    @Override
+    public String getTokenValue(String username) throws DataAccessException, SQLException {
+
+        try (var conn = DatabaseManager.getConnection()){
+            try (var preparedStatement = conn.prepareStatement("SELECT username, authtoken, created_at FROM Auth WHERE username=? ORDER BY created_at DESC LIMIT 1")) {
+                preparedStatement.setString(1, username);
+                try (var rs = preparedStatement.executeQuery()) {
+                    if (rs.next()) {
+                        var authtoken = rs.getString("authtoken");
+                        System.out.println(authtoken + "get");
+                        System.out.println(rs.getString("created_at"));
+                        return authtoken;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public Vector<AuthData> getCurrentAuths() throws DataAccessException, SQLException {
@@ -50,22 +68,29 @@ public class SQLAuthDAO implements AuthDAO{
 
     @Override
     public void createAuth(String username) throws DataAccessException, SQLException {
+        String randomToken = UUID.randomUUID().toString();
+        System.out.println(randomToken + "Create");
         try (var conn = DatabaseManager.getConnection()){
             try (var preparedStatement = conn.prepareStatement("UPDATE User SET authtoken = null WHERE username = ?")){
                 preparedStatement.setString(1, username);
                 preparedStatement.executeUpdate();
             }
-            try (var preparedStatement = conn.prepareStatement("DELETE FROM Auth WHERE username=?")) {
-                preparedStatement.setString(1, username);
-                preparedStatement.executeUpdate();
-            }
+//            try (var preparedStatement = conn.prepareStatement("DELETE FROM Auth WHERE username=?")) {
+//                preparedStatement.setString(1, username);
+//                preparedStatement.executeUpdate();
+//            }
             try (var preparedStatement = conn.prepareStatement("INSERT INTO Auth (authtoken, username) VALUES(?, ?)")) {
-                String randomToken = UUID.randomUUID().toString();
+
                 preparedStatement.setString(1, randomToken);
                 preparedStatement.setString(2, username);
 
                 preparedStatement.executeUpdate();
 
+            }
+            try (var preparedStatement = conn.prepareStatement("UPDATE User SET authtoken = ? WHERE username = ?")) {
+                preparedStatement.setString(1, randomToken);
+                preparedStatement.setString(2, username);
+                preparedStatement.executeUpdate();
             }
         }
     }

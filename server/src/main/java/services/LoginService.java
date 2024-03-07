@@ -32,8 +32,7 @@ public class LoginService {
         if (userData != null){
             if (encoder.matches(password, userData.password())){
                 auth.createAuth(username);
-                Vector<AuthData> authsList = auth.getCurrentAuths();
-                String currentToken = auth.getCurrentToken(authsList.get(authsList.size() - 1 ).authToken()).authToken();
+                String currentToken = auth.getTokenValue(username);
                 LoginResponse response = new LoginResponse(username, currentToken);
                 response.setStatus(200);
                 return response;

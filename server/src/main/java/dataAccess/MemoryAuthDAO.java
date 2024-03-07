@@ -25,6 +25,11 @@ public class MemoryAuthDAO implements AuthDAO{
     }
 
     @Override
+    public String getTokenValue(String username) throws DataAccessException, SQLException {
+        return null;
+    }
+
+    @Override
     public void createAuth(String username) throws SQLException, DataAccessException {
         UserDAO user = new MemoryUserDAO();
         //may eventually generate the same token from before

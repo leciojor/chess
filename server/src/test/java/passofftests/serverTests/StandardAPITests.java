@@ -163,7 +163,6 @@ public class StandardAPITests {
         Assertions.assertEquals(HttpURLConnection.HTTP_OK, serverFacade.getStatusCode(),
                 "Server response code was not 200 OK");
         Assertions.assertNotNull(loginTwo.authToken, "Login result did not contain an authToken");
-
         Assertions.assertNotEquals(existingAuth, loginOne.authToken,
                 "Authtoken returned by login matched authtoken from prior register");
         Assertions.assertNotEquals(existingAuth, loginTwo.authToken,
