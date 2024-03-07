@@ -13,9 +13,7 @@ import services.*;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Collections;
-import java.util.UUID;
-import java.util.Vector;
+import java.util.*;
 
 import static java.util.Collections.sort;
 
@@ -410,87 +408,114 @@ public class SQLTests {
     @Order(24)
     @DisplayName("Get game bad")
     public void getGameBad() throws Exception {
-        Sql_game.createGame(gameid, white_username, black_username, game_name, game);
         GameData game_already_in_database = Sql_game.getGame(game_name);
-        Assertions.assertEquals(game_already_in_database.gameName(), null);
+        Assertions.assertEquals(game_already_in_database, null);
 
     }
 
-//    @Test
-//    @Order(25)
-//    @DisplayName("List Games 401")
-//    public void listGamesBad() throws Exception {
-//        request_list_games = new ListGamesRequest(token);
-//        ListGamesService service_list_games = new ListGamesService(request_list_games);
-//        response_list_games = service_list_games.listGames(token);
-//        Assertions.assertEquals(401, response_list_games.getStatus());
-//
-//    }
-//
-//    @Test
-//    @Order(26)
-//    @DisplayName("Clear")
-//    public void clear() throws Exception{
-//        ClearService service_clear = new ClearService();
-//        response_clear = service_clear.clear();
-//        Assertions.assertEquals(200, response_clear.getStatus());
-//    }
-//
-//    @Test
-//    @Order(27)
-//    @DisplayName("Clear")
-//    public void clear() throws Exception{
-//        ClearService service_clear = new ClearService();
-//        response_clear = service_clear.clear();
-//        Assertions.assertEquals(200, response_clear.getStatus());
-//    }
-//
-//    @Test
-//    @Order(28)
-//    @DisplayName("Clear")
-//    public void clear() throws Exception{
-//        ClearService service_clear = new ClearService();
-//        response_clear = service_clear.clear();
-//        Assertions.assertEquals(200, response_clear.getStatus());
-//    }
-//
-//    @Test
-//    @Order(29)
-//    @DisplayName("Clear")
-//    public void clear() throws Exception{
-//        ClearService service_clear = new ClearService();
-//        response_clear = service_clear.clear();
-//        Assertions.assertEquals(200, response_clear.getStatus());
-//    }
-//
-//    @Test
-//    @Order(30)
-//    @DisplayName("Clear")
-//    public void clear() throws Exception{
-//        ClearService service_clear = new ClearService();
-//        response_clear = service_clear.clear();
-//        Assertions.assertEquals(200, response_clear.getStatus());
-//    }
-//
-//    @Test
-//    @Order(31)
-//    @DisplayName("Clear")
-//    public void clear() throws Exception{
-//        ClearService service_clear = new ClearService();
-//        response_clear = service_clear.clear();
-//        Assertions.assertEquals(200, response_clear.getStatus());
-//    }
-//
-//    @Test
-//    @Order(32)
-//    @DisplayName("Clear")
-//    public void clear() throws Exception{
-//        ClearService service_clear = new ClearService();
-//        response_clear = service_clear.clear();
-//        Assertions.assertEquals(200, response_clear.getStatus());
-//    }
-//
-//
+    @Test
+    @Order(25)
+    @DisplayName("Add user to game good")
+    public void addUserToGameGood() throws Exception {
+        white_username = null;
+        Sql_game.createGame(gameid, white_username, black_username, game_name, game);
+        GameData game_already_in_database = Sql_game.getGame(game_name);
+        white_username = "username" + "a";
+        GameData game_new = new GameData(gameid, white_username, black_username, game_name + "b", game);
+
+        Sql_game.addUser(game_already_in_database, game_new);
+
+        GameData game_updated = Sql_game.getGame(game_name);
+
+        Assertions.assertNotEquals(game_updated, game_already_in_database);
+
+    }
+
+    @Test
+    @Order(26)
+    @DisplayName("Add user to game bad")
+    public void addUserToGameBad() throws Exception {
+        white_username = "username" + "a";
+        Sql_game.createGame(gameid, white_username, black_username, game_name, game);
+        GameData game_already_in_database = Sql_game.getGame(game_name);
+
+        GameData game_new = new GameData(gameid, white_username, black_username, game_name + "b", game);
+
+        Sql_game.addUser(game_already_in_database, game_new);
+
+        GameData game_updated = Sql_game.getGame(game_name);
+
+        Assertions.assertEquals(game_updated, null);
+
+    }
+
+    @Test
+    @Order(27)
+    @DisplayName("Get game by id good")
+    public void getGameByIdGood() throws Exception{
+        Sql_game.createGame(gameid, white_username, black_username, game_name, game);
+        GameData game_already_in_database = Sql_game.getGameByID(Integer.toString(gameid));
+        Assertions.assertNotEquals(game_already_in_database, null);
+    }
+
+    @Test
+    @Order(28)
+    @DisplayName("Get game by id bad")
+    public void getGameById() throws Exception{
+        GameData game_already_in_database = Sql_game.getGameByID(Integer.toString(gameid));
+        Assertions.assertNull(game_already_in_database);
+    }
+
+    @Test
+    @Order(29)
+    @DisplayName("Get games list good")
+    public void getGamesListGood() throws Exception{
+        Sql_game.createGame(gameid, white_username, black_username, game_name, game);
+        ChessGame new_game = new ChessGame();
+        Sql_game.createGame(gameid + 123, white_username + "a", black_username + "a", game_name = "a", new_game);
+
+        HashSet<GameData> games =  Sql_game.getListGames();
+
+        Assertions.assertNotEquals(games, null);
+
+    }
+
+    @Test
+    @Order(30)
+    @DisplayName("games list bad")
+    public void getGamesListBad() throws Exception{
+        HashSet<GameData> games =  Sql_game.getListGames();
+
+        Assertions.assertTrue(games.isEmpty());
+    }
+
+    @Test
+    @Order(31)
+    @DisplayName("Delete all games good")
+    public void deleteAllGamesGood() throws Exception{
+        Sql_game.createGame(gameid, white_username, black_username, game_name, game);
+        ChessGame new_game = new ChessGame();
+        Sql_game.createGame(gameid + 123, white_username + "a", black_username + "a", game_name + "a", new_game);
+
+        Sql_game.deleteGame();
+
+        GameData game = Sql_game.getGame(game_name);
+
+        Assertions.assertNull(game);
+    }
+
+    @Test
+    @Order(32)
+    @DisplayName("Delete all games bad")
+    public void deleteAllGamesBad() throws Exception{
+        Sql_game.deleteGame();
+        Sql_game.createGame(gameid, white_username, black_username, game_name, game);
+        GameData game = Sql_game.getGame(game_name);
+
+        Assertions.assertNotEquals(game, null);
+    }
+
+
 
 
 }
