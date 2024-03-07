@@ -36,8 +36,6 @@ public class SQLAuthDAO implements AuthDAO{
                 try (var rs = preparedStatement.executeQuery()) {
                     if (rs.next()) {
                         var authtoken = rs.getString("authtoken");
-                        System.out.println(authtoken + "get");
-                        System.out.println(rs.getString("created_at"));
                         return authtoken;
                     }
                 }
@@ -69,7 +67,6 @@ public class SQLAuthDAO implements AuthDAO{
     @Override
     public void createAuth(String username) throws DataAccessException, SQLException {
         String randomToken = UUID.randomUUID().toString();
-        System.out.println(randomToken + "Create");
         try (var conn = DatabaseManager.getConnection()){
             try (var preparedStatement = conn.prepareStatement("UPDATE User SET authtoken = null WHERE username = ?")){
                 preparedStatement.setString(1, username);
