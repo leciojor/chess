@@ -49,7 +49,7 @@ public class Server {
         Spark.awaitStop();
     }
 
-    private static void createTables() throws DataAccessException, SQLException {
+    public static void createTables() throws DataAccessException, SQLException {
         try (var conn = DatabaseManager.getConnection()){
             var createUserTable = """
             CREATE TABLE  IF NOT EXISTS User (
