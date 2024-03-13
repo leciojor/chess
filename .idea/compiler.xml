@@ -14,7 +14,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="server" options="--add-exports java.base/sun.util.locale=ALL-UNNAMED" />
+      <module name="server" options="" />
     </option>
   </component>
 </project>
