@@ -20,9 +20,11 @@ public class ChessBoardUi {
 
     private static final String[] PIECES_BLACK = {BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_KING, BLACK_QUEEN, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK};
 
+    private static final String[] HEADER_LETTERS = { "𝐻", "𝒢", "𝐹", "𝐸", "𝒟", "𝒞", "𝐵", "𝒜"};
+
     private static Random rand = new Random();
 
-    private static boolean alternate = false;
+    private static boolean alternate = true;
     private static boolean orientationAlternate = false;
 
 
@@ -48,8 +50,14 @@ public class ChessBoardUi {
 
     private static void drawBorders(PrintStream out, String orientation){
         drawTopBottom(out);
+        drawTextTopBottom(out);
+
+
         out.println();
         drawSides(out);
+
+
+        drawTextTopBottom(out);
         out.println();
         drawTopBottom(out);
     }
@@ -58,7 +66,6 @@ public class ChessBoardUi {
         for(int col = 0; col < BOARD_SIZE_CHAR; col++){
             if (col == 0){
                 out.print(EMPTY);
-
 
             }
             else{
@@ -107,24 +114,47 @@ public class ChessBoardUi {
             printPlayer(out, WHITE_BISHOP);
         }
 
+        else if(row == 7){
+            setWhite(out);
+            printPlayer(out, BLACK_BISHOP);
+            setBlue(out);
+            printPlayer(out, BLACK_BISHOP);
+        }
+
         else if (row == 1){
             setWhite(out);
-            printPlayer(out, WHITE_BISHOP);
+            printPlayer(out, WHITE_PAWN);
             setBlue(out);
-            printPlayer(out, WHITE_BISHOP);
+            printPlayer(out, WHITE_PAWN);
+        }
+
+        else if (row == 6){
+            setBlue(out);
+            printPlayer(out, BLACK_PAWN);
+            setWhite(out);
+            printPlayer(out, BLACK_PAWN);
         }
 
         else if (!alternate){
+            setWhite(out);
+            out.print(EMPTY);
+            setBlue(out);
+            out.print(EMPTY);
+        }
+        else{
             setBlue(out);
             out.print(EMPTY);
             setWhite(out);
             out.print(EMPTY);
         }
-        else{
-            setWhite(out);
-            out.print(EMPTY);
-            setBlue(out);
-            out.print(EMPTY);
+    }
+
+    private static void drawTextTopBottom(PrintStream out){
+        out.print("   ");
+        for (int col = 0; col < HEADER_LETTERS.length; col++){
+            out.print("  ");
+            out.print(HEADER_LETTERS[col]);
+            out.print(" ");
         }
     }
 
