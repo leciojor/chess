@@ -59,6 +59,15 @@ public class EscapeSequences {
     public static final String BLACK_KNIGHT = " ♞ ";
     public static final String BLACK_ROOK = " ♜ ";
     public static final String BLACK_PAWN = " ♟ ";
+
+    public static final String CIRCLE = "◯";
+
+    public static final String BORDER_LEFT = "╟";
+
+    public static final String BORDER_RIGHT = "╢";
+
+    public static final String BORDER_UP_DOWN = "═";
+
     public static final String EMPTY = " \u2003 ";
 
     public static String moveCursorToLocation(int x, int y) { return UNICODE_ESCAPE + "[" + y + ";" + x + "H"; }
