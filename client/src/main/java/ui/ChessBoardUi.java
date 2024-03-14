@@ -12,10 +12,12 @@ import static ui.EscapeSequences.*;
 
 public class ChessBoardUi {
 
-    private static final int BOARD_SIZE = 10;
+    private static final int BOARD_SIZE = 4;
     private static final int BOARD_SIZE_CHAR = BOARD_SIZE + 26;
     private static final String[] DIGITS_SIDES = {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT};
     private static Random rand = new Random();
+
+    private static boolean alternate = false;
 
 
 
@@ -34,42 +36,16 @@ public class ChessBoardUi {
 
 
     private static void drawBox(PrintStream out) {
-        drawBorder(out);
-
-//        for(int row = 0; row < BOARD_SIZE; row++){
-//            for(int col = 0; col < BOARD_SIZE; col++){
-//
-//                if (row == 0) {
-//                    out.print(BORDER_UP);
-//                }
-//
-//                else if(row == BOARD_SIZE - 1){
-//                    out.print(BORDER_DOWN);
-//                }
-//
-//                else if (col == 0 || col == BOARD_SIZE - 1){
-//                    drawBorder(out);
-//                }
-//
-//                else {
-//                    out.print(EMPTY);
-//                    drawInside(out);
-//                }
-//
-//            }
-//            out.println();
-//        }
-    }
-
-
-
-    private static void drawInside(PrintStream out) {
+        drawBorders(out);
 
     }
 
-    private static void drawBorder(PrintStream out){
+
+    private static void drawBorders(PrintStream out){
         drawTopBottom(out);
+        out.println();
         drawSides(out);
+        out.println();
         drawTopBottom(out);
     }
 
@@ -95,17 +71,41 @@ public class ChessBoardUi {
             out.print(SIDE_COMPLIMENT);
             out.print(digit);
 
-            for (int row = 0; row < BOARD_SIZE; row++){
-                out.print(EMPTY);
-            }
+            drawInside(out);
 
             out.print(digit);
             out.print(SIDE_COMPLIMENT);
 
             out.println();
 
+        }
+    }
 
+    private static void drawInside(PrintStream out) {
+        out.print(EMPTY);
+        for (int row = 0; row < BOARD_SIZE; row++){
+            if (!alternate){
+                setBlue(out);
+                out.print(EMPTY);
+                setWhite(out);
+                out.print(EMPTY);
+            }
 
+            else{
+                setWhite(out);
+                out.print(EMPTY);
+                setBlue(out);
+                out.print(EMPTY);
+            }
+        }
+        setRegular(out);
+        out.print(EMPTY);
+
+        if (alternate){
+            alternate = false;
+        }
+        else{
+            alternate = true;
         }
     }
 
@@ -122,6 +122,11 @@ public class ChessBoardUi {
     private static void setWhite(PrintStream out) {
         out.print(SET_BG_COLOR_WHITE);
         out.print(SET_TEXT_COLOR_WHITE);
+    }
+
+    private static void setRegular(PrintStream out) {
+        out.print(RESET_BG_COLOR);
+        out.print(RESET_TEXT_COLOR);
     }
 
     private static void printPlayer(PrintStream out, String player) {
