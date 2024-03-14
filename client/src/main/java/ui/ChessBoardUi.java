@@ -15,6 +15,11 @@ public class ChessBoardUi {
     private static final int BOARD_SIZE = 4;
     private static final int BOARD_SIZE_CHAR = BOARD_SIZE + 33;
     private static final String[] DIGITS_SIDES = {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT};
+
+    private static final String[] PIECES_WHITE = {WHITE_ROOK, WHITE_KNIGHT, WHITE_BISHOP, WHITE_KING, WHITE_QUEEN, WHITE_BISHOP, WHITE_KNIGHT, WHITE_ROOK};
+
+    private static final String[] PIECES_BLACK = {BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_KING, BLACK_QUEEN, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK};
+
     private static Random rand = new Random();
 
     private static boolean alternate = false;
@@ -29,24 +34,15 @@ public class ChessBoardUi {
 
         out.print(ERASE_SCREEN);
 
-        drawBoard(out);
+        drawBoard(out, "one");
     }
 
 
 
 
 
-    private static void drawBoard(PrintStream out) {
-        if (!orientationAlternate){
-            drawBorders(out, "one");
-        }
-        else{
-            drawBorders(out, "two");
-        }
-
-
-
-        orientationAlternate = !orientationAlternate;
+    private static void drawBoard(PrintStream out, String orientation) {
+            drawBorders(out, orientation);
     }
 
 
@@ -66,9 +62,9 @@ public class ChessBoardUi {
 
             }
             else{
-               int random_index = rand.nextInt(DIGITS_SIDES.length);
-               String value = DIGITS_SIDES[random_index];
-               out.print(value);
+                int random_index = rand.nextInt(DIGITS_SIDES.length);
+                String value = DIGITS_SIDES[random_index];
+                out.print(value);
             }
         }
 
@@ -81,18 +77,8 @@ public class ChessBoardUi {
         for(int row = 0; row < DIGITS_SIDES.length; row++){
             out.print(SIDE_COMPLIMENT);
             out.print(DIGITS_SIDES[row]);
-            if (row == 0){
-                drawInside(out, "top0");
-            }
-            else if(row == 1){
-                drawInside(out, "top1");
-            }
-            else if(row == 6){
-                drawInside(out, "down0");
-            }
-            else if(row == 7){
-                drawInside(out, "down1");
-            }
+
+            drawInside(out, row);
 
             out.print(DIGITS_SIDES[row]);
             out.print(SIDE_COMPLIMENT);
@@ -102,27 +88,44 @@ public class ChessBoardUi {
         }
     }
 
-    private static void drawInside(PrintStream out, String piecesToInsert) {
+    private static void drawInside(PrintStream out, int row) {
         out.print(EMPTY);
         for (int col = 0; col < BOARD_SIZE; col++){
-            if (!alternate){
-                setBlue(out);
-                out.print(EMPTY);
-                setWhite(out);
-                out.print(EMPTY);
-            }
-
-            else{
-                setWhite(out);
-                out.print(EMPTY);
-                setBlue(out);
-                out.print(EMPTY);
-            }
+            addPieces(out, row);
         }
         setRegular(out);
         out.print(EMPTY);
 
         alternate = !alternate;
+    }
+
+    private static void addPieces(PrintStream out, int row){
+        if (row == 0){
+            setBlue(out);
+            printPlayer(out, WHITE_BISHOP);
+            setWhite(out);
+            printPlayer(out, WHITE_BISHOP);
+        }
+
+        else if (row == 1){
+            setWhite(out);
+            printPlayer(out, WHITE_BISHOP);
+            setBlue(out);
+            printPlayer(out, WHITE_BISHOP);
+        }
+
+        else if (!alternate){
+            setBlue(out);
+            out.print(EMPTY);
+            setWhite(out);
+            out.print(EMPTY);
+        }
+        else{
+            setWhite(out);
+            out.print(EMPTY);
+            setBlue(out);
+            out.print(EMPTY);
+        }
     }
 
     private static void setBlack(PrintStream out) {
@@ -135,12 +138,10 @@ public class ChessBoardUi {
 
     private static void setBlue(PrintStream out) {
         out.print(SET_BG_COLOR_BLUE);
-        out.print(SET_TEXT_COLOR_BLUE);
     }
 
     private static void setWhite(PrintStream out) {
         out.print(SET_BG_COLOR_WHITE);
-        out.print(SET_TEXT_COLOR_WHITE);
     }
 
     private static void setRegular(PrintStream out) {
