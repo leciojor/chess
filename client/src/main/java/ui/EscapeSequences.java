@@ -62,11 +62,23 @@ public class EscapeSequences {
 
     public static final String CIRCLE = "◯";
 
-    public static final String BORDER_LEFT = "╟";
+    public static final String ONE = "\uD835\uDFD9";
 
-    public static final String BORDER_RIGHT = "╢";
+    public static final String TWO = "\uD835\uDFDA";
 
-    public static final String BORDER_UP_DOWN = "═";
+    public static final String THREE = "\uD835\uDFDB";
+
+    public static final String FOUR = "\uD835\uDFDC";
+
+    public static final String FIVE = "\uD835\uDFDD";
+
+    public static final String SIX = "\uD835\uDFDE";
+
+    public static final String SEVEN = "\uD835\uDFDF";
+
+    public static final String EIGHT = "\uD835\uDFE0";
+
+    public static final String SIDE_COMPLIMENT = "║";
 
     public static final String EMPTY = " \u2003 ";
 

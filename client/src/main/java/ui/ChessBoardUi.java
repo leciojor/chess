@@ -12,7 +12,13 @@ import static ui.EscapeSequences.*;
 
 public class ChessBoardUi {
 
-    private static final int BOARD_SIZE = 30;
+    private static final int BOARD_SIZE = 10;
+    private static final int BOARD_SIZE_CHAR = BOARD_SIZE + 26;
+    private static final String[] DIGITS_SIDES = {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT};
+    private static Random rand = new Random();
+
+
+
 
 
     public static void main(String[] args) {
@@ -27,35 +33,80 @@ public class ChessBoardUi {
 
 
 
-
-
-
     private static void drawBox(PrintStream out) {
-        for(int row = 0; row < BOARD_SIZE; row++){
-            for(int col = 0; col < BOARD_SIZE; col++){
-                if (row == 0 || row == BOARD_SIZE - 1) {
-                    out.print(BORDER_UP_DOWN);
-                }
+        drawBorder(out);
 
-                else if (col == 0){
-                    out.print(BORDER_LEFT);
-                }
-
-                else if (col == BOARD_SIZE - 1){
-                    out.print(BORDER_RIGHT);
-                }
-
-                else {
-                    drawInside(out);
-                }
-
-            }
-            out.println();
-        }
+//        for(int row = 0; row < BOARD_SIZE; row++){
+//            for(int col = 0; col < BOARD_SIZE; col++){
+//
+//                if (row == 0) {
+//                    out.print(BORDER_UP);
+//                }
+//
+//                else if(row == BOARD_SIZE - 1){
+//                    out.print(BORDER_DOWN);
+//                }
+//
+//                else if (col == 0 || col == BOARD_SIZE - 1){
+//                    drawBorder(out);
+//                }
+//
+//                else {
+//                    out.print(EMPTY);
+//                    drawInside(out);
+//                }
+//
+//            }
+//            out.println();
+//        }
     }
+
+
 
     private static void drawInside(PrintStream out) {
 
+    }
+
+    private static void drawBorder(PrintStream out){
+        drawTopBottom(out);
+        drawSides(out);
+        drawTopBottom(out);
+    }
+
+    private static void drawTopBottom(PrintStream out){
+        for(int col = 0; col < BOARD_SIZE_CHAR; col++){
+            if (col == 0){
+                out.print(EMPTY);
+            }
+            else{
+               int random_index = rand.nextInt(DIGITS_SIDES.length);
+               String value = DIGITS_SIDES[random_index];
+               out.print(value);
+            }
+        }
+
+        out.println();
+    }
+
+
+
+    private static void drawSides(PrintStream out){
+        for(String digit : DIGITS_SIDES){
+            out.print(SIDE_COMPLIMENT);
+            out.print(digit);
+
+            for (int row = 0; row < BOARD_SIZE; row++){
+                out.print(EMPTY);
+            }
+
+            out.print(digit);
+            out.print(SIDE_COMPLIMENT);
+
+            out.println();
+
+
+
+        }
     }
 
     private static void setBlack(PrintStream out) {
