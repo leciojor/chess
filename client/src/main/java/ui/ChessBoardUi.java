@@ -5,6 +5,7 @@ import chess.ChessPiece;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Random;
 
 import static ui.EscapeSequences.*;
@@ -37,6 +38,11 @@ public class ChessBoardUi {
         out.print(ERASE_SCREEN);
 
         drawBoard(out, "one");
+
+        out.println();
+        out.println();
+
+        drawBoard(out, "two");
     }
 
 
@@ -54,7 +60,7 @@ public class ChessBoardUi {
 
 
         out.println();
-        drawSides(out);
+        drawSides(out, orientation);
 
 
         drawTextTopBottom(out);
@@ -80,12 +86,12 @@ public class ChessBoardUi {
 
 
 
-    private static void drawSides(PrintStream out){
+    private static void drawSides(PrintStream out, String orientation){
         for(int row = 0; row < DIGITS_SIDES.length; row++){
             out.print(SIDE_COMPLIMENT);
             out.print(DIGITS_SIDES[row]);
 
-            drawInside(out, row);
+            drawInside(out, row, orientation);
 
             out.print(DIGITS_SIDES[row]);
             out.print(SIDE_COMPLIMENT);
@@ -95,44 +101,44 @@ public class ChessBoardUi {
         }
     }
 
-    private static void drawInside(PrintStream out, int row) {
+    private static void drawInside(PrintStream out, int row, String orientation) {
         out.print(EMPTY);
-        for (int col = 0; col < BOARD_SIZE; col++){
-            addPieces(out, row);
-        }
+
+        drawBoxes(out, row, orientation);
+
         setRegular(out);
         out.print(EMPTY);
 
         alternate = !alternate;
     }
 
-    private static void addPieces(PrintStream out, int row){
+    private static void drawBoxes(PrintStream out, int row, String orientation){
+        for (int col = 0; col < BOARD_SIZE; col++){
+            if (Objects.equals(orientation, "one")){
+                addPieces(out, row, PIECES_WHITE[col], PIECES_BLACK[col], WHITE_PAWN, BLACK_PAWN);
+            }
+            else{
+                addPieces(out, row, PIECES_BLACK[col], PIECES_WHITE[col], BLACK_PAWN, WHITE_PAWN);
+            }
+
+        }
+    }
+
+    private static void addPieces(PrintStream out, int row, String pieceDown, String pieceUp, String pawnDown, String pawnUp){
         if (row == 0){
-            setBlue(out);
-            printPlayer(out, WHITE_BISHOP);
-            setWhite(out);
-            printPlayer(out, WHITE_BISHOP);
+            setBoxBlue(out, pieceUp);
         }
 
         else if(row == 7){
-            setWhite(out);
-            printPlayer(out, BLACK_BISHOP);
-            setBlue(out);
-            printPlayer(out, BLACK_BISHOP);
+            setBoxWhite(out, pieceDown);
         }
 
         else if (row == 1){
-            setWhite(out);
-            printPlayer(out, WHITE_PAWN);
-            setBlue(out);
-            printPlayer(out, WHITE_PAWN);
+            setBoxWhite(out, pieceUp);
         }
 
         else if (row == 6){
-            setBlue(out);
-            printPlayer(out, BLACK_PAWN);
-            setWhite(out);
-            printPlayer(out, BLACK_PAWN);
+            setBoxBlue(out, pieceDown);
         }
 
         else if (!alternate){
@@ -141,6 +147,7 @@ public class ChessBoardUi {
             setBlue(out);
             out.print(EMPTY);
         }
+
         else{
             setBlue(out);
             out.print(EMPTY);
@@ -148,6 +155,21 @@ public class ChessBoardUi {
             out.print(EMPTY);
         }
     }
+
+    private static void setBoxBlue(PrintStream out, String piece){
+        setBlue(out);
+        printPlayer(out, piece);
+        setWhite(out);
+        printPlayer(out, piece);
+    }
+
+    private static void setBoxWhite(PrintStream out, String piece){
+        setWhite(out);
+        printPlayer(out, piece);
+        setBlue(out);
+        printPlayer(out, piece);
+    }
+
 
     private static void drawTextTopBottom(PrintStream out){
         out.print("   ");
