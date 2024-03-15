@@ -13,8 +13,8 @@ import static ui.EscapeSequences.*;
 
 public class ChessBoardUi {
 
-    private static final int BOARD_SIZE = 4;
-    private static final int BOARD_SIZE_CHAR = BOARD_SIZE + 33;
+    private static final int BOARD_SIZE = 8;
+    private static final int BOARD_SIZE_CHAR = BOARD_SIZE + 29;
     private static final String[] DIGITS_SIDES = {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT};
 
     private static final String[] PIECES_WHITE = {WHITE_ROOK, WHITE_KNIGHT, WHITE_BISHOP, WHITE_KING, WHITE_QUEEN, WHITE_BISHOP, WHITE_KNIGHT, WHITE_ROOK};
@@ -113,18 +113,23 @@ public class ChessBoardUi {
     }
 
     private static void drawBoxes(PrintStream out, int row, String orientation){
+
         for (int col = 0; col < BOARD_SIZE; col++){
+            String[] temp_pieces_white = {PIECES_WHITE[col], PIECES_WHITE[col + 1]};
+            String[] temp_pieces_black = {PIECES_BLACK[col], PIECES_BLACK[col + 1]};
+
             if (Objects.equals(orientation, "one")){
-                addPieces(out, row, PIECES_WHITE[col], PIECES_BLACK[col], WHITE_PAWN, BLACK_PAWN);
+                addPieces(out, row, temp_pieces_white, temp_pieces_black, WHITE_PAWN, BLACK_PAWN);
             }
             else{
-                addPieces(out, row, PIECES_BLACK[col], PIECES_WHITE[col], BLACK_PAWN, WHITE_PAWN);
+                addPieces(out, row, temp_pieces_black, temp_pieces_white, BLACK_PAWN, WHITE_PAWN);
             }
-
+            col++;
         }
+
     }
 
-    private static void addPieces(PrintStream out, int row, String pieceDown, String pieceUp, String pawnDown, String pawnUp){
+    private static void addPieces(PrintStream out, int row, String[] pieceDown, String[] pieceUp, String pawnDown, String pawnUp){
         if (row == 0){
             setBoxBlue(out, pieceUp);
         }
@@ -156,18 +161,18 @@ public class ChessBoardUi {
         }
     }
 
-    private static void setBoxBlue(PrintStream out, String piece){
+    private static void setBoxBlue(PrintStream out, String[] piece){
         setBlue(out);
-        printPlayer(out, piece);
+        printPlayer(out, piece[0]);
         setWhite(out);
-        printPlayer(out, piece);
+        printPlayer(out, piece[1]);
     }
 
-    private static void setBoxWhite(PrintStream out, String piece){
+    private static void setBoxWhite(PrintStream out, String[] piece){
         setWhite(out);
-        printPlayer(out, piece);
+        printPlayer(out, piece[0]);
         setBlue(out);
-        printPlayer(out, piece);
+        printPlayer(out, piece[1]);
     }
 
 
