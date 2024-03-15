@@ -117,19 +117,21 @@ public class ChessBoardUi {
         for (int col = 0; col < BOARD_SIZE; col++){
             String[] temp_pieces_white = {PIECES_WHITE[col], PIECES_WHITE[col + 1]};
             String[] temp_pieces_black = {PIECES_BLACK[col], PIECES_BLACK[col + 1]};
+            String[] temp_pawn_black = {BLACK_PAWN, BLACK_PAWN};
+            String[] temp_pawn_white = {WHITE_PAWN, WHITE_PAWN};
 
             if (Objects.equals(orientation, "one")){
-                addPieces(out, row, temp_pieces_white, temp_pieces_black, WHITE_PAWN, BLACK_PAWN);
+                addPieces(out, row, temp_pieces_white, temp_pieces_black, temp_pawn_white, temp_pawn_black);
             }
             else{
-                addPieces(out, row, temp_pieces_black, temp_pieces_white, BLACK_PAWN, WHITE_PAWN);
+                addPieces(out, row, temp_pieces_black, temp_pieces_white, temp_pawn_black, temp_pawn_white);
             }
             col++;
         }
 
     }
 
-    private static void addPieces(PrintStream out, int row, String[] pieceDown, String[] pieceUp, String pawnDown, String pawnUp){
+    private static void addPieces(PrintStream out, int row, String[] pieceDown, String[] pieceUp, String[] pawnDown, String[] pawnUp){
         if (row == 0){
             setBoxBlue(out, pieceUp);
         }
@@ -139,11 +141,11 @@ public class ChessBoardUi {
         }
 
         else if (row == 1){
-            setBoxWhite(out, pieceUp);
+            setBoxWhite(out, pawnUp);
         }
 
         else if (row == 6){
-            setBoxBlue(out, pieceDown);
+            setBoxBlue(out, pawnDown);
         }
 
         else if (!alternate){
@@ -177,12 +179,12 @@ public class ChessBoardUi {
 
 
     private static void drawTextTopBottom(PrintStream out){
-        out.print("   ");
+        out.print(EMPTY);
         for (int col = 0; col < HEADER_LETTERS.length; col++){
-            out.print("  ");
+            out.print(EMPTY_HEADER);
             out.print(HEADER_LETTERS[col]);
-            out.print(" ");
         }
+
     }
 
     private static void setBlack(PrintStream out) {
