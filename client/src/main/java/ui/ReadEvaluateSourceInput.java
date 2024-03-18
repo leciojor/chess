@@ -36,10 +36,14 @@ public class ReadEvaluateSourceInput {
             if (input.equals("register")){
                 input = readInput("Type desired USERNAME PASSWORD EMAIL: ", false);
                 client_call.register(input);
+                runPostLogin();
+                break;
             }
             else if (input.equals("login")){
                 input = readInput("Type your USERNAME PASSWORD: ");
                 client_call.login(input);
+                runPostLogin();
+                break;
             }
             else if (input.equals("quit")){
                 System.out.print("Thank you for playing");
@@ -52,6 +56,40 @@ public class ReadEvaluateSourceInput {
     }
 
     private void runPostLogin(){
+        while(true){
+            input = readInput("""
+                            Select one of the following options: 
+                                - logout (to leave current account)
+                                - create (to create a game)
+                                - list (to list all games created)
+                                - join (to join a game)
+                                - join observer (to join a game as observer)
+                                - help (for more info)""", true);
+
+            if (input.equals("logout")){
+                client_call.logout(input);
+                runPreLogin();
+                break;
+            }
+            else if (input.equals("create")){
+                input = readInput("Type desired game NAME: ", false);
+                client_call.create(input);
+            }
+            else if (input.equals("list")){
+                client_call.list(input);
+            }
+            else if (input.equals("join")){
+                input = readInput("Type desired game PIECE COLOR (BLACK|WHITE|NONE): ", false);
+                client_call.join(input);
+            }
+            else if (input.equals("quit")){
+                System.out.print("Thank you for playing");
+                break;
+            }
+            else if (!input.equals("help")){
+                System.out.print("Invalid input");
+            }
+        }
 
     }
 
