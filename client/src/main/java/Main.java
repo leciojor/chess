@@ -1,8 +1,15 @@
 import chess.*;
 
+import ui.*;
+
 public class Main {
     public static void main(String[] args) {
-        var piece = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
-        System.out.println("♕ 240 Chess Client: " + piece);
+        System.out.println("♕ A Chess Game Made by Lecio: ♕");
+        System.out.println();
+        System.out.println();
+
+        ReadEvaluateSourceInput client_loop = new ReadEvaluateSourceInput();
+        client_loop.run();
+
     }
 }

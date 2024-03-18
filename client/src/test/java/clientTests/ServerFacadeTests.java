@@ -1,7 +1,6 @@
 package clientTests;
 
 import org.junit.jupiter.api.*;
-//may present import issue
 import server.Server;
 
 public class ServerFacadeTests {
