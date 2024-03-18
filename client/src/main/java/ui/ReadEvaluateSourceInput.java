@@ -5,6 +5,7 @@ import chess.ChessBoard;
 import client.ServerFacade;
 import ui.*;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -19,6 +20,7 @@ public class ReadEvaluateSourceInput {
 
     private PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
+    public ReadEvaluateSourceInput() throws IOException {}
 
 
     private String readInput(String prompt, boolean formated){
