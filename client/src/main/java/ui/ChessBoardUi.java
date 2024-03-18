@@ -49,7 +49,7 @@ public class ChessBoardUi {
 
 
 
-    private static void drawBoard(PrintStream out, String orientation) {
+    public static void drawBoard(PrintStream out, String orientation) {
             drawBorders(out, orientation);
     }
 

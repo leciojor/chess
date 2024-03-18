@@ -1,8 +1,12 @@
 package ui;
 
 
+import chess.ChessBoard;
 import client.ServerFacade;
+import ui.*;
 
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class ReadEvaluateSourceInput {
@@ -12,6 +16,8 @@ public class ReadEvaluateSourceInput {
     private String input;
 
     private ServerFacade client_call = new ServerFacade();
+
+    private PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
 
 
@@ -26,6 +32,7 @@ public class ReadEvaluateSourceInput {
 
     private void runPreLogin(){
         while (true){
+            System.out.println();
             input = readInput("""
                             Select one of the following options: 
                                 - register (to register a new account)
@@ -40,7 +47,7 @@ public class ReadEvaluateSourceInput {
                 break;
             }
             else if (input.equals("login")){
-                input = readInput("Type your USERNAME PASSWORD: ");
+                input = readInput("Type your USERNAME PASSWORD: ", false);
                 client_call.login(input);
                 runPostLogin();
                 break;
@@ -51,20 +58,21 @@ public class ReadEvaluateSourceInput {
             }
             else if (!input.equals("help")){
                 System.out.print("Invalid input");
+                System.out.println();
             }
         }
     }
 
     private void runPostLogin(){
         while(true){
+            System.out.println();
             input = readInput("""
                             Select one of the following options: 
                                 - logout (to leave current account)
                                 - create (to create a game)
                                 - list (to list all games created)
                                 - join (to join a game)
-                                - join observer (to join a game as observer)
-                                - help (for more info)""", true);
+d                                - help (for more info)""", true);
 
             if (input.equals("logout")){
                 client_call.logout(input);
@@ -81,6 +89,13 @@ public class ReadEvaluateSourceInput {
             else if (input.equals("join")){
                 input = readInput("Type desired game PIECE COLOR (BLACK|WHITE|NONE): ", false);
                 client_call.join(input);
+
+                System.out.println();
+                ChessBoardUi.drawBoard(out, "one");
+                out.println();
+                out.println();
+                ChessBoardUi.drawBoard(out, "two");
+                System.out.println();
             }
             else if (input.equals("quit")){
                 System.out.print("Thank you for playing");
@@ -88,6 +103,7 @@ public class ReadEvaluateSourceInput {
             }
             else if (!input.equals("help")){
                 System.out.print("Invalid input");
+                System.out.println();
             }
         }
 
