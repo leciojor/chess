@@ -27,6 +27,10 @@ public class CreateGameResponse {
         return this.status;
     }
 
+    public String getGameID(){
+        return this.gameID;
+    }
+
     public void setStatus(int status){
         this.status = status;
     }

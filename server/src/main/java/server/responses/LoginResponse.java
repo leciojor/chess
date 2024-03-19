@@ -31,6 +31,10 @@ public class LoginResponse {
         return this.status;
     }
 
+    public String getAuthToken(){
+        return this.authToken;
+    }
+
     public void setStatus(int status){
         this.status = status;
     }

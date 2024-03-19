@@ -72,10 +72,7 @@ public class SQLAuthDAO implements AuthDAO{
                 preparedStatement.setString(1, username);
                 preparedStatement.executeUpdate();
             }
-//            try (var preparedStatement = conn.prepareStatement("DELETE FROM Auth WHERE username=?")) {
-//                preparedStatement.setString(1, username);
-//                preparedStatement.executeUpdate();
-//            }
+
             try (var preparedStatement = conn.prepareStatement("INSERT INTO Auth (authtoken, username) VALUES(?, ?)")) {
 
                 preparedStatement.setString(1, randomToken);

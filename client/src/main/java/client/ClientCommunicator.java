@@ -10,7 +10,8 @@ import java.util.Objects;
 
 import com.google.gson.Gson;
 import server.requests.*;
-
+import server.responses.*;
+import server.responses.RegisterResponse;
 
 
 public class ClientCommunicator {
@@ -33,6 +34,43 @@ public class ClientCommunicator {
         System.out.print(responseBody);
     }
 
+    private void serializationPost(OutputStream requestBody, String[] inputsArray, String endpointType) throws IOException {
+        if (Objects.equals(endpointType, "register")){
+            RegisterRequest request = new RegisterRequest(inputsArray[0], inputsArray[1], inputsArray[2]);
+            requestBody.write(gson.toJson(request).getBytes());
+        }
+        else if (Objects.equals(endpointType, "login")){
+            LoginRequest request = new LoginRequest(inputsArray[0], inputsArray[1]);
+            requestBody.write(gson.toJson(request).getBytes());
+        }
+        else if (Objects.equals(endpointType, "create")){
+            CreateGameRequest request = new CreateGameRequest(inputsArray[0]);
+            requestBody.write(gson.toJson(request).getBytes());
+        }
+    }
+
+    private void deserializationPost(String endpointType) throws IOException {
+        InputStream responseBody = connection.getInputStream();
+
+
+        if (Objects.equals(endpointType, "register")){
+            RegisterResponse response = gson.fromJson(responseBody.toString(), RegisterResponse.class);
+            System.out.println("Username: " + response.getUsername() );
+            System.out.println("AuthToken: " + response.getAuthToken() );
+        }
+        else if (Objects.equals(endpointType, "login")){
+            LoginResponse response = gson.fromJson(responseBody.toString(), LoginResponse.class);
+            System.out.println("Username: " + response.getUsername() );
+            System.out.println("AuthToken: " + response.getAuthToken() );
+        }
+        else if (Objects.equals(endpointType, "create")){
+            CreateGameResponse response = gson.fromJson(responseBody.toString(), CreateGameResponse.class);
+            System.out.println("GameID: " + response.getGameID() );
+            System.out.println("AuthToken: " + connection.getHeaderField("Authorization"));
+        }
+
+    }
+
     public ClientCommunicator(URL url) throws IOException {
         this.url = url;
         this.connection = (HttpURLConnection) url.openConnection();
@@ -48,22 +86,14 @@ public class ClientCommunicator {
 
         try(OutputStream requestBody = connection.getOutputStream();) {
             //I should have made the register classes with an inheritance organization for a cleaner code here
-            if (Objects.equals(endpointType, "register")){
-                RegisterRequest request = new RegisterRequest(inputsArray[0], inputsArray[1], inputsArray[2]);
-                requestBody.write(gson.toJson(request).getBytes());
-            }
-            else if (Objects.equals(endpointType, "login")){
-                LoginRequest request = new LoginRequest(inputsArray[0], inputsArray[1]);
-                requestBody.write(gson.toJson(request).getBytes());
-            }
-            else if (Objects.equals(endpointType, "create")){
-                CreateGameRequest request = new CreateGameRequest(inputsArray[0]);
-                requestBody.write(gson.toJson(request).getBytes());
-            }
-
+            serializationPost(requestBody, inputsArray, endpointType);
         }
 
-        if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            System.out.println();
+            deserializationPost(endpointType);
+        }
+        else{
             printErrorMessage();
         }
 
@@ -71,15 +101,20 @@ public class ClientCommunicator {
 
     }
 
-    public void delete(String path) throws IOException{
+    public void delete(String input) throws IOException{
 
     }
 
-    public void get(String path) throws IOException{
+    public void get(String input) throws IOException{
+        setConfigs("GET", false);
+        connection.addRequestProperty("Authorization",  );
+        connection.connect();
+
+
 
     }
 
-    public void put(String path) throws IOException{
+    public void put(String input) throws IOException{
 
     }
 
