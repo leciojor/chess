@@ -143,7 +143,7 @@ public class ReadEvaluateSourceInput {
                 }
             }
             else if (input.equals("list")){
-                client_call.list(input);
+                client_call.list();
             }
             else if (input.equals("join")){
                 input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE|NONE): ", false);

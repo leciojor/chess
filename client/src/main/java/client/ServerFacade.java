@@ -32,7 +32,7 @@ public class ServerFacade {
         communicator.delete();
     }
 
-    public void list(String input) throws IOException{
+    public void list() throws IOException{
         ClientCommunicator communicator = setClientCommunication("/game");
         communicator.get();
     }

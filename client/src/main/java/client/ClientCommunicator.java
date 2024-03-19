@@ -17,11 +17,11 @@ import server.responses.RegisterResponse;
 
 public class ClientCommunicator {
 
+    public static String current_auth_token;
+
     private InputStream responseBody;
 
     private BufferedReader reader = null;
-
-    private static String current_auth_token;
 
     private Gson gson = new Gson();
 
