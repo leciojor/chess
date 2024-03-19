@@ -124,6 +124,7 @@ public class ClientCommunicator {
         }
         else{
             printErrorMessage();
+            System.out.println();
             ServerFacade.returned_error = true;
         }
 
@@ -145,6 +146,7 @@ public class ClientCommunicator {
         }
         else {
             printErrorMessage();
+            System.out.println();
             ServerFacade.returned_error = true;
         }
 
@@ -159,15 +161,19 @@ public class ClientCommunicator {
         int i = 0;
 
         if (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            responseBody = this.connection.getInputStream();
+            StringBuilder response_builder = readingInputStream(responseBody);
 
-            InputStream responseBody = this.connection.getInputStream();
-            ListGamesResponse response = gson.fromJson(responseBody.toString(), ListGamesResponse.class);
+            ListGamesResponse response = gson.fromJson(response_builder.toString(), ListGamesResponse.class);
             HashSet<GameData> games = response.getGames();
             System.out.println();
             System.out.println("Games List: ");
 
             for (GameData game : games){
+                System.out.println();
                 System.out.println(i + "." + " " +game.gameName() + "\n" + "White Username: " +  game.whiteUsername() + "\n" + "Black Username: " +  game.blackUsername());
+                System.out.println();
+
                 i++;
             }
             ServerFacade.returned_error = false;
@@ -175,6 +181,7 @@ public class ClientCommunicator {
         }
         else {
             printErrorMessage();
+            System.out.println();
             ServerFacade.returned_error = true;;
         }
 
@@ -203,11 +210,15 @@ public class ClientCommunicator {
 
         if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
             printErrorMessage();
+            System.out.println();
             ServerFacade.returned_error = true;;
         }
-        ServerFacade.returned_error = false;
-        System.out.println();
-        System.out.println("Successfully Joined Game");
+        else{
+            ServerFacade.returned_error = false;
+            System.out.println();
+            System.out.println("Successfully Joined Game");
+        }
+
 
         this.connection.disconnect();
 

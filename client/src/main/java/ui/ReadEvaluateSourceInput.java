@@ -37,6 +37,7 @@ public class ReadEvaluateSourceInput {
         }
         return true;
     }
+
 // for future generalization of run methods
 //    private void mainEndpointsGeneralization(String prompt, boolean formatted, int requiredSize, lamba) throws IOException {
 //        input = readInput("Type desired USERNAME PASSWORD EMAIL: ", false);
