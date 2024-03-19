@@ -14,7 +14,7 @@ public class ServerFacadeTests {
 
     private static Server server;
 
-    private static ServerFacade server_call = new ServerFacade();
+    private static ServerFacade server_call;
 
     private String getGameId(String input){
         String[] lines = input.split("\n");
@@ -33,7 +33,8 @@ public class ServerFacadeTests {
     @BeforeAll
     public static void init() throws SQLException {
         server = new Server();
-        var port = server.run(8080);
+        int port = server.run(0);
+        server_call = new ServerFacade(port);
         ClearService clearing = new ClearService();
         clearing.clear();
         System.out.println("Started test HTTP server on " + port);

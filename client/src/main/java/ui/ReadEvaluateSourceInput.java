@@ -17,7 +17,7 @@ public class ReadEvaluateSourceInput {
 
     private String input;
 
-    private ServerFacade client_call = new ServerFacade();
+    private ServerFacade client_call = new ServerFacade(8080);
 
     private PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 

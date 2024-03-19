@@ -8,11 +8,17 @@ import client.*;
 
 public class ServerFacade {
 
-    private String urlString = "http://localhost:8080/";
+    private int port;
+
+    private String urlString = "http://localhost:";
 
     private ClientCommunicator setClientCommunication(String path) throws IOException {
-        URL url = new URL(urlString + path);
+        URL url = new URL(urlString + this.port + "/" +  path);
         return new ClientCommunicator(url);
+    }
+
+    public ServerFacade(int port){
+        this.port = port;
     }
 
     public static boolean returned_error = false;

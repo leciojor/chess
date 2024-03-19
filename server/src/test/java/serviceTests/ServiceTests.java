@@ -67,6 +67,8 @@ public class ServiceTests {
     ListGamesResponse response_list_games;
 
     ClearResponse response_clear;
+
+    SQLAuthDAO auth_SQL;
     
 
     @BeforeEach
@@ -74,6 +76,8 @@ public class ServiceTests {
         user = new MemoryUserDAO();
 
         auth = new MemoryAuthDAO();
+
+        auth_SQL = new SQLAuthDAO();
 
         game = new MemoryGameDAO();
 
@@ -85,7 +89,7 @@ public class ServiceTests {
         request_login = new LoginRequest(username_created, password);
         LoginService service_login = new LoginService(request_login);
         response_login = service_login.login(username_created, password);
-
+        auth_SQL.createAuth(username);
         auth.createAuth(username);
         within_token = auth.getCurrentAuths().get(auth.getCurrentAuths().size() - 1).authToken();
 
