@@ -6,9 +6,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Objects;
 
 import com.google.gson.Gson;
+import model.GameData;
 import server.requests.*;
 import server.responses.*;
 import server.responses.RegisterResponse;
@@ -88,16 +90,17 @@ public class ClientCommunicator {
     public void post(String input, String endpointType) throws IOException {
 
         setConfigs("POST", true);
-        connection.connect();
+        this.connection.addRequestProperty("Authorization", current_auth_token);
+        this.connection.connect();
 
         String[] inputsArray = input.split(" ");
 
-        try(OutputStream requestBody = connection.getOutputStream();) {
+        try(OutputStream requestBody = this.connection.getOutputStream();) {
             //I should have made the register classes with an inheritance organization for a cleaner code here
             serializationPost(requestBody, inputsArray, endpointType);
         }
 
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+        if (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             System.out.println();
             deserializationPost(endpointType);
         }
@@ -105,25 +108,38 @@ public class ClientCommunicator {
             printErrorMessage();
         }
 
-        connection.disconnect();
+        this.connection.disconnect();
 
     }
 
     public void delete(String input) throws IOException{
+        setConfigs("GET", false);
+        this.connection.addRequestProperty("Authorization",  current_auth_token);
+        this.connection.connect();
 
     }
 
     public void get(String input) throws IOException{
         setConfigs("GET", false);
-        connection.addRequestProperty("Authorization",  current_auth_token);
-        connection.connect();
+        this.connection.addRequestProperty("Authorization",  current_auth_token);
+        this.connection.connect();
+        int i = 0;
 
-        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            // Get HTTP response headers, if necessary
+        if (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 
-            InputStream responseBody = connection.getInputStream();
-            // print list of games based on assignment requirements (check)
-        } else {
+            InputStream responseBody = this.connection.getInputStream();
+            ListGamesResponse response = gson.fromJson(responseBody.toString(), ListGamesResponse.class);
+            HashSet<GameData> games = response.getGames();
+            System.out.println();
+            System.out.println("Games List: ");
+
+            for (GameData game : games){
+                System.out.println(i + "." + " " +game.gameName() + "\n" + "White Username: " +  game.whiteUsername() + "\n" + "Black Username: " +  game.blackUsername());
+                i++;
+            }
+
+        }
+        else {
             printErrorMessage();
         }
 
@@ -131,6 +147,24 @@ public class ClientCommunicator {
     }
 
     public void put(String input) throws IOException{
+        setConfigs("PUT", false);
+        this.connection.addRequestProperty("Authorization",  current_auth_token);
+        this.connection.connect();
+
+        String[] inputsArray = input.split(" ");
+
+        try(OutputStream requestBody = connection.getOutputStream();) {
+            JoinGameRequest request = new JoinGameRequest(inputsArray[0], inputsArray[1]);
+            requestBody.write(gson.toJson(request).getBytes());
+        }
+
+        if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+
+            printErrorMessage();
+
+        }
+        System.out.println();
+        System.out.println("Successfully Joined Game");
 
     }
 

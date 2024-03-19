@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) throws DataAccessException, SQLException {
         DatabaseManager.createDatabase();
-        createTables();
+        //createTables();
         Server server = new Server();
         server.run(8080);
         var piece = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);

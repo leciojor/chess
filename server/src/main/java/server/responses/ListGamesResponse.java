@@ -28,6 +28,10 @@ public class ListGamesResponse {
         return this.status;
     }
 
+    public HashSet<GameData> getGames(){
+        return this.games;
+    }
+
     public void setStatus(int status){
         this.status = status;
     }
