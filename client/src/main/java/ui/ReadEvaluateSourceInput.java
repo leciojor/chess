@@ -62,6 +62,15 @@ public class ReadEvaluateSourceInput {
         }
     }
 
+    private void printBoards(){
+        System.out.println();
+        ChessBoardUi.drawBoard(out, "one");
+        out.println();
+        out.println();
+        ChessBoardUi.drawBoard(out, "two");
+        System.out.println();
+    }
+
     private void runPostLogin() throws IOException {
         while(true){
             System.out.println();
@@ -71,7 +80,8 @@ public class ReadEvaluateSourceInput {
                                 - create (to create a game)
                                 - list (to list all games created)
                                 - join (to join a game)
-d                                - help (for more info)""", true);
+                                - observe (to join game with watch only mode)
+d                               - help (for more info)""", true);
 
             if (input.equals("logout")){
                 client_call.logout(input);
@@ -86,15 +96,16 @@ d                                - help (for more info)""", true);
                 client_call.list(input);
             }
             else if (input.equals("join")){
-                input = readInput("Type desired game PIECE COLOR (BLACK|WHITE|NONE): ", false);
+                input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE|NONE): ", false);
                 client_call.join(input);
 
-                System.out.println();
-                ChessBoardUi.drawBoard(out, "one");
-                out.println();
-                out.println();
-                ChessBoardUi.drawBoard(out, "two");
-                System.out.println();
+                printBoards();
+            }
+            else if (input.equals("observe")){
+                input = readInput("Type desired game ID: ", false);
+                client_call.join(input);
+
+                printBoards();
             }
             else if (input.equals("quit")){
                 System.out.print("Thank you for playing");
