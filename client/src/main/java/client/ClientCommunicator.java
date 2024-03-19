@@ -16,6 +16,8 @@ import server.responses.RegisterResponse;
 
 public class ClientCommunicator {
 
+    private String current_auth_token;
+
     private Gson gson = new Gson();
 
     private URL url;
@@ -30,8 +32,10 @@ public class ClientCommunicator {
 
     private void printErrorMessage(){
         InputStream responseBody = connection.getErrorStream();
+        String error_message = gson.toJson(responseBody);
+
         System.out.println();
-        System.out.print(responseBody);
+        System.out.print(error_message);
     }
 
     private void serializationPost(OutputStream requestBody, String[] inputsArray, String endpointType) throws IOException {
@@ -57,17 +61,21 @@ public class ClientCommunicator {
             RegisterResponse response = gson.fromJson(responseBody.toString(), RegisterResponse.class);
             System.out.println("Username: " + response.getUsername() );
             System.out.println("AuthToken: " + response.getAuthToken() );
+            current_auth_token = response.getAuthToken();
         }
         else if (Objects.equals(endpointType, "login")){
             LoginResponse response = gson.fromJson(responseBody.toString(), LoginResponse.class);
             System.out.println("Username: " + response.getUsername() );
             System.out.println("AuthToken: " + response.getAuthToken() );
+            current_auth_token = response.getAuthToken();
         }
         else if (Objects.equals(endpointType, "create")){
             CreateGameResponse response = gson.fromJson(responseBody.toString(), CreateGameResponse.class);
             System.out.println("GameID: " + response.getGameID() );
             System.out.println("AuthToken: " + connection.getHeaderField("Authorization"));
+            current_auth_token = connection.getHeaderField("Authorization");
         }
+
 
     }
 
@@ -107,9 +115,17 @@ public class ClientCommunicator {
 
     public void get(String input) throws IOException{
         setConfigs("GET", false);
-        connection.addRequestProperty("Authorization",  );
+        connection.addRequestProperty("Authorization",  current_auth_token);
         connection.connect();
 
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            // Get HTTP response headers, if necessary
+
+            InputStream responseBody = connection.getInputStream();
+            // print list of games based on assignment requirements (check)
+        } else {
+            printErrorMessage();
+        }
 
 
     }
