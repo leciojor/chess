@@ -1,6 +1,6 @@
 package server.requests;
 
-public class CreateGameRequest {
+public class CreateGameRequest{
 
     private String gameName;
 

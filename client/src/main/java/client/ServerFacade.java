@@ -8,34 +8,46 @@ import client.*;
 
 public class ServerFacade {
 
-    public ServerFacade() throws IOException {}
+    private String urlString = "http://localhost:8080/";
 
-    public void register(String input){
-        ClientCommunicator.post("/user", input);
+    private ClientCommunicator setClientCommunication(String path) throws IOException {
+        URL url = new URL(urlString + path);
+        return new ClientCommunicator(url);
     }
 
-    public void login(String input){
-        ClientCommunicator.post("/session", input);
+    public void register(String input) throws IOException {
+        ClientCommunicator communicator = setClientCommunication("/user");
+        communicator.post(input, "register");
     }
 
-    public void logout(String input){
-        ClientCommunicator.delete("/session", input);
+    public void login(String input) throws IOException {
+        ClientCommunicator communicator = setClientCommunication("/session");
+        communicator.post(input, "login");
     }
 
-    public void list(String input){
-        ClientCommunicator.get("/game", input);
+    public void logout(String input) throws IOException{
+        ClientCommunicator communicator = setClientCommunication("/session");
+        communicator.delete(input);
     }
 
-    public void join(String input){
-        ClientCommunicator.put("/game", input);
+    public void list(String input) throws IOException{
+        ClientCommunicator communicator = setClientCommunication("/game");
+        communicator.get(input);
     }
 
-    public void create(String input){
-        ClientCommunicator.post("/game", input);
+    public void join(String input) throws IOException{
+        ClientCommunicator communicator = setClientCommunication("/game");
+        communicator.put(input);
     }
 
-    public void clear(String input){
-        ClientCommunicator.delete("/db", input);
+    public void create(String input) throws IOException{
+        ClientCommunicator communicator = setClientCommunication("/game");
+        communicator.post(input, "create");
+    }
+
+    public void clear(String input) throws IOException{
+        ClientCommunicator communicator = setClientCommunication("/db");
+        communicator.delete(input);
     }
 
 

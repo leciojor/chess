@@ -20,9 +20,6 @@ public class ReadEvaluateSourceInput {
 
     private PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
-    public ReadEvaluateSourceInput() throws IOException {}
-
-
     private String readInput(String prompt, boolean formated){
         System.out.print(prompt);
         input = scanner.nextLine();
@@ -32,7 +29,7 @@ public class ReadEvaluateSourceInput {
         return input;
     }
 
-    private void runPreLogin(){
+    private void runPreLogin() throws IOException {
         while (true){
             System.out.println();
             input = readInput("""
@@ -65,7 +62,7 @@ public class ReadEvaluateSourceInput {
         }
     }
 
-    private void runPostLogin(){
+    private void runPostLogin() throws IOException {
         while(true){
             System.out.println();
             input = readInput("""
@@ -111,7 +108,7 @@ d                                - help (for more info)""", true);
 
     }
 
-    public void run(){
+    public void run() throws IOException {
 
         while (true){
             System.out.println("Press ENTER to START...");
