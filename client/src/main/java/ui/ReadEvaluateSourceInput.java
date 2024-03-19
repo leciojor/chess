@@ -20,10 +20,10 @@ public class ReadEvaluateSourceInput {
 
     private PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
-    private String readInput(String prompt, boolean formated){
-        System.out.print(prompt);
+    private String readInput(String prompt, boolean formatted){
+        System.out.println(prompt);
         input = scanner.nextLine();
-        if (formated){
+        if (formatted){
             input = input.toLowerCase().trim();
         }
         return input;
@@ -56,6 +56,7 @@ public class ReadEvaluateSourceInput {
                 break;
             }
             else if (!input.equals("help")){
+                System.out.println();
                 System.out.print("Invalid input");
                 System.out.println();
             }
@@ -125,6 +126,7 @@ d                               - help (for more info)""", true);
             System.out.println("Press ENTER to START...");
 
             boolean keyPressed = scanner.hasNextLine();
+            input = scanner.nextLine();
 
             if (keyPressed){
                 runPreLogin();
