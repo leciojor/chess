@@ -15,6 +15,8 @@ public class ServerFacade {
         return new ClientCommunicator(url);
     }
 
+    public static boolean returned_error = false;
+
     public void register(String input) throws IOException {
         ClientCommunicator communicator = setClientCommunication("/user");
         communicator.post(input, "register");
@@ -32,7 +34,7 @@ public class ServerFacade {
 
     public void list(String input) throws IOException{
         ClientCommunicator communicator = setClientCommunication("/game");
-        communicator.get(input);
+        communicator.get();
     }
 
     public void join(String input) throws IOException{

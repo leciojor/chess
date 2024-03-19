@@ -29,6 +29,31 @@ public class ReadEvaluateSourceInput {
         return input;
     }
 
+    private boolean checkInputSize(String input, int requiredSize){
+        String[] inputsArray = input.split(" ");
+
+        if (inputsArray.length != requiredSize){
+            return false;
+        }
+        return true;
+    }
+// for future generalization of run methods
+//    private void mainEndpointsGeneralization(String prompt, boolean formatted, int requiredSize, lamba) throws IOException {
+//        input = readInput("Type desired USERNAME PASSWORD EMAIL: ", false);
+//        if (!checkInputSize(input, 3)){
+//            System.out.println("You forgot some required information");
+//        }
+//        else{
+//            client_call.clientEndpointMethod(input);
+//            if (!ServerFacade.returned_error){
+//                runPostLogin();
+//                break;
+//            }
+//        }
+//    }
+
+
+
     private void runPreLogin() throws IOException {
         while (true){
             System.out.println();
@@ -41,15 +66,29 @@ public class ReadEvaluateSourceInput {
 
             if (input.equals("register")){
                 input = readInput("Type desired USERNAME PASSWORD EMAIL: ", false);
-                client_call.register(input);
-                runPostLogin();
-                break;
+                if (!checkInputSize(input, 3)){
+                    System.out.println("You forgot some required information");
+                }
+                else{
+                    client_call.register(input);
+                    if (!ServerFacade.returned_error){
+                        runPostLogin();
+                        break;
+                    }
+                }
             }
             else if (input.equals("login")){
                 input = readInput("Type your USERNAME PASSWORD: ", false);
-                client_call.login(input);
-                runPostLogin();
-                break;
+                if (!checkInputSize(input, 2)){
+                    System.out.println("You forgot some required information");
+                }
+                else{
+                    client_call.login(input);
+                    if (!ServerFacade.returned_error){
+                        runPostLogin();
+                        break;
+                    }
+                }
             }
             else if (input.equals("quit")){
                 System.out.print("Thank you for playing");
@@ -82,31 +121,50 @@ public class ReadEvaluateSourceInput {
                                 - list (to list all games created)
                                 - join (to join a game)
                                 - observe (to join game with watch only mode)
-d                               - help (for more info)""", true);
+                                - help (for more info)""", true);
 
             if (input.equals("logout")){
                 client_call.logout();
-                runPreLogin();
-                break;
+                if (!ServerFacade.returned_error){
+                    runPreLogin();
+                    break;
+                }
             }
             else if (input.equals("create")){
                 input = readInput("Type desired game NAME: ", false);
-                client_call.create(input);
+                if (!checkInputSize(input, 1)){
+                    System.out.println("A game's name can only have one word");
+                }
+                else{
+                    client_call.create(input);
+                }
             }
             else if (input.equals("list")){
                 client_call.list(input);
             }
             else if (input.equals("join")){
                 input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE|NONE): ", false);
-                client_call.join(input);
-
-                printBoards();
+                if (!checkInputSize(input, 2)){
+                    System.out.println("You forgot some required information");
+                }
+                else{
+                    client_call.join(input);
+                    if (!ServerFacade.returned_error){
+                        printBoards();
+                    }
+                }
             }
             else if (input.equals("observe")){
                 input = readInput("Type desired game ID: ", false);
-                client_call.join(input);
-
-                printBoards();
+                if (!checkInputSize(input, 1)){
+                    System.out.println("You can only add the game's ID and nothing else");
+                }
+                else{
+                    client_call.join(input);
+                    if (!ServerFacade.returned_error){
+                        printBoards();
+                    }
+                }
             }
             else if (input.equals("quit")){
                 System.out.print("Thank you for playing");

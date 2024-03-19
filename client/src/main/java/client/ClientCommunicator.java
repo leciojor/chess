@@ -1,8 +1,6 @@
 package client;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -16,9 +14,14 @@ import server.responses.*;
 import server.responses.RegisterResponse;
 
 
+
 public class ClientCommunicator {
 
-    private String current_auth_token;
+    private InputStream responseBody;
+
+    private BufferedReader reader = null;
+
+    private static String current_auth_token;
 
     private Gson gson = new Gson();
 
@@ -32,9 +35,23 @@ public class ClientCommunicator {
         connection.setDoOutput(doOutput);
     }
 
-    private void printErrorMessage(){
-        InputStream responseBody = connection.getErrorStream();
-        String error_message = gson.toJson(responseBody);
+    private StringBuilder readingInputStream(InputStream responseBody) throws IOException {
+        reader = new BufferedReader(new InputStreamReader(responseBody));
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+        }
+
+        return response;
+    }
+
+    private void printErrorMessage() throws IOException {
+        responseBody = connection.getErrorStream();
+        StringBuilder response_builder = readingInputStream(responseBody);
+
+        ErrorResponse response = gson.fromJson(response_builder.toString(), ErrorResponse.class);
+        String error_message = response.getMessage();
 
         System.out.println();
         System.out.print(error_message);
@@ -56,26 +73,26 @@ public class ClientCommunicator {
     }
 
     private void deserializationPost(String endpointType) throws IOException {
-        InputStream responseBody = connection.getInputStream();
+        responseBody = connection.getInputStream();
+        StringBuilder response_builder = readingInputStream(responseBody);
 
 
         if (Objects.equals(endpointType, "register")){
-            RegisterResponse response = gson.fromJson(responseBody.toString(), RegisterResponse.class);
+            RegisterResponse response = gson.fromJson(response_builder.toString(), RegisterResponse.class);
             System.out.println("Username: " + response.getUsername() );
             System.out.println("AuthToken: " + response.getAuthToken() );
-            current_auth_token = response.getAuthToken();
+            ClientCommunicator.current_auth_token = response.getAuthToken();
         }
         else if (Objects.equals(endpointType, "login")){
-            LoginResponse response = gson.fromJson(responseBody.toString(), LoginResponse.class);
+            LoginResponse response = gson.fromJson(response_builder.toString(), LoginResponse.class);
             System.out.println("Username: " + response.getUsername() );
             System.out.println("AuthToken: " + response.getAuthToken() );
-            current_auth_token = response.getAuthToken();
+            ClientCommunicator.current_auth_token = response.getAuthToken();
         }
         else if (Objects.equals(endpointType, "create")){
-            CreateGameResponse response = gson.fromJson(responseBody.toString(), CreateGameResponse.class);
+            CreateGameResponse response = gson.fromJson(response_builder.toString(), CreateGameResponse.class);
             System.out.println("GameID: " + response.getGameID() );
-            System.out.println("AuthToken: " + connection.getHeaderField("Authorization"));
-            current_auth_token = connection.getHeaderField("Authorization");
+
         }
 
 
@@ -90,7 +107,7 @@ public class ClientCommunicator {
     public void post(String input, String endpointType) throws IOException {
 
         setConfigs("POST", true);
-        this.connection.addRequestProperty("Authorization", current_auth_token);
+        this.connection.addRequestProperty("Authorization", ClientCommunicator.current_auth_token);
         this.connection.connect();
 
         String[] inputsArray = input.split(" ");
@@ -103,9 +120,11 @@ public class ClientCommunicator {
         if (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             System.out.println();
             deserializationPost(endpointType);
+            ServerFacade.returned_error = false;
         }
         else{
             printErrorMessage();
+            ServerFacade.returned_error = true;
         }
 
         this.connection.disconnect();
@@ -114,25 +133,28 @@ public class ClientCommunicator {
 
     public void delete() throws IOException{
         setConfigs("DELETE", false);
-        this.connection.addRequestProperty("Authorization",  current_auth_token);
+        this.connection.addRequestProperty("Authorization",  ClientCommunicator.current_auth_token);
         this.connection.connect();
 
         if (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
+            //still to add logic for clear endpoint
             System.out.println();
             System.out.println("Successfully Logged Out");
+            ServerFacade.returned_error = false;
 
         }
         else {
             printErrorMessage();
+            ServerFacade.returned_error = true;
         }
 
+        this.connection.disconnect();
 
     }
 
-    public void get(String input) throws IOException{
+    public void get() throws IOException{
         setConfigs("GET", false);
-        this.connection.addRequestProperty("Authorization",  current_auth_token);
+        this.connection.addRequestProperty("Authorization",  ClientCommunicator.current_auth_token);
         this.connection.connect();
         int i = 0;
 
@@ -148,34 +170,46 @@ public class ClientCommunicator {
                 System.out.println(i + "." + " " +game.gameName() + "\n" + "White Username: " +  game.whiteUsername() + "\n" + "Black Username: " +  game.blackUsername());
                 i++;
             }
+            ServerFacade.returned_error = false;
 
         }
         else {
             printErrorMessage();
+            ServerFacade.returned_error = true;;
         }
 
+        this.connection.disconnect();
 
     }
 
     public void put(String input) throws IOException{
-        setConfigs("PUT", false);
-        this.connection.addRequestProperty("Authorization",  current_auth_token);
+        setConfigs("PUT", true);
+        this.connection.addRequestProperty("Authorization",  ClientCommunicator.current_auth_token);
         this.connection.connect();
 
         String[] inputsArray = input.split(" ");
 
-        try(OutputStream requestBody = connection.getOutputStream();) {
-            JoinGameRequest request = new JoinGameRequest(inputsArray[0], inputsArray[1]);
-            requestBody.write(gson.toJson(request).getBytes());
+        try(OutputStream requestBody = connection.getOutputStream()) {
+            if (inputsArray.length == 2){
+                JoinGameRequest request = new JoinGameRequest(inputsArray[0], inputsArray[1]);
+                requestBody.write(gson.toJson(request).getBytes());
+            }
+            else{
+                JoinGameRequest request = new JoinGameRequest(inputsArray[0], "OBSERVER");
+                requestBody.write(gson.toJson(request).getBytes());
+            }
+
         }
 
         if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-
             printErrorMessage();
-
+            ServerFacade.returned_error = true;;
         }
+        ServerFacade.returned_error = false;
         System.out.println();
         System.out.println("Successfully Joined Game");
+
+        this.connection.disconnect();
 
     }
 
