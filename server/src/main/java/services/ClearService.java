@@ -13,9 +13,7 @@ public class ClearService {
 
     private GameDAO game = new SQLGameDAO();
 
-    public ClearService(){
-
-    }
+    public ClearService(){}
 
     public ClearResponse clear() throws SQLException {
         try{

@@ -8,6 +8,7 @@ import ui.*;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ReadEvaluateSourceInput {
@@ -32,7 +33,7 @@ public class ReadEvaluateSourceInput {
     private boolean checkInputSize(String input, int requiredSize){
         String[] inputsArray = input.split(" ");
 
-        if (inputsArray.length != requiredSize){
+        if (inputsArray.length != requiredSize || Objects.equals(inputsArray[0], "")){
             return false;
         }
         return true;
@@ -133,6 +134,7 @@ public class ReadEvaluateSourceInput {
             }
             else if (input.equals("create")){
                 input = readInput("Type desired game NAME: ", false);
+                System.out.print(input);
                 if (!checkInputSize(input, 1)){
                     System.out.println("A game's name can only have one word");
                 }
