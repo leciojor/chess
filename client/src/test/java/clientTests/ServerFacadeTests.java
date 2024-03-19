@@ -16,6 +16,20 @@ public class ServerFacadeTests {
 
     private static ServerFacade server_call = new ServerFacade();
 
+    private String getGameId(String input){
+        String[] lines = input.split("\n");
+        String gameId = null;
+        for (String line : lines) {
+            if (line.startsWith("GameID:")) {
+                gameId = line.substring(line.indexOf(":") + 1).trim();
+                break;
+            }
+        }
+
+        return gameId;
+
+    }
+
     @BeforeAll
     public static void init() throws SQLException {
         server = new Server();
@@ -24,6 +38,13 @@ public class ServerFacadeTests {
         clearing.clear();
         System.out.println("Started test HTTP server on " + port);
     }
+
+    @BeforeEach
+    public void initEach() throws SQLException {
+        ClearService clearing = new ClearService();
+        clearing.clear();
+    }
+
 
     @AfterAll
     static void stopServer() {
@@ -142,21 +163,33 @@ public class ServerFacadeTests {
     @Order(11)
     @DisplayName("Clear Good")
     public void clearGood() throws Exception{
-        
+        server_call.register("lecio 123 leciojor@gmail.com");
+        server_call.clear();
+        server_call.create("game");
+        Assertions.assertTrue(ServerFacade.returned_error);
     }
 
     @Test
     @Order(12)
     @DisplayName("Clear Bad")
     public void clearBad() throws Exception{
-
+        //there isn't really a possible scenario for that one
     }
 
     @Test
     @Order(13)
     @DisplayName("Join Good")
     public void joinGood() throws Exception{
+        ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStreamCaptor));
 
+        server_call.register("lecio 123 a");
+        server_call.create("game");
+
+        String printedOutput = outputStreamCaptor.toString();
+        String id = getGameId(printedOutput);
+        server_call.join(id);
+        Assertions.assertFalse(ServerFacade.returned_error);
     }
 
     @Test
@@ -164,6 +197,11 @@ public class ServerFacadeTests {
     @DisplayName("Join Bad")
     public void joinBad() throws Exception{
 
+        server_call.register("lecio 123 a");
+        server_call.create("game");
+
+        server_call.join("123 BLACK");
+        Assertions.assertTrue(ServerFacade.returned_error);
     }
 
 

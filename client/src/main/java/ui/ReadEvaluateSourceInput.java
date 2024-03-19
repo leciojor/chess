@@ -39,6 +39,18 @@ public class ReadEvaluateSourceInput {
         return true;
     }
 
+    private boolean checkIdType(String input){
+        String[] inputsArray = input.split(" ");
+
+        try {
+            int intValue = Integer.parseInt(inputsArray[0]);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return true;
+    }
+
 // for future generalization of run methods
 //    private void mainEndpointsGeneralization(String prompt, boolean formatted, int requiredSize, lamba) throws IOException {
 //        input = readInput("Type desired USERNAME PASSWORD EMAIL: ", false);
@@ -149,6 +161,9 @@ public class ReadEvaluateSourceInput {
                 input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE|NONE): ", false);
                 if (!checkInputSize(input, 2)){
                     System.out.println("You forgot some required information");
+                }
+                else if (!checkIdType(input)){
+                    System.out.println("Game ID has to be a number");
                 }
                 else{
                     client_call.join(input);
