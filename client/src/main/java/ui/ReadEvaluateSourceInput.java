@@ -84,7 +84,7 @@ public class ReadEvaluateSourceInput {
 d                               - help (for more info)""", true);
 
             if (input.equals("logout")){
-                client_call.logout(input);
+                client_call.logout();
                 runPreLogin();
                 break;
             }

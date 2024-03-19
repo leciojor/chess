@@ -25,9 +25,9 @@ public class ServerFacade {
         communicator.post(input, "login");
     }
 
-    public void logout(String input) throws IOException{
+    public void logout() throws IOException{
         ClientCommunicator communicator = setClientCommunication("/session");
-        communicator.delete(input);
+        communicator.delete();
     }
 
     public void list(String input) throws IOException{
@@ -45,9 +45,9 @@ public class ServerFacade {
         communicator.post(input, "create");
     }
 
-    public void clear(String input) throws IOException{
+    public void clear() throws IOException{
         ClientCommunicator communicator = setClientCommunication("/db");
-        communicator.delete(input);
+        communicator.delete();
     }
 
 

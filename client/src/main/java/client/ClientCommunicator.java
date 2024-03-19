@@ -112,10 +112,21 @@ public class ClientCommunicator {
 
     }
 
-    public void delete(String input) throws IOException{
-        setConfigs("GET", false);
+    public void delete() throws IOException{
+        setConfigs("DELETE", false);
         this.connection.addRequestProperty("Authorization",  current_auth_token);
         this.connection.connect();
+
+        if (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+            System.out.println();
+            System.out.println("Successfully Logged Out");
+
+        }
+        else {
+            printErrorMessage();
+        }
+
 
     }
 
