@@ -30,7 +30,7 @@ public class ChessBoardUi {
 
 
 
-
+//add method that takes the current board and changes it with the necessary piece changes
 
     public static void main(String[] args) {
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);

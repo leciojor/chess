@@ -7,12 +7,16 @@ import server.responses.*;
 import services.*;
 import spark.*;
 import com.google.gson.Gson;
+import server.websocket.WebSocketHandler;
 
 
 import java.sql.SQLException;
 
 
 public class Server {
+
+    private final WebSocketHandler webSocketHandler = new WebSocketHandler();
+
 
     public int run(int desiredPort){
         try {
@@ -27,11 +31,13 @@ public class Server {
             throw new RuntimeException(e);
         }
 
+
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("/web");
 
         // Register your endpoints and handle exceptions here.
+        Spark.webSocket("/connect", webSocketHandler);
         Spark.delete("/db", (request, response) -> clearGameHandler(request, response));
         Spark.post("/user", (request, response) -> registerHandler(request, response));
         Spark.post("/session", (request, response) -> loginHandler(request, response));
