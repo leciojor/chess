@@ -159,16 +159,30 @@ public class ReadEvaluateSourceInput {
             }
             else if (input.equals("join")){
                 input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE|NONE): ", false);
+                input = input.toLowerCase();
+                String[] input_words = input.split("\\s+");
+
                 if (!checkInputSize(input, 2)){
                     System.out.println("You forgot some required information");
                 }
                 else if (!checkIdType(input)){
                     System.out.println("Game ID has to be a number");
                 }
+                else if (input_words[1] != "black" || input_words[1] != "white"){
+                    client_call.join(input);
+                    client_call.webSoc(input, "join_player");
+                    if (!ServerFacade.returned_error){
+                        runGameplay();
+//                        printBoards();
+                    }
+                }
+
                 else{
                     client_call.join(input);
+                    client_call.webSoc(input, "join_observer");
                     if (!ServerFacade.returned_error){
-                        printBoards();
+                        runGameplay();
+//                        printBoards();
                     }
                 }
             }
@@ -194,6 +208,10 @@ public class ReadEvaluateSourceInput {
             }
         }
 
+    }
+
+    private void runGameplay() throws IOException{
+        
     }
 
     public void run() throws IOException {

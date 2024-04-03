@@ -17,7 +17,7 @@ public class WebSocketHandler {
     //add connection manager (keeps track with map of users in each session (WITH AUTHTOKEN TO IDENTIFY USER))
 
     //method for getting and handling the notifications on the server side
-    @OnWebSocketMessage 
+    @OnWebSocketMessage
     public void onMessage(Session session, String msg) throws Exception {
         Gson gson = new Gson();
 

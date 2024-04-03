@@ -17,6 +17,22 @@ public class ServerFacade {
         return new ClientCommunicator(url);
     }
 
+    private void determineWebSocketMethod(String input, String webSocketMethod){
+        switch (webSocketMethod) {
+            case "join_player" -> join(conn, msg);
+            case "join_observer" -> observe(conn, msg);
+            case "make_move" -> move(conn, msg);
+            case "leave" -> leave(conn, msg);
+            case "resign" -> resign(conn, msg);
+        }
+
+    }
+
+    private WebSocketCommunicator setWebSocketCommunication(String path) throws IOException {
+        URL url = new URL(urlString + this.port + "/" +  path);
+        return new WebSocketCommunicator(url);
+    }
+
     public ServerFacade(int port){
         this.port = port;
     }
@@ -57,6 +73,15 @@ public class ServerFacade {
         ClientCommunicator communicator = setClientCommunication("/db");
         communicator.delete();
     }
+
+    public void webSoc(String input, String webSocketMethod){
+        WebSocketCommunicator communitator = setWebSocketCommunication("/connect");
+        determineWebSocketMethod(input, webSocketMethod);
+    }
+
+
+
+
 
 
 }
