@@ -103,7 +103,6 @@ public class Server {
     }
 
 
-
     private String registerHandler(Request req, Response res) throws SQLException, DataAccessException {
         res.header("Content-Type", "application/json");
         Gson gson = new Gson();

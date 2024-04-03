@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import server.requests.RegisterRequest;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import java.io.IOException;
@@ -16,13 +17,15 @@ public class WebSocketHandler {
     //add connection manager (keeps track with map of users in each session (WITH AUTHTOKEN TO IDENTIFY USER))
 
     //method for getting and handling the notifications on the server side
-    @OnWebSocketMessage
+    @OnWebSocketMessage 
     public void onMessage(Session session, String msg) throws Exception {
-        UserGameCommand command = readJson(msg, UserGameCommand.class);
+        Gson gson = new Gson();
 
-        Connection conn = getConnection(command.getAuthString(), session);
+        UserGameCommand command = gson.fromJson(msg, UserGameCommand.class);
+
+        Connection conn = new Connection(command.getAuthString(), session);
         if (conn != null) {
-            switch (command.commandType) {
+            switch (command.getCommandType()) {
                 case JOIN_PLAYER -> join(conn, msg);
                 case JOIN_OBSERVER -> observe(conn, msg);
                 case MAKE_MOVE -> move(conn, msg);
@@ -39,8 +42,24 @@ public class WebSocketHandler {
 
     //add websocket endpoints (eg. join, observe, move, leave, resign)
 
-    Connection getConnection(String authToken, Session session){
-        //use Websocket section class
+    public void join(Connection conn, String msg){
+
+    }
+
+    public void observe(Connection conn, String msg){
+
+    }
+
+    public void move(Connection conn, String msg){
+
+    }
+
+    public void leave(Connection conn, String msg){
+
+    }
+
+    public void resign(Connection conn, String msg){
+
     }
 
 
