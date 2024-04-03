@@ -165,9 +165,11 @@ public class ReadEvaluateSourceInput {
                 if (!checkInputSize(input, 2)){
                     System.out.println("You forgot some required information");
                 }
+
                 else if (!checkIdType(input)){
                     System.out.println("Game ID has to be a number");
                 }
+
                 else if (input_words[1] != "black" || input_words[1] != "white"){
                     client_call.join(input);
                     client_call.webSoc(input, "join_player");
@@ -211,7 +213,38 @@ public class ReadEvaluateSourceInput {
     }
 
     private void runGameplay() throws IOException{
-        
+        while(true){
+            System.out.println();
+            input = readInput("""
+                            Select one of the following options: 
+                                - Help (available actions)
+                                - Redraw (redraws the chess board)
+                                - Move (makes game move)
+                                - Resign (to join a game)
+                                - Highlight (shows legal moves)""", true);
+
+            input = input.toLowerCase();
+            if (input.equals("help")){
+
+            }
+
+            else if (input.equals("redraw")){
+
+            }
+
+            else if (input.equals("move")){
+
+            }
+
+            else if (input.equals("resign")){
+
+            }
+
+            else if (input.equals("highlight")){
+
+            }
+
+        }
     }
 
     public void run() throws IOException {

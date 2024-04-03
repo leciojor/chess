@@ -17,13 +17,13 @@ public class ServerFacade {
         return new ClientCommunicator(url);
     }
 
-    private void determineWebSocketMethod(String input, String webSocketMethod){
+    private void determineWebSocketMethod(String input, String webSocketMethod, WebSocketCommunicator communicator) throws IOException {
         switch (webSocketMethod) {
-            case "join_player" -> join(conn, msg);
-            case "join_observer" -> observe(conn, msg);
-            case "make_move" -> move(conn, msg);
-            case "leave" -> leave(conn, msg);
-            case "resign" -> resign(conn, msg);
+            case "join_player" -> communicator.join();
+            case "join_observer" -> communicator.observe();
+            case "make_move" -> communicator.move();
+            case "leave" -> communicator.leave();
+            case "resign" -> communicator.resign();
         }
 
     }
@@ -74,9 +74,9 @@ public class ServerFacade {
         communicator.delete();
     }
 
-    public void webSoc(String input, String webSocketMethod){
-        WebSocketCommunicator communitator = setWebSocketCommunication("/connect");
-        determineWebSocketMethod(input, webSocketMethod);
+    public void webSoc(String input, String webSocketMethod) throws IOException {
+        WebSocketCommunicator communicator = setWebSocketCommunication("/connect");
+        determineWebSocketMethod(input, webSocketMethod, communicator);
     }
 
 
