@@ -7,6 +7,7 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import server.requests.RegisterRequest;
 import webSocketMessages.userCommands.UserGameCommand;
 
+
 import java.io.IOException;
 import java.util.Timer;
 
@@ -24,7 +25,7 @@ public class WebSocketHandler {
         UserGameCommand command = gson.fromJson(msg, UserGameCommand.class);
 
         Connection conn = new Connection(command.getAuthString(), session);
-        if (conn != null) {
+        if (command.getAuthString() != null) {
             switch (command.getCommandType()) {
                 case JOIN_PLAYER -> join(conn, msg);
                 case JOIN_OBSERVER -> observe(conn, msg);
@@ -42,7 +43,11 @@ public class WebSocketHandler {
 
     //add websocket endpoints (eg. join, observe, move, leave, resign)
 
-    public void join(Connection conn, String msg){
+    //send a SERVER MESSAGE to the client using ON MESSAGE
+    public void join(Connection conn, String msg) throws IOException {
+        //see slides for general on message for more instruction
+        //send to all clients in session when necessary
+        conn.getSession().getRemote().sendString(msg);
 
     }
 

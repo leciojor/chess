@@ -10,12 +10,15 @@ public class Connection {
     public Session session;
 
     public Connection(String authToken, Session session) {
-        this.authToken = authToken;
         this.session = session;
     }
 
     public static void sendError(RemoteEndpoint sessionRemote, String msg) throws IOException {
         sessionRemote.sendString(msg);
+    }
+
+    public Session getSession(){
+        return session;
     }
 
 

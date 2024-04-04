@@ -3,8 +3,13 @@ package client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import client.*;
+import server.websocket.Connection;
+import webSocketMessages.serverMessages.ServerMessage;
+
+import javax.websocket.DeploymentException;
 
 public class ServerFacade {
 
@@ -17,19 +22,19 @@ public class ServerFacade {
         return new ClientCommunicator(url);
     }
 
-    private void determineWebSocketMethod(String input, String webSocketMethod, WebSocketCommunicator communicator) throws IOException {
+    private void determineWebSocketMethod(String webSocketMethod, WebSocketCommunicator communicator) throws IOException {
         switch (webSocketMethod) {
-            case "join_player" -> communicator.join();
-            case "join_observer" -> communicator.observe();
-            case "make_move" -> communicator.move();
-            case "leave" -> communicator.leave();
-            case "resign" -> communicator.resign();
+            case "join_player" -> communicator.sendJoin();
+            case "join_observer" -> communicator.sendObserve();
+            case "make_move" -> communicator.sendMove();
+            case "leave" -> communicator.sendLeave();
+            case "resign" -> communicator.sendResign();
         }
 
     }
 
-    private WebSocketCommunicator setWebSocketCommunication(String path) throws IOException {
-        URL url = new URL(urlString + this.port + "/" +  path);
+    private WebSocketCommunicator setWebSocketCommunication(String path) throws IOException, DeploymentException, URISyntaxException {
+        String url = urlString + this.port + "/" +  path;
         return new WebSocketCommunicator(url);
     }
 
@@ -74,10 +79,11 @@ public class ServerFacade {
         communicator.delete();
     }
 
-    public void webSoc(String input, String webSocketMethod) throws IOException {
+    public void webSoc(String webSocketMethod) throws IOException, DeploymentException, URISyntaxException {
         WebSocketCommunicator communicator = setWebSocketCommunication("/connect");
-        determineWebSocketMethod(input, webSocketMethod, communicator);
+        determineWebSocketMethod(webSocketMethod, communicator);
     }
+
 
 
 

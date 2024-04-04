@@ -10,4 +10,8 @@ public class ErrorMessage extends ServerMessage {
         super(type);
         this.errorMessage = errorMessage;
     }
+
+    public Object getErrorMessage() {
+        return errorMessage;
+    }
 }

@@ -11,4 +11,8 @@ public class Notification extends ServerMessage {
         super(type);
         this.message = message;
     }
+
+    public Object getMessage() {
+        return message;
+    }
 }

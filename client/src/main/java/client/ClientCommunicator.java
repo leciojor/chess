@@ -171,7 +171,7 @@ public class ClientCommunicator {
 
             for (GameData game : games){
                 System.out.println();
-                System.out.println(i + "." + " " +game.gameName() + "\n" + "White Username: " +  game.whiteUsername() + "\n" + "Black Username: " +  game.blackUsername());
+                System.out.println(i + "." + " " +game.gameName() + "\n" + "White Username: " +  game.whiteUsername() + "\n" + "Black Username: " +  game.blackUsername() + "\n" + "Game ID: " +  game.gameID());
                 System.out.println();
 
                 i++;

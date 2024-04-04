@@ -11,4 +11,3 @@ public class Resign extends UserGameCommand {
         this.gameID = gameID;
     }
 }
-}

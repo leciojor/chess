@@ -1,10 +1,16 @@
 package ui;
 
 
-import chess.ChessBoard;
+import client.ClientCommunicator;
 import client.ServerFacade;
-import ui.*;
 
+import java.net.URISyntaxException;
+import java.util.HashMap;
+
+
+import org.eclipse.jetty.websocket.api.Session;
+
+import javax.websocket.DeploymentException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -68,7 +74,7 @@ public class ReadEvaluateSourceInput {
 
 
 
-    private void runPreLogin() throws IOException {
+    private void runPreLogin() throws IOException, DeploymentException, URISyntaxException {
         while (true){
             System.out.println();
             input = readInput("""
@@ -126,10 +132,10 @@ public class ReadEvaluateSourceInput {
     }
 
     private void printHighlightedBoard(){
-        
+
     }
 
-    private void runPostLogin() throws IOException {
+    private void runPostLogin() throws IOException, DeploymentException, URISyntaxException {
         while(true){
             System.out.println();
             input = readInput("""
@@ -176,7 +182,8 @@ public class ReadEvaluateSourceInput {
 
                 else if (input_words[1] != "black" || input_words[1] != "white"){
                     client_call.join(input);
-                    client_call.webSoc(input, "join_player");
+                    client_call.webSoc("join_player");
+
                     if (!ServerFacade.returned_error){
                         printCurrentBoard();
                         runGameplay();
@@ -185,7 +192,8 @@ public class ReadEvaluateSourceInput {
 
                 else{
                     client_call.join(input);
-                    client_call.webSoc(input, "join_observer");
+                    client_call.webSoc("join_observer");
+
                     if (!ServerFacade.returned_error){
                         printCurrentBoard();
                         runGameplay();
@@ -216,7 +224,7 @@ public class ReadEvaluateSourceInput {
 
     }
 
-    private void runGameplay() throws IOException{
+    private void runGameplay() throws IOException, DeploymentException, URISyntaxException {
         while(true){
             System.out.println();
             input = readInput("""
@@ -241,11 +249,11 @@ public class ReadEvaluateSourceInput {
             }
 
             else if (input.equals("move")){
-                client_call.webSoc(input, "make_move");
+                client_call.webSoc("make_move");
             }
 
             else if (input.equals("resign")){
-                client_call.webSoc(input, "resign");
+                client_call.webSoc("resign");
             }
 
             else if (input.equals("highlight")){
@@ -255,7 +263,7 @@ public class ReadEvaluateSourceInput {
         }
     }
 
-    public void run() throws IOException {
+    public void run() throws IOException, DeploymentException, URISyntaxException {
 
         while (true){
             System.out.println("Press ENTER to START...");

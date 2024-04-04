@@ -1,10 +1,11 @@
 package webSocketMessages.serverMessages;
 
-public interface ServerMessageObserver {
+import webSocketMessages.serverMessages.subMessages.*;
 
-    public static void  notify(ServerMessage message) {
+public class ServerMessageObserver {
 
-    }
+
+
 
 
 
