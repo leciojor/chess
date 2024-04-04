@@ -19,7 +19,9 @@ public interface GameDAO {
 
     HashSet<GameData> getListGames() throws DataAccessException, SQLException;
 
+    void updateGame(int gameId, ChessGame UpdatedGame) throws DataAccessException, SQLException;
 
+    void updateUser(ChessGame.TeamColor color, String newUsername, int gameId) throws DataAccessException;
 
     void deleteGame() throws DataAccessException, SQLException;
 }

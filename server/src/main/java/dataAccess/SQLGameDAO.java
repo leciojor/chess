@@ -139,6 +139,52 @@ public class SQLGameDAO implements GameDAO{
     }
 
     @Override
+    public void updateGame(int gameId, ChessGame UpdatedGame) throws DataAccessException, SQLException {
+        try (var conn = DatabaseManager.getConnection()){
+            try (var preparedStatement = conn.prepareStatement("UPDATE Game SET game = ? WHERE gameId = ?")) {
+                Gson gson = new Gson();
+                String updated_game = gson.toJson(UpdatedGame);
+
+                preparedStatement.setString(1, updated_game);
+                preparedStatement.setString(2, String.valueOf(gameId));
+                preparedStatement.executeUpdate();
+
+            }
+        }
+    }
+
+    @Override
+    public void updateUser(ChessGame.TeamColor color, String newUsername, int gameId) throws DataAccessException {
+        try (var conn = DatabaseManager.getConnection()){
+            if (color == ChessGame.TeamColor.WHITE){
+                try (var preparedStatement = conn.prepareStatement("UPDATE Game SET whiteUsername = ? WHERE gameId = ?")) {
+                    Gson gson = new Gson();
+                    String updated_username = gson.toJson(newUsername);
+
+                    preparedStatement.setString(1, updated_username);
+                    preparedStatement.setString(2, String.valueOf(gameId));
+                    preparedStatement.executeUpdate();
+
+                }
+            }
+            else{
+                try (var preparedStatement = conn.prepareStatement("UPDATE Game SET blackUsername = ? WHERE gameId = ?")) {
+                    Gson gson = new Gson();
+                    String updated_username = gson.toJson(newUsername);
+
+                    preparedStatement.setString(1, updated_username);
+                    preparedStatement.setString(2, String.valueOf(gameId));
+                    preparedStatement.executeUpdate();
+
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void deleteGame() throws DataAccessException, SQLException {
         try (var conn = DatabaseManager.getConnection()) {
             try (var preparedStatement = conn.prepareStatement("DELETE FROM Game")) {

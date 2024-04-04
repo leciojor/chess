@@ -262,7 +262,6 @@ public class ChessGame {
                     piecePair.add(tempPosition);
                     teamPieces.add(piecePair);
                 }
-
             }
         }
 

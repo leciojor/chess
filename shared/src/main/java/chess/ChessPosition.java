@@ -64,9 +64,6 @@ public class ChessPosition {
     }
 
     public ChessPosition validPosition(int positionRow, int positionCol, ChessBoard board, ChessGame.TeamColor color){
-        //if out of bounds
-        //if no one here
-        //if else someone but enemy
 
         ChessPosition newValidPosition = new ChessPosition(positionRow, positionCol);
 

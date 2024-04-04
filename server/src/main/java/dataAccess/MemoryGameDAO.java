@@ -3,6 +3,7 @@ package dataAccess;
 import chess.ChessGame;
 import model.GameData;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -58,6 +59,16 @@ public class MemoryGameDAO implements GameDAO{
     @Override
     public HashSet<GameData> getListGames() {
         return gameList;
+    }
+
+    @Override
+    public void updateGame(int gameId, ChessGame UpdatedGame) throws DataAccessException, SQLException {
+
+    }
+
+    @Override
+    public void updateUser(ChessGame.TeamColor color, String newUsername, int gameId) throws DataAccessException {
+
     }
 
 

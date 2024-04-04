@@ -27,7 +27,7 @@ public class WebSocketCommunicator {
             //cant cast here (deserialize again)
             case NOTIFICATION -> displayNotification(((Notification) message).getMessage());
             case ERROR -> displayError(((ErrorMessage) message).getErrorMessage());
-            case LOAD_GAME -> loadGame(((LoadGame) message).getGame());
+            case LOAD_GAME -> loadGame(((LoadGame) message).getGameID());
         }
     }
     //just print out messages
