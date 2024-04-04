@@ -6,6 +6,8 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import server.requests.RegisterRequest;
 import webSocketMessages.serverMessages.ServerMessage;
+import webSocketMessages.serverMessages.subMessages.LoadGame;
+import webSocketMessages.serverMessages.subMessages.Notification;
 import webSocketMessages.userCommands.UserGameCommand;
 import webSocketMessages.userCommands.subCommands.JoinPlayer;
 
@@ -57,7 +59,14 @@ public class WebSocketHandler {
         JoinPlayer join_command = gson.fromJson(msg, JoinPlayer.class);
         connections.add(join_command.getGameID(), conn.session);
         //send ServerMessageObject (JSON TEXT)
-        conn.session.getRemote().sendString();
+
+        connections.sendNotifications(join_command.getGameID(), "joined game as");
+
+        //sending loadgame message to added user
+        LoadGame game = new LoadGame(join_command.getGameID(), ServerMessage.ServerMessageType.LOAD_GAME);
+        String game_json = gson.toJson(game);
+
+        conn.session.getRemote().sendString(game_json);
 
     }
 
