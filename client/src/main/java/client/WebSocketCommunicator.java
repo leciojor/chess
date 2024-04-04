@@ -24,12 +24,13 @@ public class WebSocketCommunicator {
     //logic to receive msg from server
     private static void notify(ServerMessage message) {
         switch (message.getServerMessageType()) {
+            //cant cast here (deserialize again)
             case NOTIFICATION -> displayNotification(((Notification) message).getMessage());
             case ERROR -> displayError(((ErrorMessage) message).getErrorMessage());
             case LOAD_GAME -> loadGame(((LoadGame) message).getGame());
         }
     }
-
+    //just print out messages
     private static void displayNotification(Object message){
 
     }
@@ -52,25 +53,19 @@ public class WebSocketCommunicator {
 
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             public void onMessage(String message) {
-                System.out.println(message);
-            }
-        });
+                try {
+                    ServerMessage message_server = gson.fromJson(message, ServerMessage.class);
+                    WebSocketCommunicator.notify(message_server);
+                } catch(Exception ex) {
+                    WebSocketCommunicator.notify(new ErrorMessage(ex.getMessage(), ServerMessage.ServerMessageType.ERROR));
+                }
+            }        });
 
     }
 
     public void send(String msg) throws Exception {this.session.getBasicRemote().sendText(msg);}
 
     public void onOpen(Session session, EndpointConfig endpointConfig) {}
-
-    //logic to receive msg from server
-    public void onMessage(String message) {
-        try {
-            ServerMessage message_server = gson.fromJson(message, ServerMessage.class);
-            notify(message_server);
-        } catch(Exception ex) {
-            notify(new ErrorMessage(ex.getMessage(), ServerMessage.ServerMessageType.ERROR));
-        }
-    }
 
 
     //send messages to server with current authtoken and the requested command (use SEND local method for that)

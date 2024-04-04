@@ -5,7 +5,9 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import server.requests.RegisterRequest;
+import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.UserGameCommand;
+import webSocketMessages.userCommands.subCommands.JoinPlayer;
 
 
 import java.io.IOException;
@@ -15,7 +17,7 @@ import java.util.Timer;
 @WebSocket
 public class WebSocketHandler {
 
-    //add connection manager (keeps track with map of users in each session (WITH AUTHTOKEN TO IDENTIFY USER))
+    private static ConnectionManager connections = new ConnectionManager();
 
     //method for getting and handling the notifications on the server side
     @OnWebSocketMessage
@@ -45,25 +47,33 @@ public class WebSocketHandler {
 
     //send a SERVER MESSAGE to the client using ON MESSAGE
     public void join(Connection conn, String msg) throws IOException {
+        Gson gson = new Gson();
         //see slides for general on message for more instruction
         //send to all clients in session when necessary
-        conn.getSession().getRemote().sendString(msg);
+        //desirialize msg to COMMANDS instance (WHERE MESSAGE IS USED)
+        //send messages to all necessary clients
+        //change the connection manager to keep track of it all
+
+        JoinPlayer join_command = gson.fromJson(msg, JoinPlayer.class);
+        connections.add(join_command.getGameID(), conn.session);
+        //send ServerMessageObject (JSON TEXT)
+        conn.session.getRemote().sendString();
 
     }
 
-    public void observe(Connection conn, String msg){
+    public void observe(Connection conn, String msg) throws IOException {
 
     }
 
-    public void move(Connection conn, String msg){
+    public void move(Connection conn, String msg) throws IOException {
 
     }
 
-    public void leave(Connection conn, String msg){
+    public void leave(Connection conn, String msg) throws IOException {
 
     }
 
-    public void resign(Connection conn, String msg){
+    public void resign(Connection conn, String msg) throws IOException {
 
     }
 

@@ -5,7 +5,6 @@ import client.ClientCommunicator;
 import client.ServerFacade;
 
 import java.net.URISyntaxException;
-import java.util.HashMap;
 
 
 import org.eclipse.jetty.websocket.api.Session;
