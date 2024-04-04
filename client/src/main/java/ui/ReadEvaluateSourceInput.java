@@ -116,13 +116,17 @@ public class ReadEvaluateSourceInput {
         }
     }
 
-    private void printBoards(){
+    private void printCurrentBoard(){
         System.out.println();
         ChessBoardUi.drawBoard(out, "one");
         out.println();
         out.println();
         ChessBoardUi.drawBoard(out, "two");
         System.out.println();
+    }
+
+    private void printHighlightedBoard(){
+        
     }
 
     private void runPostLogin() throws IOException {
@@ -174,8 +178,8 @@ public class ReadEvaluateSourceInput {
                     client_call.join(input);
                     client_call.webSoc(input, "join_player");
                     if (!ServerFacade.returned_error){
+                        printCurrentBoard();
                         runGameplay();
-//                        printBoards();
                     }
                 }
 
@@ -183,8 +187,8 @@ public class ReadEvaluateSourceInput {
                     client_call.join(input);
                     client_call.webSoc(input, "join_observer");
                     if (!ServerFacade.returned_error){
+                        printCurrentBoard();
                         runGameplay();
-//                        printBoards();
                     }
                 }
             }
@@ -196,7 +200,7 @@ public class ReadEvaluateSourceInput {
                 else{
                     client_call.join(input);
                     if (!ServerFacade.returned_error){
-                        printBoards();
+                        printCurrentBoard();
                     }
                 }
             }
@@ -220,28 +224,32 @@ public class ReadEvaluateSourceInput {
                                 - Help (available actions)
                                 - Redraw (redraws the chess board)
                                 - Move (makes game move)
-                                - Resign (to join a game)
+                                - Resign (to leave and finish the game)
                                 - Highlight (shows legal moves)""", true);
 
             input = input.toLowerCase();
             if (input.equals("help")){
-
+                System.out.println("""                      
+                                - Redraw -> will update your chess board to the current one
+                                - Move -> will move some piece to the requested stop (if it is a legal move)
+                                - Resign -> leaves and finishes the current game
+                                - Highlight -> displays the legal moves allowed based on the selected piece""");
             }
 
             else if (input.equals("redraw")){
-
+                printCurrentBoard();
             }
 
             else if (input.equals("move")){
-
+                client_call.webSoc(input, "make_move");
             }
 
             else if (input.equals("resign")){
-
+                client_call.webSoc(input, "resign");
             }
 
             else if (input.equals("highlight")){
-
+                printHighlightedBoard();
             }
 
         }
