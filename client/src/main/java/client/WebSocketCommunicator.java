@@ -6,6 +6,7 @@ import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.serverMessages.subMessages.ErrorMessage;
 import webSocketMessages.serverMessages.subMessages.LoadGame;
 import webSocketMessages.serverMessages.subMessages.Notification;
+import webSocketMessages.userCommands.subCommands.JoinPlayer;
 
 import javax.websocket.*;
 import java.io.IOException;
@@ -71,6 +72,7 @@ public class WebSocketCommunicator {
     //send messages to server with current authtoken and the requested command (use SEND local method for that)
 
     public void sendJoin() throws IOException {
+        JoinPlayer join_command = new JoinPlayer();
 
     }
 

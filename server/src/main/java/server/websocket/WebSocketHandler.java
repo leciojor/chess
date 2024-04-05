@@ -84,16 +84,9 @@ public class WebSocketHandler {
 
     }
 
-    //add websocket endpoints (eg. join, observe, move, leave, resign)
 
-    //send a SERVER MESSAGE to the client using ON MESSAGE
     public void join(Connection conn, String msg) throws IOException, SQLException, DataAccessException {
         Gson gson = new Gson();
-        //see slides for general on message for more instruction
-        //send to all clients in session when necessary
-        //desirialize msg to COMMANDS instance (WHERE MESSAGE IS USED)
-        //send messages to all necessary clients
-        //change the connection manager to keep track of it all
 
         JoinPlayer join_command = gson.fromJson(msg, JoinPlayer.class);
         connections.add(join_command.getGameID(), conn.session);

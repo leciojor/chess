@@ -6,6 +6,7 @@ import webSocketMessages.serverMessages.subMessages.LoadGame;
 import webSocketMessages.serverMessages.subMessages.Notification;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,20 +35,34 @@ public class ConnectionManager {
     }
 
     public void add(int gameID, Session session){
-        List<Session> game_connections = connections.get(gameID);
-        game_connections.add(session);
+
+        if (connections.containsKey(gameID)){
+            List<Session> game_connections = connections.get(gameID);
+            game_connections.add(session);
+        }
+        else{
+            List<Session> game_connections = new ArrayList<>();
+            game_connections.add(session);
+            connections.put(gameID, game_connections);
+        }
+
     }
 
     public void remove(int gameID, Session session){
-        List<Session> game_connections = connections.get(gameID);
-        game_connections.remove(session);
+        if (connections.containsKey(gameID)){
+            List<Session> game_connections = connections.get(gameID);
+            game_connections.remove(session);
+        }
+
     }
 
 
     public void removeAll(int gameID) {
-        List<Session> game_sessions = connections.get(gameID);
-        for (Session session : game_sessions){
-            game_sessions.remove(session);
+        if (connections.containsKey(gameID)){
+            List<Session> game_sessions = connections.get(gameID);
+            for (Session session : game_sessions){
+                game_sessions.remove(session);
+            }
         }
     }
 

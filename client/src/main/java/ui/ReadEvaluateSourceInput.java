@@ -1,6 +1,8 @@
 package ui;
 
 
+import chess.ChessMove;
+import chess.ChessPosition;
 import client.ClientCommunicator;
 import client.ServerFacade;
 
@@ -21,6 +23,8 @@ public class ReadEvaluateSourceInput {
     private Scanner scanner = new Scanner(System.in);
 
     private String input;
+
+    private int current_game_id;
 
     private ServerFacade client_call = new ServerFacade(8080);
 
@@ -179,9 +183,10 @@ public class ReadEvaluateSourceInput {
                     System.out.println("Game ID has to be a number");
                 }
 
-                else if (input_words[1] != "black" || input_words[1] != "white"){
+                else if (Objects.equals(input_words[1], "black") || Objects.equals(input_words[1], "white")){
+                    current_game_id = Integer.parseInt(input_words[1]);
                     client_call.join(input);
-                    client_call.webSoc("join_player");
+                    client_call.webSoc("join_player", new Object[]{input_words[0], current_game_id, ClientCommunicator.current_auth_token});
 
                     if (!ServerFacade.returned_error){
                         printCurrentBoard();
@@ -191,7 +196,7 @@ public class ReadEvaluateSourceInput {
 
                 else{
                     client_call.join(input);
-                    client_call.webSoc("join_observer");
+                    client_call.webSoc("join_observer", new Object[]{input_words[0], ClientCommunicator.current_auth_token});
 
                     if (!ServerFacade.returned_error){
                         printCurrentBoard();
@@ -230,6 +235,7 @@ public class ReadEvaluateSourceInput {
                             Select one of the following options: 
                                 - Help (available actions)
                                 - Redraw (redraws the chess board)
+                                - Leave (leaves game)
                                 - Move (makes game move)
                                 - Resign (to leave and finish the game)
                                 - Highlight (shows legal moves)""", true);
@@ -238,6 +244,7 @@ public class ReadEvaluateSourceInput {
             if (input.equals("help")){
                 System.out.println("""                      
                                 - Redraw -> will update your chess board to the current one
+                                - Leave -> will leave the current game leaving the spot open for another player
                                 - Move -> will move some piece to the requested stop (if it is a legal move)
                                 - Resign -> leaves and finishes the current game
                                 - Highlight -> displays the legal moves allowed based on the selected piece""");
@@ -247,12 +254,37 @@ public class ReadEvaluateSourceInput {
                 printCurrentBoard();
             }
 
+            else if (input.equals("leave")){
+                client_call.webSoc("leave", new Object[] {current_game_id, ClientCommunicator.current_auth_token});
+            }
+
             else if (input.equals("move")){
-                client_call.webSoc("make_move");
+                String input_start_position = readInput("Type desired piece coordinates(row - col): ", false);
+                String input_end_position = readInput("Type desired end coordinates(row - col): ", false);
+
+                input_start_position = input_start_position.toLowerCase();
+                input_end_position = input_end_position.toLowerCase();
+                String[] start_positions = input_start_position.split("\\s+");
+                String[] end_positions = input_end_position.split("\\s+");
+
+                if (!checkInputSize(input_start_position, 2) || !checkInputSize(input_end_position,2)){
+                    System.out.println("You forgot some required information");
+                }
+
+                else if (!checkIdType(input_start_position) || !checkIdType(input_end_position)){
+                    System.out.println("The coordinates have to be have to be a numbers");
+                }
+
+                ChessPosition start_position = new ChessPosition(Integer.parseInt(start_positions[0]), Integer.parseInt(start_positions[1]));
+                ChessPosition end_position = new ChessPosition(Integer.parseInt(end_positions[0]), Integer.parseInt(end_positions[1]));
+
+                ChessMove user_move = new ChessMove(start_position, end_position, null);
+
+                client_call.webSoc("resign", new Object[] {current_game_id, user_move, ClientCommunicator.current_auth_token});
             }
 
             else if (input.equals("resign")){
-                client_call.webSoc("resign");
+                client_call.webSoc("resign", new Object[] {current_game_id, ClientCommunicator.current_auth_token});
             }
 
             else if (input.equals("highlight")){

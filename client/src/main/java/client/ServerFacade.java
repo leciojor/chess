@@ -22,7 +22,7 @@ public class ServerFacade {
         return new ClientCommunicator(url);
     }
 
-    private void determineWebSocketMethod(String webSocketMethod, WebSocketCommunicator communicator) throws IOException {
+    private void determineWebSocketMethod(String webSocketMethod, WebSocketCommunicator communicator, Object[] requiredParameters) throws IOException {
         switch (webSocketMethod) {
             case "join_player" -> communicator.sendJoin();
             case "join_observer" -> communicator.sendObserve();
@@ -79,9 +79,9 @@ public class ServerFacade {
         communicator.delete();
     }
 
-    public void webSoc(String webSocketMethod) throws IOException, DeploymentException, URISyntaxException {
+    public void webSoc(String webSocketMethod, Object[] requiredParameters) throws IOException, DeploymentException, URISyntaxException {
         WebSocketCommunicator communicator = setWebSocketCommunication("/connect");
-        determineWebSocketMethod(webSocketMethod, communicator);
+        determineWebSocketMethod(webSocketMethod, communicator, requiredParameters);
     }
 
 
