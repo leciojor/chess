@@ -34,6 +34,15 @@ public class WebSocketHandler {
 
     private static ConnectionManager connections = new ConnectionManager();
 
+    private void sendError(Connection conn, String errorMessage) throws IOException {
+        Gson gson = new Gson();
+
+        ErrorMessage error = new ErrorMessage(errorMessage, ServerMessage.ServerMessageType.ERROR);
+        String error_json = gson.toJson(error);
+        conn.session.getRemote().sendString(error_json);
+        return;
+    }
+
     private String getUsername(UserGameCommand command) throws SQLException, DataAccessException {
         SQLAuthDAO auth = new SQLAuthDAO();
         AuthData auth_data = auth.getCurrentToken(command.getAuthString());
@@ -52,6 +61,7 @@ public class WebSocketHandler {
         return game_data.game();
 
     }
+
 
     private String getWhiteUsername(int gameID) throws SQLException, DataAccessException {
         SQLGameDAO game = new SQLGameDAO();
@@ -90,7 +100,7 @@ public class WebSocketHandler {
                 case RESIGN -> resign(conn, msg);
             }
         } else {
-            Connection.sendError(session.getRemote(), "unknown user");
+            sendError(conn, "unknown user");
         }
 
 
@@ -108,19 +118,10 @@ public class WebSocketHandler {
 
         if (Server.returned_error) {
 
-            switch (Server.current_error) {
-                case 403 -> { error = new ErrorMessage("SPOT ALREADY HAS USER " + getWhiteUsername(join_command.getGameID()), ServerMessage.ServerMessageType.ERROR);
-                }
-                
-            }
-            String error_json = gson.toJson(error);
-            conn.session.getRemote().sendString(error_json);
-            return;
+            sendError(conn, "SERVER ERROR");
         }
         else if(!Objects.equals(getUsername(join_command), getBlackUsername(join_command.getGameID())) && !Objects.equals(getUsername(join_command), getWhiteUsername(join_command.getGameID()))){
-            error = new ErrorMessage("SPOT ALREADY HAS USER " + getWhiteUsername(join_command.getGameID()), ServerMessage.ServerMessageType.ERROR);
-            String error_json = gson.toJson(error);
-            conn.session.getRemote().sendString(error_json);
+            sendError(conn, "SPOT ALREADY HAS USER " + getWhiteUsername(join_command.getGameID()));
             return;
         }
         
@@ -144,6 +145,16 @@ public class WebSocketHandler {
         connections.add(join_command.getGameID(), conn.session);
         //send ServerMessageObject (JSON TEXT)
 
+        if (getChessGame(join_command.getGameID()) == null){
+            sendError(conn, "Game does not exist");
+            return;
+        }
+
+        else if (Server.returned_error){
+            sendError(conn, "SERVER ERROR");
+            return;
+        }
+
         String username = getUsername(join_command);
 
         connections.sendNotifications(join_command.getGameID(), username + " joined game as observer", conn.session, false);
@@ -158,22 +169,50 @@ public class WebSocketHandler {
     public void move(Connection conn, String msg) throws IOException, SQLException, DataAccessException, InvalidMoveException {
         Gson gson = new Gson();
         SQLGameDAO game_sql = new SQLGameDAO();
+        ChessGame.TeamColor user_color = null;
 
         MakeMove move_command = gson.fromJson(msg, MakeMove.class);
         int gameID = move_command.getGameID();
         ChessMove move = move_command.getMove();
 
-        ChessGame game = getChessGame(gameID);
-        //Verifying move validity
-        try{
-            game.makeMove(move);
+        //getting user color
+        if (Objects.equals(getWhiteUsername(gameID), getUsername(move_command))) {
+            user_color = ChessGame.TeamColor.WHITE;
         }
-        catch (InvalidMoveException e){
-            ErrorMessage error = new ErrorMessage("INVALID MOVE", ServerMessage.ServerMessageType.ERROR);
-            String error_json = gson.toJson(error);
-            conn.session.getRemote().sendString(error_json);
+        else if (Objects.equals(getBlackUsername(gameID), getUsername(move_command))){
+            user_color = ChessGame.TeamColor.BLACK;
+        }
+        //Verifying move validity
+
+        ChessGame game = getChessGame(gameID);
+
+        if (game.getTeamTurn() != user_color){
+            sendError(conn, "IT IS NOT YOUR TURN");
             return;
         }
+
+        //try catch not working (not giving exception)
+        try{
+            game.makeMove(move);
+
+        }
+        catch (InvalidMoveException e){
+            sendError(conn, "INVALID MOVE");
+            return;
+        }
+
+        if (game.getTeamTurn() != user_color){
+            sendError(conn, "IT IS NOT YOUR TURN");
+            return;
+        }
+
+        //making normal move and invalid move fail (they get into it) - STALMATE CONDITION FOR MAKE MOVE NORMAL
+        else if (game.isInCheckmate(ChessGame.TeamColor.BLACK) || game.isInCheckmate(ChessGame.TeamColor.WHITE) || game.isInStalemate(ChessGame.TeamColor.BLACK) || game.isInStalemate(ChessGame.TeamColor.WHITE)){
+            sendError(conn, "GAME IS OVER, NO MOVES ARE ALLOWED");
+            return;
+        }
+
+
 
         //Updating game
 
@@ -251,7 +290,7 @@ public class WebSocketHandler {
 
         //updating game
         ChessGame game = getChessGame(gameID);
-        //may need to change this logic (so no more moves are possible and the game is over)
+        //may need to change this logic (so no more moves are possible and the game is over) - consider isInStallMate or IsINCheckMate from chessGame
         game.setTeamTurn(null);
 
         game_sql.updateGame(gameID, game);

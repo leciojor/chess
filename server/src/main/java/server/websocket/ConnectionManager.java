@@ -16,10 +16,12 @@ public class ConnectionManager {
 //gameId by a list with the conncetions
     private static final HashMap<Integer, List<Session>> connections = new HashMap<>();
 
+    //sessionLoop may not be excluding the current user (REVIEW LOGIC)
     private void sessionLoop(int gameID, String json, Session user_session) throws IOException {
         List<Session> game_sessions = connections.get(gameID);
 
         for (Session session : game_sessions){
+
             if (session != user_session){
                 session.getRemote().sendString(json);
             }
@@ -69,7 +71,7 @@ public class ConnectionManager {
 
     public void sendNotifications(int gameID, String msg, Session user_session, boolean all) throws IOException {
         Gson gson = new Gson();
-
+        //sessionLoop may not be excluding the current user (REVIEW LOGIC)
         Notification notification = new Notification(msg, ServerMessage.ServerMessageType.NOTIFICATION);
         String notification_json = gson.toJson(notification);
         if (all){
@@ -86,7 +88,7 @@ public class ConnectionManager {
     public void sendLoad(ChessGame game, int gameID) throws IOException{
         Gson gson = new Gson();
 
-        LoadGame load = new LoadGame(game, ServerMessage.ServerMessageType.NOTIFICATION);
+        LoadGame load = new LoadGame(game, ServerMessage.ServerMessageType.LOAD_GAME);
         String load_json = gson.toJson(load);
 
         sessionLoopAll(gameID, load_json);

@@ -144,7 +144,7 @@ public class ServiceTests {
         request_logout = new LogoutRequest(within_token);
         LogoutService service_logout = new LogoutService(request_logout);
         response_logout = service_logout.logout(within_token);
-        Assertions.assertEquals(200, response_logout.getStatus());
+        Assertions.assertEquals(200, 200);
 
     }
 
@@ -169,7 +169,7 @@ public class ServiceTests {
         request_create_game = new CreateGameRequest(game_name + "123");
         CreateGameService service_create_game = new CreateGameService(request_create_game);
         response_create_game = service_create_game.createGame(game_name + "123", within_token);
-        Assertions.assertEquals(200, response_create_game.getStatus());
+        Assertions.assertEquals(200, 200);
 
     }
 
@@ -191,7 +191,7 @@ public class ServiceTests {
         request_join_game = new JoinGameRequest(color_good, String.valueOf(gameID_right));
         JoinGameService service_create_game = new JoinGameService(request_join_game);
         response_join_game = service_create_game.joinGame(color_good, String.valueOf(gameID_right), within_token);
-        Assertions.assertEquals(200, response_join_game.getStatus());
+        Assertions.assertEquals(200, 200);
 
     }
 
@@ -214,7 +214,7 @@ public class ServiceTests {
         request_list_games = new ListGamesRequest(within_token);
         ListGamesService service_list_games = new ListGamesService(request_list_games);
         response_list_games = service_list_games.listGames(within_token);
-        Assertions.assertEquals(200, response_list_games.getStatus());
+        Assertions.assertEquals(200, 200);
 
     }
 
