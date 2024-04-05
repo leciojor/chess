@@ -4,6 +4,7 @@ import chess.ChessGame;
 import chess.ChessMove;
 import com.google.gson.Gson;
 import server.websocket.Connection;
+import ui.ReadEvaluateSourceInput;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.serverMessages.subMessages.ErrorMessage;
 import webSocketMessages.serverMessages.subMessages.LoadGame;
@@ -28,22 +29,22 @@ public class WebSocketCommunicator {
     private static void notify(ServerMessage message) {
         switch (message.getServerMessageType()) {
             //cant cast here (deserialize again)
-            case NOTIFICATION -> displayNotification(((Notification) message).getMessage());
-            case ERROR -> displayError(((ErrorMessage) message).getErrorMessage());
-            case LOAD_GAME -> loadGame(((LoadGame) message).getGame());
+            case NOTIFICATION -> displayNotification((Notification) message);
+            case ERROR -> displayError((ErrorMessage) message);
+            case LOAD_GAME -> loadGame((LoadGame) message);
         }
     }
     //just print out messages
-    private static void displayNotification(Object message){
-
+    private static void displayNotification(Notification message){
+        System.out.println(message.getMessage());
     }
 
-    private static void displayError(Object message){
-
+    private static void displayError(ErrorMessage message){
+        System.out.println(message.getErrorMessage());
     }
 
-    private static void loadGame(Object message){
-
+    private static void loadGame(LoadGame message){
+        ReadEvaluateSourceInput.printCurrentBoard(message.getGame());
     }
 
     //needs to add logic so it can send messages to server any type and something to get the server messages and answer it (notify)

@@ -1,6 +1,7 @@
 package ui;
 
 
+import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPosition;
 import client.ClientCommunicator;
@@ -28,7 +29,7 @@ public class ReadEvaluateSourceInput {
 
     private ServerFacade client_call = new ServerFacade(8080);
 
-    private PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+    private static PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
     private String readInput(String prompt, boolean formatted){
         System.out.println(prompt);
@@ -125,7 +126,7 @@ public class ReadEvaluateSourceInput {
         }
     }
 
-    private void printCurrentBoard(){
+    public static void printCurrentBoard(ChessGame game){
         System.out.println();
         ChessBoardUi.drawBoard(out, "one");
         out.println();
@@ -189,7 +190,7 @@ public class ReadEvaluateSourceInput {
                     client_call.webSoc("join_player", new Object[]{input_words[0], current_game_id, ClientCommunicator.current_auth_token});
 
                     if (!ServerFacade.returned_error){
-                        printCurrentBoard();
+//                        printCurrentBoard();
                         runGameplay();
                     }
                 }
@@ -199,7 +200,7 @@ public class ReadEvaluateSourceInput {
                     client_call.webSoc("join_observer", new Object[]{input_words[0], ClientCommunicator.current_auth_token});
 
                     if (!ServerFacade.returned_error){
-                        printCurrentBoard();
+//                        printCurrentBoard();
                         runGameplay();
                     }
                 }
@@ -212,7 +213,7 @@ public class ReadEvaluateSourceInput {
                 else{
                     client_call.join(input);
                     if (!ServerFacade.returned_error){
-                        printCurrentBoard();
+//                        printCurrentBoard();
                     }
                 }
             }
@@ -251,7 +252,7 @@ public class ReadEvaluateSourceInput {
             }
 
             else if (input.equals("redraw")){
-                printCurrentBoard();
+//                printCurrentBoard();
             }
 
             else if (input.equals("leave")){

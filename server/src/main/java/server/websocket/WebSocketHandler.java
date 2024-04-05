@@ -12,6 +12,7 @@ import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import server.Server;
 import server.requests.RegisterRequest;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.serverMessages.subMessages.ErrorMessage;
@@ -36,12 +37,18 @@ public class WebSocketHandler {
     private String getUsername(UserGameCommand command) throws SQLException, DataAccessException {
         SQLAuthDAO auth = new SQLAuthDAO();
         AuthData auth_data = auth.getCurrentToken(command.getAuthString());
+        if (auth_data == null){
+            return null;
+        }
         return auth_data.username();
     }
 
     private ChessGame getChessGame(int gameID) throws SQLException, DataAccessException {
         SQLGameDAO game = new SQLGameDAO();
         GameData game_data = game.getGameByID(String.valueOf(gameID));
+        if (game_data == null){
+            return null;
+        }
         return game_data.game();
 
     }
@@ -49,6 +56,9 @@ public class WebSocketHandler {
     private String getWhiteUsername(int gameID) throws SQLException, DataAccessException {
         SQLGameDAO game = new SQLGameDAO();
         GameData game_data = game.getGameByID(String.valueOf(gameID));
+        if (game_data == null){
+            return null;
+        }
         return game_data.whiteUsername();
 
     }
@@ -56,6 +66,9 @@ public class WebSocketHandler {
     private String getBlackUsername(int gameID) throws SQLException, DataAccessException {
         SQLGameDAO game = new SQLGameDAO();
         GameData game_data = game.getGameByID(String.valueOf(gameID));
+        if (game_data == null){
+            return null;
+        }
         return game_data.blackUsername();
 
     }
@@ -86,10 +99,31 @@ public class WebSocketHandler {
 
 
     public void join(Connection conn, String msg) throws IOException, SQLException, DataAccessException {
+        ErrorMessage error = null;
         Gson gson = new Gson();
 
         JoinPlayer join_command = gson.fromJson(msg, JoinPlayer.class);
         connections.add(join_command.getGameID(), conn.session);
+
+
+        if (Server.returned_error) {
+
+            switch (Server.current_error) {
+                case 403 -> { error = new ErrorMessage("SPOT ALREADY HAS USER " + getWhiteUsername(join_command.getGameID()), ServerMessage.ServerMessageType.ERROR);
+                }
+                
+            }
+            String error_json = gson.toJson(error);
+            conn.session.getRemote().sendString(error_json);
+            return;
+        }
+        else if(!Objects.equals(getUsername(join_command), getBlackUsername(join_command.getGameID())) && !Objects.equals(getUsername(join_command), getWhiteUsername(join_command.getGameID()))){
+            error = new ErrorMessage("SPOT ALREADY HAS USER " + getWhiteUsername(join_command.getGameID()), ServerMessage.ServerMessageType.ERROR);
+            String error_json = gson.toJson(error);
+            conn.session.getRemote().sendString(error_json);
+            return;
+        }
+        
         //send ServerMessageObject (JSON TEXT)
 
         String username = getUsername(join_command);
@@ -97,7 +131,7 @@ public class WebSocketHandler {
         connections.sendNotifications(join_command.getGameID(), username + " joined game as " + join_command.getPlayerColor(), conn.session, false);
 
         //sending loadgame message to added user
-        LoadGame game = new LoadGame(join_command.getGameID(), ServerMessage.ServerMessageType.LOAD_GAME);
+        LoadGame game = new LoadGame(getChessGame(join_command.getGameID()), ServerMessage.ServerMessageType.LOAD_GAME);
         String game_json = gson.toJson(game);
 
         conn.session.getRemote().sendString(game_json);
@@ -115,7 +149,7 @@ public class WebSocketHandler {
         connections.sendNotifications(join_command.getGameID(), username + " joined game as observer", conn.session, false);
 
         //sending loadgame message to added user
-        LoadGame game = new LoadGame(join_command.getGameID(), ServerMessage.ServerMessageType.LOAD_GAME);
+        LoadGame game = new LoadGame(getChessGame(join_command.getGameID()), ServerMessage.ServerMessageType.LOAD_GAME);
         String game_json = gson.toJson(game);
 
         conn.session.getRemote().sendString(game_json);
@@ -147,7 +181,7 @@ public class WebSocketHandler {
 
         //Sending load_game message
 
-        connections.sendLoad(gameID);
+        connections.sendLoad(getChessGame(gameID), gameID);
 
         //Sending notifications
         String username = getUsername(move_command);

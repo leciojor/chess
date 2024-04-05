@@ -1,4 +1,5 @@
 package server.websocket;
+import chess.ChessGame;
 import com.google.gson.Gson;
 import org.eclipse.jetty.websocket.api.Session;
 import webSocketMessages.serverMessages.ServerMessage;
@@ -82,10 +83,10 @@ public class ConnectionManager {
 
     }
 
-    public void sendLoad(int gameID) throws IOException{
+    public void sendLoad(ChessGame game, int gameID) throws IOException{
         Gson gson = new Gson();
 
-        LoadGame load = new LoadGame(gameID, ServerMessage.ServerMessageType.NOTIFICATION);
+        LoadGame load = new LoadGame(game, ServerMessage.ServerMessageType.NOTIFICATION);
         String load_json = gson.toJson(load);
 
         sessionLoopAll(gameID, load_json);
