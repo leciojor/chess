@@ -77,7 +77,7 @@ public class ReadEvaluateSourceInput {
 
 
 
-    private void runPreLogin() throws IOException, DeploymentException, URISyntaxException {
+    private void runPreLogin() throws Exception {
         while (true){
             System.out.println();
             input = readInput("""
@@ -138,7 +138,7 @@ public class ReadEvaluateSourceInput {
 
     }
 
-    private void runPostLogin() throws IOException, DeploymentException, URISyntaxException {
+    private void runPostLogin() throws Exception {
         while(true){
             System.out.println();
             input = readInput("""
@@ -228,7 +228,7 @@ public class ReadEvaluateSourceInput {
 
     }
 
-    private void runGameplay() throws IOException, DeploymentException, URISyntaxException {
+    private void runGameplay() throws Exception {
         while(true){
             System.out.println();
             input = readInput("""
@@ -294,7 +294,7 @@ public class ReadEvaluateSourceInput {
         }
     }
 
-    public void run() throws IOException, DeploymentException, URISyntaxException {
+    public void run() throws Exception {
 
         while (true){
             System.out.println("Press ENTER to START...");

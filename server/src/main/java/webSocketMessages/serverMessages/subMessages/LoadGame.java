@@ -5,14 +5,14 @@ import webSocketMessages.serverMessages.ServerMessage;
 
 public class LoadGame extends ServerMessage {
 
-    private int gameID;
+    private int game;
 
-    public LoadGame(int gameID, ServerMessageType type){
+    public LoadGame(int game, ServerMessageType type){
         super(type);
-        this.gameID = gameID;
+        this.game = game;
     }
 
-    public int getGameID() {
-        return gameID;
+    public int getGame() {
+        return game;
     }
 }

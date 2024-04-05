@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+
+import chess.ChessGame;
+import chess.ChessMove;
 import client.*;
 import server.websocket.Connection;
 import webSocketMessages.serverMessages.ServerMessage;
@@ -22,13 +25,13 @@ public class ServerFacade {
         return new ClientCommunicator(url);
     }
 
-    private void determineWebSocketMethod(String webSocketMethod, WebSocketCommunicator communicator, Object[] requiredParameters) throws IOException {
+    private void determineWebSocketMethod(String webSocketMethod, WebSocketCommunicator communicator, Object[] requiredParameters) throws Exception {
         switch (webSocketMethod) {
-            case "join_player" -> communicator.sendJoin();
-            case "join_observer" -> communicator.sendObserve();
-            case "make_move" -> communicator.sendMove();
-            case "leave" -> communicator.sendLeave();
-            case "resign" -> communicator.sendResign();
+            case "join_player" -> communicator.sendJoin((Integer) requiredParameters[0], (ChessGame.TeamColor) requiredParameters[1], (String) requiredParameters[2]);
+            case "join_observer" -> communicator.sendObserve((Integer) requiredParameters[0], (String) requiredParameters[1]);
+            case "make_move" -> communicator.sendMove((Integer) requiredParameters[0], (ChessMove) requiredParameters[1], (String) requiredParameters[2]);
+            case "leave" -> communicator.sendLeave((Integer) requiredParameters[0], (String) requiredParameters[1]);
+            case "resign" -> communicator.sendResign((Integer) requiredParameters[0], (String) requiredParameters[1]);
         }
 
     }
@@ -79,7 +82,7 @@ public class ServerFacade {
         communicator.delete();
     }
 
-    public void webSoc(String webSocketMethod, Object[] requiredParameters) throws IOException, DeploymentException, URISyntaxException {
+    public void webSoc(String webSocketMethod, Object[] requiredParameters) throws Exception {
         WebSocketCommunicator communicator = setWebSocketCommunication("/connect");
         determineWebSocketMethod(webSocketMethod, communicator, requiredParameters);
     }
