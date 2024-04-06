@@ -24,6 +24,7 @@ import webSocketMessages.userCommands.subCommands.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Timer;
@@ -52,6 +53,44 @@ public class WebSocketHandler {
         conn.session.getRemote().sendString(error_json);
         return;
     }
+
+    private void checkStalCases(SQLGameDAO game_sql, ChessGame game, Connection conn, String white_username, String black_username, int gameID) throws IOException, SQLException, DataAccessException {
+
+        if (game.isInCheck(ChessGame.TeamColor.WHITE)){
+            connections.sendNotifications(gameID, white_username + " is in Check", conn.session, true);
+        }
+
+        if (game.isInCheck(ChessGame.TeamColor.BLACK)){
+            connections.sendNotifications(gameID, black_username + " is in Check", conn.session, true);
+        }
+
+        if (game.isInCheckmate(ChessGame.TeamColor.WHITE)){
+            game.setIsOver(true);
+            game_sql.updateGame(gameID, game);
+            connections.sendNotifications(gameID, white_username + " is in Check Mate", conn.session, true);
+        }
+
+        if (game.isInCheckmate(ChessGame.TeamColor.BLACK)){
+            game.setIsOver(true);
+            game_sql.updateGame(gameID, game);
+            connections.sendNotifications(gameID, black_username + " is in Check Mate", conn.session, true);
+        }
+
+//        if (game.isInStalemate(ChessGame.TeamColor.WHITE)){
+
+//            game.setIsOver(true);
+//            game_sql.updateGame(gameID, game);
+//            connections.sendNotifications(gameID, white_username + " is in StallMate", conn.session, true);
+//        }
+//
+//        if (game.isInStalemate(ChessGame.TeamColor.BLACK)){
+//
+//            game.setIsOver(true);
+//            game_sql.updateGame(gameID, game);
+//            connections.sendNotifications(gameID, black_username + " is in StallMate", conn.session, true);
+//        }
+    }
+
 
     private String getAuthToken(UserGameCommand command) throws SQLException, DataAccessException {
         SQLAuthDAO auth = new SQLAuthDAO();
@@ -184,7 +223,7 @@ public class WebSocketHandler {
             sendError(conn, "Game does not exist or is empty");
             return;
         }
-        
+
          if (!Objects.equals(getAuthToken(join_command), join_command.getAuthString())){
             sendError(conn, "Wrong AuthToken");
             return;
@@ -224,30 +263,44 @@ public class WebSocketHandler {
             return;
         }
 
+        else if (game.getIsOver()){
+            sendError(conn, "GAME IS OVER, NO MOVEMENTS ALLOWED");
+            return;
+        }
+
         //try catch not working (not giving exception)
+
+//        ArrayList<ChessMove> valid_moves = (ArrayList<ChessMove>) game.validMoves(move.getStartPosition());
+
+//        if (valid_moves == null){
+//            sendError(conn, "MOVE NOT ALLOWED");
+//            return;
+//        }
+//
+//        else if (!valid_moves.contains(move)){
+//            sendError(conn, "MOVE NOT ALLOWED");
+//            return;
+//        }
+//
+//
+
+
+
+        //making normal move and invalid move fail (they get into it) - STALMATE CONDITION FOR MAKE MOVE NORMAL
+//        else if (game.isInCheckmate(ChessGame.TeamColor.BLACK) || game.isInCheckmate(ChessGame.TeamColor.WHITE) || game.isInStalemate(ChessGame.TeamColor.BLACK) || game.isInStalemate(ChessGame.TeamColor.WHITE)){
+//            sendError(conn, "GAME IS OVER, NO MOVES ARE ALLOWED");
+//            return;
+//        }
+
+        //Updating game
+
         try{
             game.makeMove(move);
-
         }
         catch (InvalidMoveException e){
             sendError(conn, "INVALID MOVE");
             return;
         }
-
-        if (game.getTeamTurn() != user_color){
-            sendError(conn, "IT IS NOT YOUR TURN");
-            return;
-        }
-
-        //making normal move and invalid move fail (they get into it) - STALMATE CONDITION FOR MAKE MOVE NORMAL
-        else if (game.isInCheckmate(ChessGame.TeamColor.BLACK) || game.isInCheckmate(ChessGame.TeamColor.WHITE) || game.isInStalemate(ChessGame.TeamColor.BLACK) || game.isInStalemate(ChessGame.TeamColor.WHITE)){
-            sendError(conn, "GAME IS OVER, NO MOVES ARE ALLOWED");
-            return;
-        }
-
-
-
-        //Updating game
 
         game_sql.updateGame(gameID, game);
 
@@ -264,21 +317,7 @@ public class WebSocketHandler {
         String white_username = getWhiteUsername(gameID);
         String black_username = getBlackUsername(gameID);
 
-        if (game.isInCheck(ChessGame.TeamColor.WHITE)){
-            connections.sendNotifications(gameID, white_username + " is in Check", conn.session, true);
-        }
-
-        if (game.isInCheck(ChessGame.TeamColor.BLACK)){
-            connections.sendNotifications(gameID, black_username + " is in Check", conn.session, true);
-        }
-
-        if (game.isInCheckmate(ChessGame.TeamColor.WHITE)){
-            connections.sendNotifications(gameID, white_username + " is in Check Mate", conn.session, true);
-        }
-
-        if (game.isInCheckmate(ChessGame.TeamColor.BLACK)){
-            connections.sendNotifications(gameID, black_username + " is in Check Mate", conn.session, true);
-        }
+        checkStalCases(game_sql, game, conn, white_username, black_username, gameID);
     }
 
     public void leave(Connection conn, String msg) throws IOException, SQLException, DataAccessException {
@@ -340,7 +379,6 @@ public class WebSocketHandler {
         //updating game
         //may need to change this logic (so no more moves are possible and the game is over) - consider isInStallMate or IsINCheckMate from chessGame
         game.setIsOver(true);
-
         game_sql.updateGame(gameID, game);
 
         //sending notifications

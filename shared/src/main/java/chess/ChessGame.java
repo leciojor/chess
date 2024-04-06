@@ -1,6 +1,7 @@
 package chess;
 
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.*;
 
 /**
@@ -66,10 +67,10 @@ public class ChessGame {
         ChessBoard currentBoard = getBoard();
         ChessPiece pieceToMove = currentBoard.getPiece(startPosition);
 
-
         if (pieceToMove == null){
             return null;
         }
+
         TeamColor pieceColor = pieceToMove.getTeamColor();
 
         Collection<ChessMove> validMovesPiece = pieceToMove.pieceMoves(currentBoard, startPosition);
@@ -102,7 +103,6 @@ public class ChessGame {
         ChessBoard currentBoard = getBoard();
         ChessPiece pieceToMove = currentBoard.getPiece(move.getStartPosition());
         if(valid != null && pieceToMove != null){
-            System.out.print(valid);
             if (valid.contains(move) && pieceToMove.getTeamColor() == turn){
                 TeamColor color = pieceToMove.getTeamColor();
                 if (move.getPromotionPiece() == ChessPiece.PieceType.QUEEN){
@@ -199,9 +199,6 @@ public class ChessGame {
                     tempBoard = currentBoard.boardDeepCopy();
                     tempGame.setBoard(tempBoard);
                 }
-
-
-
             }
             if (validMoves.isEmpty()){
                 return true;
