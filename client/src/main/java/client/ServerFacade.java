@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -85,9 +86,6 @@ public class ServerFacade {
     }
 
     public void webSoc(String webSocketMethod, Object[] requiredParameters) throws Exception {
-        for (Object obj: requiredParameters){
-            System.out.println(obj);
-        }
         WebSocketCommunicator communicator = setWebSocketCommunication("connect");
         determineWebSocketMethod(webSocketMethod, communicator, requiredParameters);
     }

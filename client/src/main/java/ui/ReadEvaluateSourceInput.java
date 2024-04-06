@@ -40,6 +40,14 @@ public class ReadEvaluateSourceInput {
         return input;
     }
 
+    private ChessGame.TeamColor getUserColor(String color){
+        if (Objects.equals(color, "white")){
+            return ChessGame.TeamColor.WHITE;
+        }
+
+        return ChessGame.TeamColor.BLACK;
+    }
+
     private boolean checkInputSize(String input, int requiredSize){
         String[] inputsArray = input.split(" ");
 
@@ -172,7 +180,7 @@ public class ReadEvaluateSourceInput {
                 client_call.list();
             }
             else if (input.equals("join")){
-                input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE|NONE): ", false);
+                input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE|OBSERVE): ", false);
                 input = input.toLowerCase();
                 String[] input_words = input.split("\\s+");
 
@@ -191,7 +199,9 @@ public class ReadEvaluateSourceInput {
                         System.out.println("Server Error, try again");
                     }
                     else{
-                        client_call.webSoc("join_player", new Object[]{input_words[0], current_game_id, ClientCommunicator.current_auth_token});
+                        ChessGame.TeamColor color = getUserColor(input_words[0]);
+
+                        client_call.webSoc("join_player", new Object[]{current_game_id, color, ClientCommunicator.current_auth_token});
                         if (!ServerFacade.returned_error){
                             runGameplay();
                             break;
@@ -199,7 +209,7 @@ public class ReadEvaluateSourceInput {
                     }
                 }
                 else{
-                    System.out.println("Available inputs: white, black, observe");
+                    System.out.println("Available sides to play: white, black");
                 }
             }
             else if (input.equals("observe")){
@@ -216,7 +226,7 @@ public class ReadEvaluateSourceInput {
                         System.out.println("Server Error, try again");
                     }
                     else{
-                        client_call.webSoc("join_observer", new Object[]{input_words[0], ClientCommunicator.current_auth_token});
+                        client_call.webSoc("join_observer", new Object[]{current_game_id, ClientCommunicator.current_auth_token});
                         if (!ServerFacade.returned_error){
                             runGameplay();
                             break;
@@ -266,6 +276,8 @@ public class ReadEvaluateSourceInput {
 
             else if (input.equals("leave")){
                 client_call.webSoc("leave", new Object[] {current_game_id, ClientCommunicator.current_auth_token});
+                runPostLogin();
+                break;
             }
 
             else if (input.equals("move")){
@@ -295,6 +307,8 @@ public class ReadEvaluateSourceInput {
 
             else if (input.equals("resign")){
                 client_call.webSoc("resign", new Object[] {current_game_id, ClientCommunicator.current_auth_token});
+                runPostLogin();
+                break;
             }
 
             else if (input.equals("highlight")){

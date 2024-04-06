@@ -170,7 +170,14 @@ public class ClientCommunicator {
 
             for (GameData game : games){
                 System.out.println();
-                System.out.println(i + "." + " " +game.gameName() + "\n" + "White Username: " +  game.whiteUsername() + "\n" + "Black Username: " +  game.blackUsername() + "\n" + "Game ID: " +  game.gameID());
+
+                if (!game.game().getIsOver()){
+                    System.out.println(i + "." + " " +game.gameName() + "\n" + "White Username: " + game.whiteUsername() + "\n" + "Black Username: " +  game.blackUsername() + "\n" + "Game ID: " +  game.gameID());
+                }
+                else{
+                    System.out.println("GAME IS OVER");
+                }
+
                 System.out.println();
 
                 i++;
@@ -215,7 +222,6 @@ public class ClientCommunicator {
         else{
             ServerFacade.returned_error = false;
             System.out.println();
-            System.out.println("Successfully Joined Game");
         }
 
 
