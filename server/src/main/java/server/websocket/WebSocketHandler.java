@@ -283,15 +283,30 @@ public class WebSocketHandler {
         SQLGameDAO game_sql = new SQLGameDAO();
 
         Resign resign_command = gson.fromJson(msg, Resign.class);
+        int gameID = resign_command.getGameID();
+        ChessGame game = getChessGame(gameID);
+
 
         //removing from connections
-        int gameID = resign_command.getGameID();
-        connections.removeAll(gameID);
+
+//        connections.removeAll(gameID);
+
+
+        //setting up error scenarios
+
+        if (!Objects.equals(getWhiteUsername(gameID), getUsername(resign_command)) && !Objects.equals(getBlackUsername(gameID), getUsername(resign_command))){
+            sendError(conn, "OBSERVERS ARE NOT ALLOWED TO RESIGN");
+            return;
+        }
+
+        else if (game.getIsOver()){
+            sendError(conn, "ANOTHER PLAYER ALREADY RESIGNED, GAME IS OVER");
+            return;
+        }
 
         //updating game
-        ChessGame game = getChessGame(gameID);
         //may need to change this logic (so no more moves are possible and the game is over) - consider isInStallMate or IsINCheckMate from chessGame
-        game.setTeamTurn(null);
+        game.setIsOver(true);
 
         game_sql.updateGame(gameID, game);
 

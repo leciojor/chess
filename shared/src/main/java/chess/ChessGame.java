@@ -14,8 +14,18 @@ public class ChessGame {
     private ChessBoard gameboard = new ChessBoard();
     private TeamColor turn;
 
+    private static boolean isOver;
+
     public ChessGame() {
         turn = TeamColor.WHITE;
+    }
+
+    public void setIsOver(boolean state){
+        isOver = state;
+    }
+
+    public boolean getIsOver(){
+        return isOver;
     }
 
     /**
