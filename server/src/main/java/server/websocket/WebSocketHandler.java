@@ -53,6 +53,15 @@ public class WebSocketHandler {
         return;
     }
 
+    private String getAuthToken(UserGameCommand command) throws SQLException, DataAccessException {
+        SQLAuthDAO auth = new SQLAuthDAO();
+        AuthData auth_data = auth.getCurrentToken(command.getAuthString());
+        if (auth_data == null){
+            return null;
+        }
+        return auth_data.authToken();
+    }
+
     private String getUsername(UserGameCommand command) throws SQLException, DataAccessException {
         SQLAuthDAO auth = new SQLAuthDAO();
         AuthData auth_data = auth.getCurrentToken(command.getAuthString());
@@ -140,6 +149,7 @@ public class WebSocketHandler {
             return;
         }
 
+
         ChessGame game = getChessGame(gameID);
 
         if (game == null || checkEmptyGame(gameID, join_command.getPlayerColor(), username)){
@@ -165,23 +175,26 @@ public class WebSocketHandler {
         connections.add(join_command.getGameID(), conn.session);
         //send ServerMessageObject (JSON TEXT)
 
-        if (getChessGame(join_command.getGameID()) == null){
-            sendError(conn, "Game does not exist");
+        int gameID = join_command.getGameID();
+        String username = getUsername(join_command);
+
+        ChessGame game = getChessGame(gameID);
+
+        if (game == null || checkEmptyGame(gameID, join_command.getPlayerColor(), username)){
+            sendError(conn, "Game does not exist or is empty");
             return;
         }
-
-//        else if (){
-//            sendError(conn, "SERVER ERROR");
-//            return;
-//        }
-
-        String username = getUsername(join_command);
+        
+         if (!Objects.equals(getAuthToken(join_command), join_command.getAuthString())){
+            sendError(conn, "Wrong AuthToken");
+            return;
+        }
 
         connections.sendNotifications(join_command.getGameID(), username + " joined game as observer", conn.session, false);
 
         //sending loadgame message to added user
-        LoadGame game = new LoadGame(getChessGame(join_command.getGameID()), ServerMessage.ServerMessageType.LOAD_GAME);
-        String game_json = gson.toJson(game);
+        LoadGame game_command = new LoadGame(getChessGame(join_command.getGameID()), ServerMessage.ServerMessageType.LOAD_GAME);
+        String game_json = gson.toJson(game_command);
 
         conn.session.getRemote().sendString(game_json);
     }
