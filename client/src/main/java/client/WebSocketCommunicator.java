@@ -18,7 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class WebSocketCommunicator {
+public class WebSocketCommunicator extends Endpoint {
 
     private Gson gson = new Gson();
     private URL url;
@@ -40,6 +40,7 @@ public class WebSocketCommunicator {
     }
 
     private static void displayError(ErrorMessage message){
+        ServerFacade.returned_error = true;
         System.out.println(message.getErrorMessage());
     }
 
@@ -69,7 +70,8 @@ public class WebSocketCommunicator {
 
     public void send(String msg) throws Exception {this.session.getBasicRemote().sendText(msg);}
 
-    public void onOpen(Session session, EndpointConfig endpointConfig) {}
+    public void onOpen(Session session, EndpointConfig endpointConfig) {
+    }
 
 
     //send messages to server with current authtoken and the requested command (use SEND local method for that)

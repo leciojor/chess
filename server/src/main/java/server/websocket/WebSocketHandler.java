@@ -287,7 +287,7 @@ public class WebSocketHandler {
 
 
         //making normal move and invalid move fail (they get into it) - STALMATE CONDITION FOR MAKE MOVE NORMAL
-//        else if (game.isInCheckmate(ChessGame.TeamColor.BLACK) || game.isInCheckmate(ChessGame.TeamColor.WHITE) || game.isInStalemate(ChessGame.TeamColor.BLACK) || game.isInStalemate(ChessGame.TeamColor.WHITE)){
+//        if (game.isInCheckmate(ChessGame.TeamColor.BLACK) || game.isInCheckmate(ChessGame.TeamColor.WHITE)){
 //            sendError(conn, "GAME IS OVER, NO MOVES ARE ALLOWED");
 //            return;
 //        }

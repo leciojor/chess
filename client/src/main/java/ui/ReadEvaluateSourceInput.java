@@ -185,22 +185,21 @@ public class ReadEvaluateSourceInput {
                 }
 
                 else if (Objects.equals(input_words[1], "black") || Objects.equals(input_words[1], "white")){
-                    current_game_id = Integer.parseInt(input_words[1]);
+                    current_game_id = Integer.parseInt(input_words[0]);
                     client_call.join(input);
-
+                    if (ServerFacade.returned_error){
+                        System.out.println("Server Error, try again");
+                    }
+                    else{
                         client_call.webSoc("join_player", new Object[]{input_words[0], current_game_id, ClientCommunicator.current_auth_token});
-//                        printCurrentBoard();
-                        runGameplay();
-
+                        if (!ServerFacade.returned_error){
+                            runGameplay();
+                            break;
+                        }
+                    }
                 }
-
                 else{
-                    client_call.join(input);
-
-                    client_call.webSoc("join_player", new Object[]{input_words[0], current_game_id, ClientCommunicator.current_auth_token});
-//                        printCurrentBoard();
-                    runGameplay();
-
+                    System.out.println("Available inputs: white, black, observe");
                 }
             }
             else if (input.equals("observe")){
@@ -213,16 +212,24 @@ public class ReadEvaluateSourceInput {
                 }
                 else{
                     client_call.join(input);
-                    client_call.webSoc("join_observer", new Object[]{input_words[0], ClientCommunicator.current_auth_token});
-
-//                        printCurrentBoard();
-
+                    if (ServerFacade.returned_error){
+                        System.out.println("Server Error, try again");
+                    }
+                    else{
+                        client_call.webSoc("join_observer", new Object[]{input_words[0], ClientCommunicator.current_auth_token});
+                        if (!ServerFacade.returned_error){
+                            runGameplay();
+                            break;
+                        }
+                    }
                 }
             }
+
             else if (input.equals("quit")){
                 System.out.print("Thank you for playing");
                 break;
             }
+
             else if (!input.equals("help")){
                 System.out.print("Invalid input");
                 System.out.println();

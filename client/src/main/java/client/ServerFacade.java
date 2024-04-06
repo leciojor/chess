@@ -20,6 +20,8 @@ public class ServerFacade {
 
     private String urlString = "http://localhost:";
 
+    private String webSocString = "ws://localhost:";
+
     private ClientCommunicator setClientCommunication(String path) throws IOException {
         URL url = new URL(urlString + this.port + "/" +  path);
         return new ClientCommunicator(url);
@@ -37,7 +39,7 @@ public class ServerFacade {
     }
 
     private WebSocketCommunicator setWebSocketCommunication(String path) throws IOException, DeploymentException, URISyntaxException {
-        String url = urlString + this.port + "/" +  path;
+        String url = webSocString + this.port + "/" +  path;
         return new WebSocketCommunicator(url);
     }
 
@@ -83,7 +85,10 @@ public class ServerFacade {
     }
 
     public void webSoc(String webSocketMethod, Object[] requiredParameters) throws Exception {
-        WebSocketCommunicator communicator = setWebSocketCommunication("/connect");
+        for (Object obj: requiredParameters){
+            System.out.println(obj);
+        }
+        WebSocketCommunicator communicator = setWebSocketCommunication("connect");
         determineWebSocketMethod(webSocketMethod, communicator, requiredParameters);
     }
 

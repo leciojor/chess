@@ -52,7 +52,6 @@ public class ClientCommunicator {
 
         ErrorResponse response = gson.fromJson(response_builder.toString(), ErrorResponse.class);
         String error_message = response.getMessage();
-
         System.out.println();
         System.out.print(error_message);
     }
