@@ -34,6 +34,16 @@ public class WebSocketHandler {
 
     private static ConnectionManager connections = new ConnectionManager();
 
+    private boolean checkEmptyGame(int gameID, ChessGame.TeamColor userColor, String username) throws SQLException, DataAccessException {
+        if (userColor == ChessGame.TeamColor.WHITE && !Objects.equals(getWhiteUsername(gameID), username)){
+            return true;
+        }
+        if (userColor == ChessGame.TeamColor.BLACK && !Objects.equals(getBlackUsername(gameID), username)){
+            return true;
+        }
+        return false;
+    }
+
     private void sendError(Connection conn, String errorMessage) throws IOException {
         Gson gson = new Gson();
 
@@ -115,25 +125,35 @@ public class WebSocketHandler {
         JoinPlayer join_command = gson.fromJson(msg, JoinPlayer.class);
         connections.add(join_command.getGameID(), conn.session);
 
+        int gameID = join_command.getGameID();
+        String white_username = getWhiteUsername(gameID);
+        String black_username = getBlackUsername(gameID);
+        String username = getUsername(join_command);
 
-        if (Server.returned_error) {
-
-            sendError(conn, "SERVER ERROR");
+        if((join_command.getPlayerColor() == ChessGame.TeamColor.WHITE && white_username != null && !white_username.equals(username))){
+            sendError(conn, "SPOT ALREADY HAS USER " + white_username);
+            return;
         }
-        else if(!Objects.equals(getUsername(join_command), getBlackUsername(join_command.getGameID())) && !Objects.equals(getUsername(join_command), getWhiteUsername(join_command.getGameID()))){
-            sendError(conn, "SPOT ALREADY HAS USER " + getWhiteUsername(join_command.getGameID()));
+
+        else if((join_command.getPlayerColor() == ChessGame.TeamColor.BLACK && black_username != null && !black_username.equals(username))){
+            sendError(conn, "SPOT ALREADY HAS USER " + black_username);
+            return;
+        }
+
+        ChessGame game = getChessGame(gameID);
+
+        if (game == null || checkEmptyGame(gameID, join_command.getPlayerColor(), username)){
+            sendError(conn, "Game does not exist or is empty");
             return;
         }
         
         //send ServerMessageObject (JSON TEXT)
 
-        String username = getUsername(join_command);
-
         connections.sendNotifications(join_command.getGameID(), username + " joined game as " + join_command.getPlayerColor(), conn.session, false);
 
         //sending loadgame message to added user
-        LoadGame game = new LoadGame(getChessGame(join_command.getGameID()), ServerMessage.ServerMessageType.LOAD_GAME);
-        String game_json = gson.toJson(game);
+        LoadGame game_command = new LoadGame(getChessGame(join_command.getGameID()), ServerMessage.ServerMessageType.LOAD_GAME);
+        String game_json = gson.toJson(game_command);
 
         conn.session.getRemote().sendString(game_json);
 
@@ -150,10 +170,10 @@ public class WebSocketHandler {
             return;
         }
 
-        else if (Server.returned_error){
-            sendError(conn, "SERVER ERROR");
-            return;
-        }
+//        else if (){
+//            sendError(conn, "SERVER ERROR");
+//            return;
+//        }
 
         String username = getUsername(join_command);
 

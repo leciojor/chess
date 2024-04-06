@@ -187,34 +187,36 @@ public class ReadEvaluateSourceInput {
                 else if (Objects.equals(input_words[1], "black") || Objects.equals(input_words[1], "white")){
                     current_game_id = Integer.parseInt(input_words[1]);
                     client_call.join(input);
-                    client_call.webSoc("join_player", new Object[]{input_words[0], current_game_id, ClientCommunicator.current_auth_token});
 
-                    if (!ServerFacade.returned_error){
+                        client_call.webSoc("join_player", new Object[]{input_words[0], current_game_id, ClientCommunicator.current_auth_token});
 //                        printCurrentBoard();
                         runGameplay();
-                    }
+
                 }
 
                 else{
                     client_call.join(input);
-                    client_call.webSoc("join_observer", new Object[]{input_words[0], ClientCommunicator.current_auth_token});
 
-                    if (!ServerFacade.returned_error){
+                    client_call.webSoc("join_player", new Object[]{input_words[0], current_game_id, ClientCommunicator.current_auth_token});
 //                        printCurrentBoard();
-                        runGameplay();
-                    }
+                    runGameplay();
+
                 }
             }
             else if (input.equals("observe")){
                 input = readInput("Type desired game ID: ", false);
+                input = input.toLowerCase();
+                String[] input_words = input.split("\\s+");
+
                 if (!checkInputSize(input, 1)){
                     System.out.println("You can only add the game's ID and nothing else");
                 }
                 else{
                     client_call.join(input);
-                    if (!ServerFacade.returned_error){
+                    client_call.webSoc("join_observer", new Object[]{input_words[0], ClientCommunicator.current_auth_token});
+
 //                        printCurrentBoard();
-                    }
+
                 }
             }
             else if (input.equals("quit")){

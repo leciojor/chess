@@ -17,10 +17,6 @@ public class Server {
 
     private final WebSocketHandler webSocketHandler = new WebSocketHandler();
 
-    public static boolean returned_error;
-
-    public static int current_error;
-
     public int run(int desiredPort){
         try {
             DatabaseManager.createDatabase();
@@ -117,8 +113,6 @@ public class Server {
             return gson.toJson(response);
         }
         else{
-            returned_error = true;
-            current_error = response.getStatus();
             res.status(response.getStatus());
             return gson.toJson(response);
         }
@@ -136,8 +130,6 @@ public class Server {
             return gson.toJson(response);
         }
         else{
-            returned_error = true;
-            current_error = response.getStatus();
             res.status(response.getStatus());
             return gson.toJson(response);
         }
@@ -157,8 +149,6 @@ public class Server {
             return gson.toJson(response);
         }
         else{
-            returned_error = true;
-            current_error = response.getStatus();
             res.status(response.getStatus());
             return gson.toJson(response);
         }
@@ -176,8 +166,6 @@ public class Server {
             return gson.toJson(response);
         }
         else{
-            returned_error = true;
-            current_error = response.getStatus();
             res.status(response.getStatus());
             return gson.toJson(response);
         }
@@ -194,8 +182,6 @@ public class Server {
             return gson.toJson(response);
         }
         else{
-            returned_error = true;
-            current_error = response.getStatus();
             res.status(response.getStatus());
             return gson.toJson(response);
         }
@@ -213,8 +199,6 @@ public class Server {
             return gson.toJson(response);
         }
         else{
-            returned_error = true;
-            current_error = response.getStatus();
             res.status(response.getStatus());
             return gson.toJson(response);
         }
@@ -231,8 +215,6 @@ public class Server {
             return gson.toJson(response);
         }
         else{
-            returned_error = true;
-            current_error = response.getStatus();
             res.status(response.getStatus());
             return gson.toJson(response);
         }
