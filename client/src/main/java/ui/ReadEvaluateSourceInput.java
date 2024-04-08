@@ -170,6 +170,7 @@ public class ReadEvaluateSourceInput {
                 input = readInput("Type desired game NAME: ", false);
                 System.out.print(input);
                 if (!checkInputSize(input, 1)){
+                    System.out.println();
                     System.out.println("A game's name can only have one word");
                 }
                 else{
@@ -290,19 +291,22 @@ public class ReadEvaluateSourceInput {
                 String[] end_positions = input_end_position.split("\\s+");
 
                 if (!checkInputSize(input_start_position, 2) || !checkInputSize(input_end_position,2)){
-                    System.out.println("You forgot some required information");
+                    System.out.println("You forgot some required information or gave positions with wrong format");
                 }
 
-                else if (!checkIdType(input_start_position) || !checkIdType(input_end_position)){
-                    System.out.println("The coordinates have to be have to be a numbers");
+                else if (!checkIdType(start_positions[0]) || !checkIdType(start_positions[1]) || !checkIdType(end_positions[0]) || !checkIdType(end_positions[1] )){
+                    System.out.println("The coordinates have to be have to be a numbers. It is still your turn");
+                }
+                else{
+                    ChessPosition start_position = new ChessPosition(Integer.parseInt(start_positions[0]), Integer.parseInt(start_positions[1]));
+                    ChessPosition end_position = new ChessPosition(Integer.parseInt(end_positions[0]), Integer.parseInt(end_positions[1]));
+
+                    ChessMove user_move = new ChessMove(start_position, end_position, null);
+
+                    client_call.webSoc("make_move", new Object[] {current_game_id, user_move, ClientCommunicator.current_auth_token});
+
                 }
 
-                ChessPosition start_position = new ChessPosition(Integer.parseInt(start_positions[0]), Integer.parseInt(start_positions[1]));
-                ChessPosition end_position = new ChessPosition(Integer.parseInt(end_positions[0]), Integer.parseInt(end_positions[1]));
-
-                ChessMove user_move = new ChessMove(start_position, end_position, null);
-
-                client_call.webSoc("resign", new Object[] {current_game_id, user_move, ClientCommunicator.current_auth_token});
             }
 
             else if (input.equals("resign")){
@@ -313,6 +317,11 @@ public class ReadEvaluateSourceInput {
 
             else if (input.equals("highlight")){
                 printHighlightedBoard();
+            }
+
+            else if (!input.equals("help")){
+                System.out.print("Invalid input");
+                System.out.println();
             }
 
         }

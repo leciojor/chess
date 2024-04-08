@@ -175,7 +175,7 @@ public class ClientCommunicator {
                     System.out.println(i + "." + " " +game.gameName() + "\n" + "White Username: " + game.whiteUsername() + "\n" + "Black Username: " +  game.blackUsername() + "\n" + "Game ID: " +  game.gameID());
                 }
                 else{
-                    System.out.println("GAME IS OVER");
+                    System.out.println(i + "." + " " +game.gameName() + "\n" + "GAME IS OVER");
                 }
 
                 System.out.println();

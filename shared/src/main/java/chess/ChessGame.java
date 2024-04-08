@@ -102,6 +102,7 @@ public class ChessGame {
         Collection<ChessMove> valid = validMoves(move.getStartPosition());
         ChessBoard currentBoard = getBoard();
         ChessPiece pieceToMove = currentBoard.getPiece(move.getStartPosition());
+        //issue is probably that valid is null
         if(valid != null && pieceToMove != null){
             if (valid.contains(move) && pieceToMove.getTeamColor() == turn){
                 TeamColor color = pieceToMove.getTeamColor();
