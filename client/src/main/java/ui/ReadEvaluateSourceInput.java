@@ -16,6 +16,8 @@ import javax.websocket.DeploymentException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -139,12 +141,19 @@ public class ReadEvaluateSourceInput {
         }
     }
 
-    public static void printCurrentBoard(ChessGame game, ChessGame.TeamColor color){
-        ChessBoardUi.drawBoard(out, current_board, color);
+    public static void printCurrentBoard(ChessGame game, ChessGame.TeamColor currentColor){
+        ChessBoardUi.drawBoard(out, current_board, currentColor);
     }
 
-    private void printHighlightedBoard(){
+    private void printHighlightedBoard(ArrayList<ChessMove> possibleMoves){
+        ArrayList<ChessPosition> possible_positions = new ArrayList<>();
 
+        for (ChessMove move : possibleMoves){
+            possible_positions.add(move.getEndPosition());
+        }
+
+        ChessBoardUi.setAllowedPositions(possible_positions);
+        ChessBoardUi.drawBoard(out, current_board, current_color);
     }
 
     private void runPostLogin() throws Exception {
@@ -316,7 +325,21 @@ public class ReadEvaluateSourceInput {
             }
 
             else if (input.equals("highlight")){
-                printHighlightedBoard();
+                String input_piece = readInput("Type desired piece coordinates(row - col): ", false);
+                String[] start_positions = input_piece.split("\\s+");
+
+                if (!checkInputSize(input_piece, 2)){
+                    System.out.println("You forgot some required information or gave positions with wrong format");
+                }
+
+                else if (!checkIdType(start_positions[0]) || !checkIdType(start_positions[1] )){
+                    System.out.println("The coordinates have to be have to be a numbers. It is still your turn");
+                }
+                else{
+                    ChessPosition piece_position = new ChessPosition(Integer.parseInt(start_positions[0]), Integer.parseInt(start_positions[1]));
+                    printHighlightedBoard((ArrayList<ChessMove>) current_board.validMoves(piece_position));
+                }
+
             }
 
             else if (!input.equals("help")){

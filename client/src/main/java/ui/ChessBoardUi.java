@@ -1,17 +1,11 @@
 package ui;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessPiece;
-import chess.ChessPosition;
+import chess.*;
 
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 import static ui.EscapeSequences.*;
 import static ui.TestFactory.*;
@@ -48,6 +42,10 @@ public class ChessBoardUi {
     private static boolean alternate_row = true;
     private static boolean alternate_col = true;
 
+    private static boolean highlight;
+
+    private static ArrayList<ChessPosition> allowed_positions;
+
 
 
 
@@ -56,15 +54,15 @@ public class ChessBoardUi {
     public static void main(String[] args) {
         var game = getNewGame();
         game.setBoard(loadBoard("""
-                | | | | | | |q| |
-                | | | | |n| | | |
-                | | | | | | |p| |
-                | | | | | | | | |
-                | | | | | | | | |
-                | | | | | | | |R|
-                | | | | | | | | |
-                |K|B| | | | | | |
-                """));
+                        |r|n|b|q|k|b|n|r|
+                        |p|p|p|p|p|p|p|p|
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        | | | | | | | | |
+                        |P|P|P|P|P|P|P|P|
+                        |R|N|B|Q|K|B|N|R|
+                        """));
         game.setTeamTurn(ChessGame.TeamColor.WHITE);
 
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
@@ -73,10 +71,21 @@ public class ChessBoardUi {
 
         drawBoard(out, game, ChessGame.TeamColor.BLACK);
 
+        ArrayList<ChessMove> allowed = (ArrayList<ChessMove>) game.validMoves(new ChessPosition(8,8));
+//        System.out.println(allowed.isEmpty());
+        for (ChessMove move : allowed){
+            allowed_positions.add(move.getEndPosition());
+        }
+
+        //testing highlight
+        highlight(out, game, ChessGame.TeamColor.BLACK);
+
+
     }
 
-
-
+    public static void setAllowedPositions(ArrayList<ChessPosition> positions){
+        allowed_positions = positions;
+    }
 
 
     public static void drawBoard(PrintStream out, ChessGame game, ChessGame.TeamColor currentColor) {
@@ -95,6 +104,12 @@ public class ChessBoardUi {
             drawBorders(out, temp_game_copy);
         }
 
+    }
+
+    public static void highlight(PrintStream out, ChessGame game, ChessGame.TeamColor currentColor){
+        highlight = true;
+        drawBoard(out, game, currentColor);
+        highlight = false;
     }
 
 
@@ -198,14 +213,28 @@ public class ChessBoardUi {
 
         return piece;
     }
+
+    private static boolean checkIfWithinAllowedOnes(int row, int col){
+        ChessPosition curr_position = new ChessPosition(row, col);
+        for (ChessPosition position : allowed_positions){
+            if (curr_position.equals(position)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     private static void drawBoxes(PrintStream out, int row, ChessGame game){
 
         for (int col = 0; col < BOARD_SIZE; col++){
-
-
             ChessPosition position = new ChessPosition(row + 1, col + 1);
             ChessPiece chess_piece = game.getBoard().getPiece(position);
-            if (chess_piece != null){
+            if (highlight && allowed_positions != null && checkIfWithinAllowedOnes(row, col)){
+                setBoxRed(out);
+            }
+
+            else if (chess_piece != null){
                 ChessGame.TeamColor color = chess_piece.getTeamColor();
                 String piece;
                 piece = addingBoxes(color, chess_piece);
@@ -234,6 +263,12 @@ public class ChessBoardUi {
 
     }
 
+    private static void setBoxRed(PrintStream out){
+        setRed(out);
+        out.print(EMPTY);
+
+    }
+
     private static void setBoxBlue(PrintStream out, String piece){
         setBlue(out);
         if (piece == null){
@@ -244,6 +279,7 @@ public class ChessBoardUi {
         }
 
     }
+
 
     private static void setBoxWhite(PrintStream out, String piece){
         setWhite(out);
@@ -279,6 +315,10 @@ public class ChessBoardUi {
 
     private static void setWhite(PrintStream out) {
         out.print(SET_BG_COLOR_WHITE);
+    }
+
+    private static void setRed(PrintStream out) {
+        out.print(SET_BG_COLOR_RED);
     }
 
     private static void setRegular(PrintStream out) {
