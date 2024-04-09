@@ -31,6 +31,8 @@ public class ReadEvaluateSourceInput {
 
     private static PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
+    private static ChessGame current_board;
+
     private String readInput(String prompt, boolean formatted){
         System.out.println(prompt);
         input = scanner.nextLine();
@@ -135,12 +137,7 @@ public class ReadEvaluateSourceInput {
     }
 
     public static void printCurrentBoard(ChessGame game){
-        System.out.println();
-        ChessBoardUi.drawBoard(out, "one");
-        out.println();
-        out.println();
-        ChessBoardUi.drawBoard(out, "two");
-        System.out.println();
+        ChessBoardUi.drawBoard(out, current_board);
     }
 
     private void printHighlightedBoard(){
@@ -272,7 +269,7 @@ public class ReadEvaluateSourceInput {
             }
 
             else if (input.equals("redraw")){
-//                printCurrentBoard();
+                printCurrentBoard(current_board);
             }
 
             else if (input.equals("leave")){
@@ -344,6 +341,7 @@ public class ReadEvaluateSourceInput {
 
     }
 
-
-
+    public static void setCurrentBoard(ChessGame current_board) {
+        ReadEvaluateSourceInput.current_board = current_board;
+    }
 }

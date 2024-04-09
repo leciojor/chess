@@ -46,6 +46,7 @@ public class WebSocketCommunicator extends Endpoint {
 
     private static void loadGame(LoadGame message){
         ReadEvaluateSourceInput.printCurrentBoard(message.getGame());
+        ReadEvaluateSourceInput.setCurrentBoard(message.getGame());
     }
 
     //needs to add logic so it can send messages to server any type and something to get the server messages and answer it (notify)

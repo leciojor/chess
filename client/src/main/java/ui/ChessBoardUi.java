@@ -3,12 +3,14 @@ package ui;
 import chess.ChessGame;
 import chess.ChessPiece;
 
+
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Random;
 
 import static ui.EscapeSequences.*;
+import static ui.TestFactory.*;
 
 
 public class ChessBoardUi {
@@ -33,31 +35,50 @@ public class ChessBoardUi {
 //add method that takes the current board and changes it with the necessary piece changes
 
     public static void main(String[] args) {
+        var game = getNewGame();
+        game.setBoard(loadBoard("""
+                | | | | | | | | |
+                | | | | | | | |q|
+                | | |n| | | |p| |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | | | | | | | |
+                | | |B| | | | | |
+                | |K| | | | | |R|
+                """));
+        game.setTeamTurn(ChessGame.TeamColor.BLACK);
+
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
         out.print(ERASE_SCREEN);
 
-        drawBoard(out, "one");
+        drawBoard(out, game);
 
         out.println();
         out.println();
 
-        drawBoard(out, "two");
+        drawBoard(out, game);
     }
 
 
 
 
 
-    public static void drawBoard(PrintStream out, String orientation) {
-            drawBorders(out, orientation);
+    public static void drawBoard(PrintStream out, ChessGame game) {
+            drawBorders(out, game);
     }
 
 
-    private static void drawBorders(PrintStream out, String orientation){
+    private static void drawBorders(PrintStream out, ChessGame game){
         drawTopBottom(out);
         drawTextTopBottom(out);
-
+        String orientation = null;
+        if (game.getTeamTurn() == ChessGame.TeamColor.WHITE){
+            orientation = "one";
+        }
+        else{
+            orientation = "two";
+        }
 
         out.println();
         drawSides(out, orientation);

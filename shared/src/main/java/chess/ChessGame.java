@@ -100,6 +100,7 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
         Collection<ChessMove> valid = validMoves(move.getStartPosition());
+
         ChessBoard currentBoard = getBoard();
         ChessPiece pieceToMove = currentBoard.getPiece(move.getStartPosition());
         //issue is probably that valid is null
