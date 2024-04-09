@@ -1,17 +1,11 @@
 package client;
 
-import java.awt.*;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 
 import chess.ChessGame;
 import chess.ChessMove;
-import client.*;
-import server.websocket.Connection;
-import webSocketMessages.serverMessages.ServerMessage;
 
 import javax.websocket.DeploymentException;
 

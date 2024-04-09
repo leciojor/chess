@@ -9,11 +9,9 @@ import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.serverMessages.subMessages.ErrorMessage;
 import webSocketMessages.serverMessages.subMessages.LoadGame;
 import webSocketMessages.serverMessages.subMessages.Notification;
-import webSocketMessages.userCommands.subCommands.*;
 
 import javax.websocket.*;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;

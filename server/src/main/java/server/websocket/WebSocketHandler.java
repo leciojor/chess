@@ -12,22 +12,14 @@ import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
-import server.Server;
-import server.requests.RegisterRequest;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.serverMessages.subMessages.ErrorMessage;
 import webSocketMessages.serverMessages.subMessages.LoadGame;
-import webSocketMessages.serverMessages.*;
-import webSocketMessages.userCommands.*;
-import webSocketMessages.userCommands.subCommands.*;
 
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
-import java.util.Timer;
 
 
 @WebSocket
