@@ -15,6 +15,11 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.serverMessages.subMessages.ErrorMessage;
 import webSocketMessages.serverMessages.subMessages.LoadGame;
+import webSocketMessages.userCommands.UserGameCommand;
+import webSocketMessages.userCommands.subCommands.JoinPlayer;
+import webSocketMessages.userCommands.subCommands.Leave;
+import webSocketMessages.userCommands.subCommands.MakeMove;
+import webSocketMessages.userCommands.subCommands.Resign;
 
 
 import java.io.IOException;

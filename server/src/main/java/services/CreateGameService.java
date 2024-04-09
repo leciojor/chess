@@ -44,13 +44,12 @@ public class CreateGameService {
                 randomIds.add(randomNumber);
 
                 ChessGame chessGame = new ChessGame();
+                chessGame.getBoard().resetBoard();
 
                 game.createGame(randomNumber, "", "", gameName, chessGame);
                 CreateGameResponse response = new CreateGameResponse(String.valueOf(randomNumber));
                 response.setStatus(200);
                 return response;
-
-
 
 
 
