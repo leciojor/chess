@@ -7,17 +7,9 @@ import chess.ChessPosition;
 import client.ClientCommunicator;
 import client.ServerFacade;
 
-import java.net.URISyntaxException;
-
-
-import org.eclipse.jetty.websocket.api.Session;
-
-import javax.websocket.DeploymentException;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
