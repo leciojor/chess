@@ -190,17 +190,15 @@ public class ReadEvaluateSourceInput {
                     System.out.println("You forgot some required information");
                 }
 
-                else if (!checkIdType(input)){
+                else if (!checkIdType(input_words[0])){
                     System.out.println("Game ID has to be a number");
                 }
 
                 else if (Objects.equals(input_words[1], "black") || Objects.equals(input_words[1], "white")){
                     current_game_id = Integer.parseInt(input_words[0]);
-                    client_call.join(input);
-                    if (ServerFacade.returned_error){
-                        System.out.println("Server Error, try again");
-                    }
-                    else{
+
+                    client_call.join(input_words[0], input_words[1].toUpperCase());
+
                         current_color = getUserColor(input_words[1]);
 
                         client_call.webSoc("join_player", new Object[]{current_game_id, current_color, ClientCommunicator.current_auth_token});
@@ -208,7 +206,7 @@ public class ReadEvaluateSourceInput {
                             runGameplay();
                             break;
                         }
-                    }
+
                 }
                 else{
                     System.out.println("Available sides to play: white, black");
@@ -222,18 +220,19 @@ public class ReadEvaluateSourceInput {
                 if (!checkInputSize(input, 1)){
                     System.out.println("You can only add the game's ID and nothing else");
                 }
+
+                else if (!checkIdType(input)){
+                    System.out.println("Game ID has to be a number");
+                }
+
                 else{
-                    client_call.join(input);
-                    if (ServerFacade.returned_error){
-                        System.out.println("Server Error, try again");
+                    client_call.join(input_words[0], "OBSERVER");
+                    client_call.webSoc("join_observer", new Object[]{current_game_id, ClientCommunicator.current_auth_token});
+                    if (!ServerFacade.returned_error){
+                        runGameplay();
+                        break;
                     }
-                    else{
-                        client_call.webSoc("join_observer", new Object[]{current_game_id, ClientCommunicator.current_auth_token});
-                        if (!ServerFacade.returned_error){
-                            runGameplay();
-                            break;
-                        }
-                    }
+
                 }
             }
 

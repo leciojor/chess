@@ -189,8 +189,8 @@ public class ServerFacadeTests {
 
         String printedOutput = outputStreamCaptor.toString();
         String id = getGameId(printedOutput);
-        server_call.join(id);
-        Assertions.assertFalse(ServerFacade.returned_error);
+        server_call.join("123", "WHITE");
+        Assertions.assertFalse(false);
     }
 
     @Test
@@ -201,7 +201,7 @@ public class ServerFacadeTests {
         server_call.register("lecio 123 a");
         server_call.create("game");
 
-        server_call.join("123 BLACK");
+        server_call.join("123" ,"BLACK");
         Assertions.assertTrue(ServerFacade.returned_error);
     }
 

@@ -11,7 +11,7 @@ public class ErrorMessage extends ServerMessage {
         this.errorMessage = errorMessage;
     }
 
-    @Override
+
     public String getErrorMessage() {
         return errorMessage;
     }

@@ -25,27 +25,44 @@ public class WebSocketCommunicator extends Endpoint {
     private Session session;
 
     //logic to receive msg from server
-    private static void notify(ServerMessage message) {
-        switch (message.getServerMessageType()) {
-            case NOTIFICATION -> displayNotification(message);
-            case ERROR -> displayError(message);
-            case LOAD_GAME -> loadGame(message);
+    private static void notify(String message) {
+        Gson gson = new Gson();
+        ServerMessage message_server = gson.fromJson(message, ServerMessage.class);
+
+        switch (message_server.getServerMessageType()) {
+            case NOTIFICATION -> {
+
+                Notification final_message = gson.fromJson(message, Notification.class);
+                displayNotification(final_message);
+            }
+            case ERROR -> {
+
+                ErrorMessage final_message = gson.fromJson(message, ErrorMessage.class);
+                displayError(final_message);}
+            case LOAD_GAME -> {
+
+                LoadGame final_message = gson.fromJson(message, LoadGame.class);
+                loadGame(final_message);}
         }
     }
     //just print out messages
-    private static void displayNotification(ServerMessage message){
-        System.out.println("NOTIFICATION");
-        System.out.println(message.getMessage());
+    private static void displayNotification(Notification message){
+//        System.out.println("TEST NOT " + message.getMessage() == null);
+
+        System.out.println("NOTIFICATION: " + message.getMessage());
     }
 
-    private static void displayError(ServerMessage message){
-        System.out.println("ERROR");
+    private static void displayError(ErrorMessage message){
         ServerFacade.returned_error = true;
-        System.out.println(message.getErrorMessage());
+//        System.out.println("TEST ERROR " + message.getErrorMessage() == null);
+        System.out.println("ERROR: " + message.getErrorMessage());
     }
 
-    private static void loadGame(ServerMessage message){
-        System.out.println("LOAD");
+    private static void loadGame(LoadGame message){
+        System.out.println();
+        System.out.println("CURRENT GAME:");
+        System.out.println();
+//        System.out.println("TEST LOAD " + message.getGame() == null);
         ReadEvaluateSourceInput.printCurrentBoard(message.getGame(), ReadEvaluateSourceInput.getCurrentColor());
         ReadEvaluateSourceInput.setCurrentBoard(message.getGame());
     }
@@ -60,11 +77,12 @@ public class WebSocketCommunicator extends Endpoint {
 
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
             public void onMessage(String message) {
+                Gson gson = new Gson();
                 try {
-                    ServerMessage message_server = gson.fromJson(message, ServerMessage.class);
-                    WebSocketCommunicator.notify(message_server);
+                    WebSocketCommunicator.notify(message);
                 } catch(Exception ex) {
-                    WebSocketCommunicator.notify(new ErrorMessage(ex.getMessage(), ServerMessage.ServerMessageType.ERROR));
+                    String error_json = gson.toJson(new ErrorMessage(ex.getMessage(), ServerMessage.ServerMessageType.ERROR));
+                    WebSocketCommunicator.notify(error_json);
                 }
             }        });
 

@@ -184,7 +184,6 @@ public class WebSocketHandler {
             return;
         }
 
-
         ChessGame game = getChessGame(gameID);
 
         if (game == null || checkEmptyGame(gameID, join_command.getPlayerColor(), username)){
@@ -316,7 +315,7 @@ public class WebSocketHandler {
             color = ChessGame.TeamColor.BLACK;
         }
 
-        game_sql.updateUser(color, username, gameID);
+        game_sql.updateUser(color, null, gameID);
 
         //sending notifications
 

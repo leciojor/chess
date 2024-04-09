@@ -22,17 +22,6 @@ public class ServerMessage {
     }
 
 
-    public String getErrorMessage(){
-        return null;
-    }
-
-    public ChessGame getGame(){
-        return null;
-    }
-
-    public String getMessage(){
-        return null;
-    }
 
     public ServerMessage(ServerMessageType type) {
         this.serverMessageType = type;

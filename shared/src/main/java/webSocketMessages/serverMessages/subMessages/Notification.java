@@ -11,7 +11,7 @@ public class Notification extends ServerMessage {
         this.message = message;
     }
 
-    @Override
+
     public String getMessage() {
         return message;
     }

@@ -53,7 +53,7 @@ public class ClientCommunicator {
         ErrorResponse response = gson.fromJson(response_builder.toString(), ErrorResponse.class);
         String error_message = response.getMessage();
         System.out.println();
-        System.out.print(error_message);
+        System.out.print(error_message.toUpperCase());
     }
 
     private void serializationPost(OutputStream requestBody, String[] inputsArray, String endpointType) throws IOException {
@@ -195,23 +195,14 @@ public class ClientCommunicator {
 
     }
 
-    public void put(String input) throws IOException{
+    public void put(String gameID, String perspective) throws IOException{
         setConfigs("PUT", true);
         this.connection.addRequestProperty("Authorization",  ClientCommunicator.current_auth_token);
         this.connection.connect();
 
-        String[] inputsArray = input.split(" ");
-
         try(OutputStream requestBody = connection.getOutputStream()) {
-            if (inputsArray.length == 2){
-                JoinGameRequest request = new JoinGameRequest(inputsArray[0], inputsArray[1]);
-                requestBody.write(gson.toJson(request).getBytes());
-            }
-            else{
-                JoinGameRequest request = new JoinGameRequest(inputsArray[0], "OBSERVER");
-                requestBody.write(gson.toJson(request).getBytes());
-            }
-
+            JoinGameRequest request = new JoinGameRequest(gameID, perspective);
+            requestBody.write(gson.toJson(request).getBytes());
         }
 
         if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {

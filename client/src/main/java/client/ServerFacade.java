@@ -64,9 +64,9 @@ public class ServerFacade {
         communicator.get();
     }
 
-    public void join(String input) throws IOException{
+    public void join(String gameID, String perspective) throws IOException{
         ClientCommunicator communicator = setClientCommunication("/game");
-        communicator.put(input);
+        communicator.put(gameID, perspective);
     }
 
     public void create(String input) throws IOException{
