@@ -159,7 +159,14 @@ public class SQLGameDAO implements GameDAO{
             if (color == ChessGame.TeamColor.WHITE){
                 try (var preparedStatement = conn.prepareStatement("UPDATE Game SET whiteUsername = ? WHERE gameId = ?")) {
                     Gson gson = new Gson();
-                    String updated_username = gson.toJson(newUsername);
+                    String updated_username;
+
+                    if (newUsername != null){
+                        updated_username = gson.toJson(newUsername);
+                    }
+                    else{
+                        updated_username = null;
+                    }
 
                     preparedStatement.setString(1, updated_username);
                     preparedStatement.setString(2, String.valueOf(gameId));

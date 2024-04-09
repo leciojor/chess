@@ -191,7 +191,7 @@ public class WebSocketHandler {
             sendError(conn, "Game does not exist or is empty");
             return;
         }
-        
+
         //send ServerMessageObject (JSON TEXT)
 
         connections.sendNotifications(join_command.getGameID(), username + " joined game as " + join_command.getPlayerColor(), conn.session, false);
@@ -220,7 +220,7 @@ public class WebSocketHandler {
             return;
         }
 
-         if (!Objects.equals(getAuthToken(join_command), join_command.getAuthString())){
+        if (!Objects.equals(getAuthToken(join_command), join_command.getAuthString())){
             sendError(conn, "Wrong AuthToken");
             return;
         }
@@ -301,9 +301,9 @@ public class WebSocketHandler {
         int gameID = leave_command.getGameID();
         connections.remove(gameID, conn.session);
 
-       ChessGame game = getChessGame(gameID);
+        ChessGame game = getChessGame(gameID);
 
-       //updating game
+        //updating game
         String username = getUsername(leave_command);
         SQLGameDAO game_sql = new SQLGameDAO();
 

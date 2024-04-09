@@ -27,7 +27,6 @@ public class WebSocketCommunicator extends Endpoint {
     //logic to receive msg from server
     private static void notify(ServerMessage message) {
         switch (message.getServerMessageType()) {
-            //cant cast here (deserialize again)
             case NOTIFICATION -> displayNotification(message);
             case ERROR -> displayError(message);
             case LOAD_GAME -> loadGame(message);
@@ -35,15 +34,18 @@ public class WebSocketCommunicator extends Endpoint {
     }
     //just print out messages
     private static void displayNotification(ServerMessage message){
+        System.out.println("NOTIFICATION");
         System.out.println(message.getMessage());
     }
 
     private static void displayError(ServerMessage message){
+        System.out.println("ERROR");
         ServerFacade.returned_error = true;
         System.out.println(message.getErrorMessage());
     }
 
     private static void loadGame(ServerMessage message){
+        System.out.println("LOAD");
         ReadEvaluateSourceInput.printCurrentBoard(message.getGame(), ReadEvaluateSourceInput.getCurrentColor());
         ReadEvaluateSourceInput.setCurrentBoard(message.getGame());
     }

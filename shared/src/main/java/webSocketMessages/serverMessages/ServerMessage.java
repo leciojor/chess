@@ -12,11 +12,7 @@ import java.util.Objects;
  */
 public class ServerMessage {
     ServerMessageType serverMessageType;
-    private String error_message;
 
-    private ChessGame game;
-
-    private String message;
 
 
     public enum ServerMessageType {
@@ -27,15 +23,15 @@ public class ServerMessage {
 
 
     public String getErrorMessage(){
-        return error_message;
+        return null;
     }
 
     public ChessGame getGame(){
-        return game;
+        return null;
     }
 
     public String getMessage(){
-        return message;
+        return null;
     }
 
     public ServerMessage(ServerMessageType type) {
