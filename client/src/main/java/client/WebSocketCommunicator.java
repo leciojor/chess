@@ -45,7 +45,7 @@ public class WebSocketCommunicator extends Endpoint {
     }
 
     private static void loadGame(LoadGame message){
-        ReadEvaluateSourceInput.printCurrentBoard(message.getGame());
+        ReadEvaluateSourceInput.printCurrentBoard(message.getGame(), ReadEvaluateSourceInput.getCurrentColor());
         ReadEvaluateSourceInput.setCurrentBoard(message.getGame());
     }
 

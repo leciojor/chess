@@ -33,6 +33,9 @@ public class ReadEvaluateSourceInput {
 
     private static ChessGame current_board;
 
+    private static ChessGame.TeamColor current_color;
+
+
     private String readInput(String prompt, boolean formatted){
         System.out.println(prompt);
         input = scanner.nextLine();
@@ -136,8 +139,8 @@ public class ReadEvaluateSourceInput {
         }
     }
 
-    public static void printCurrentBoard(ChessGame game){
-        ChessBoardUi.drawBoard(out, current_board);
+    public static void printCurrentBoard(ChessGame game, ChessGame.TeamColor color){
+        ChessBoardUi.drawBoard(out, current_board, color);
     }
 
     private void printHighlightedBoard(){
@@ -197,9 +200,9 @@ public class ReadEvaluateSourceInput {
                         System.out.println("Server Error, try again");
                     }
                     else{
-                        ChessGame.TeamColor color = getUserColor(input_words[0]);
+                        current_color = getUserColor(input_words[1]);
 
-                        client_call.webSoc("join_player", new Object[]{current_game_id, color, ClientCommunicator.current_auth_token});
+                        client_call.webSoc("join_player", new Object[]{current_game_id, current_color, ClientCommunicator.current_auth_token});
                         if (!ServerFacade.returned_error){
                             runGameplay();
                             break;
@@ -269,7 +272,7 @@ public class ReadEvaluateSourceInput {
             }
 
             else if (input.equals("redraw")){
-                printCurrentBoard(current_board);
+                printCurrentBoard(current_board, current_color);
             }
 
             else if (input.equals("leave")){
@@ -344,4 +347,9 @@ public class ReadEvaluateSourceInput {
     public static void setCurrentBoard(ChessGame current_board) {
         ReadEvaluateSourceInput.current_board = current_board;
     }
+
+    public static ChessGame.TeamColor getCurrentColor() {
+        return current_color;
+    }
+
 }

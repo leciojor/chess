@@ -2,10 +2,13 @@ package ui;
 
 import chess.ChessGame;
 import chess.ChessPiece;
+import chess.ChessPosition;
 
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 
@@ -19,16 +22,33 @@ public class ChessBoardUi {
     private static final int BOARD_SIZE_CHAR = BOARD_SIZE + 29;
     private static final String[] DIGITS_SIDES = {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT};
 
-    private static final String[] PIECES_WHITE = {WHITE_ROOK, WHITE_KNIGHT, WHITE_BISHOP, WHITE_KING, WHITE_QUEEN, WHITE_BISHOP, WHITE_KNIGHT, WHITE_ROOK};
+    private static Map<ChessPiece.PieceType, String> PIECES_WHITE = new HashMap<>() {{
+        put(ChessPiece.PieceType.ROOK, WHITE_ROOK);
+        put(ChessPiece.PieceType.KNIGHT, WHITE_KNIGHT);
+        put(ChessPiece.PieceType.BISHOP, WHITE_BISHOP);
+        put(ChessPiece.PieceType.KING, WHITE_KING);
+        put(ChessPiece.PieceType.QUEEN, WHITE_QUEEN);
+        put(ChessPiece.PieceType.PAWN, WHITE_PAWN);
+    }};
 
-    private static final String[] PIECES_BLACK = {BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_KING, BLACK_QUEEN, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK};
+    private static Map<ChessPiece.PieceType, String> PIECES_BLACK = new HashMap<>() {{
+        put(ChessPiece.PieceType.ROOK, BLACK_ROOK);
+        put(ChessPiece.PieceType.KNIGHT, BLACK_KNIGHT);
+        put(ChessPiece.PieceType.BISHOP, BLACK_BISHOP);
+        put(ChessPiece.PieceType.KING, BLACK_KING);
+        put(ChessPiece.PieceType.QUEEN, BLACK_QUEEN);
+        put(ChessPiece.PieceType.PAWN, BLACK_PAWN);
+    }};
 
     private static final String[] HEADER_LETTERS = { "𝐻", "𝒢", "𝐹", "𝐸", "𝒟", "𝒞", "𝐵", "𝒜"};
 
     private static Random rand = new Random();
 
-    private static boolean alternate = true;
-    private static boolean orientationAlternate = false;
+    private static boolean alternate_row = true;
+    private static boolean alternate_col = true;
+
+    private static ChessGame current_game;
+
 
 
 
@@ -37,14 +57,14 @@ public class ChessBoardUi {
     public static void main(String[] args) {
         var game = getNewGame();
         game.setBoard(loadBoard("""
+                | | | | | | |q| |
+                | | | | |n| | | |
                 | | | | | | | | |
-                | | | | | | | |q|
-                | | |n| | | |p| |
+                | | | | | | |p| |
                 | | | | | | | | |
+                | | | | | | | |R|
                 | | | | | | | | |
-                | | | | | | | | |
-                | | |B| | | | | |
-                | |K| | | | | |R|
+                |K|B| | | | | | |
                 """));
         game.setTeamTurn(ChessGame.TeamColor.BLACK);
 
@@ -52,36 +72,32 @@ public class ChessBoardUi {
 
         out.print(ERASE_SCREEN);
 
-        drawBoard(out, game);
+        drawBoard(out, game, ChessGame.TeamColor.BLACK);
 
-        out.println();
-        out.println();
-
-        drawBoard(out, game);
     }
 
 
 
 
 
-    public static void drawBoard(PrintStream out, ChessGame game) {
-            drawBorders(out, game);
+    public static void drawBoard(PrintStream out, ChessGame game, ChessGame.TeamColor color) {
+        current_game = game;
+        drawBorders(out, game, color);
     }
 
 
-    private static void drawBorders(PrintStream out, ChessGame game){
+    private static void drawBorders(PrintStream out, ChessGame game, ChessGame.TeamColor color){
         drawTopBottom(out);
         drawTextTopBottom(out);
-        String orientation = null;
-        if (game.getTeamTurn() == ChessGame.TeamColor.WHITE){
-            orientation = "one";
-        }
-        else{
-            orientation = "two";
+        if (color == ChessGame.TeamColor.WHITE){
+            Map<ChessPiece.PieceType, String> temp_black = PIECES_BLACK;
+            PIECES_BLACK = PIECES_WHITE;
+            PIECES_WHITE = temp_black;
         }
 
+
         out.println();
-        drawSides(out, orientation);
+        drawSides(out);
 
 
         drawTextTopBottom(out);
@@ -107,12 +123,13 @@ public class ChessBoardUi {
 
 
 
-    private static void drawSides(PrintStream out, String orientation){
+    private static void drawSides(PrintStream out){
+
         for(int row = 0; row < DIGITS_SIDES.length; row++){
             out.print(SIDE_COMPLIMENT);
             out.print(DIGITS_SIDES[row]);
 
-            drawInside(out, row, orientation);
+            drawInside(out, row);
 
             out.print(DIGITS_SIDES[row]);
             out.print(SIDE_COMPLIMENT);
@@ -122,80 +139,76 @@ public class ChessBoardUi {
         }
     }
 
-    private static void drawInside(PrintStream out, int row, String orientation) {
+    private static void drawInside(PrintStream out, int row) {
         out.print(EMPTY);
 
-        drawBoxes(out, row, orientation);
+        drawBoxes(out, row);
 
         setRegular(out);
         out.print(EMPTY);
 
-        alternate = !alternate;
+        alternate_row = !alternate_row;
     }
 
-    private static void drawBoxes(PrintStream out, int row, String orientation){
+    private static void drawBoxes(PrintStream out, int row){
 
         for (int col = 0; col < BOARD_SIZE; col++){
-            String[] temp_pieces_white = {PIECES_WHITE[col], PIECES_WHITE[col + 1]};
-            String[] temp_pieces_black = {PIECES_BLACK[col], PIECES_BLACK[col + 1]};
-            String[] temp_pawn_black = {BLACK_PAWN, BLACK_PAWN};
-            String[] temp_pawn_white = {WHITE_PAWN, WHITE_PAWN};
 
-            if (Objects.equals(orientation, "one")){
-                addPieces(out, row, temp_pieces_white, temp_pieces_black, temp_pawn_white, temp_pawn_black);
+            ChessPosition position = new ChessPosition(row + 1, col + 1);
+            ChessPiece chess_piece = current_game.getBoard().getPiece(position);
+            if (chess_piece != null){
+                ChessGame.TeamColor color = chess_piece.getTeamColor();
+                String piece;
+                if (color == ChessGame.TeamColor.WHITE){
+                    piece = PIECES_WHITE.get(chess_piece.getPieceType());
+                }
+                else{
+                    piece = PIECES_BLACK.get(chess_piece.getPieceType());
+                }
+                addPieces(out, piece);
             }
             else{
-                addPieces(out, row, temp_pieces_black, temp_pieces_white, temp_pawn_black, temp_pawn_white);
+
+                addPieces(out, null);
             }
-            col++;
+            alternate_col = !alternate_col;
         }
 
     }
 
-    private static void addPieces(PrintStream out, int row, String[] pieceDown, String[] pieceUp, String[] pawnDown, String[] pawnUp){
-        if (row == 0){
-            setBoxBlue(out, pieceUp);
+    private static void addPieces(PrintStream out, String piece){
+
+
+        if (!alternate_row && !alternate_col || alternate_row && alternate_col){
+            setBoxWhite(out, piece);
+
         }
 
-        else if(row == 7){
-            setBoxWhite(out, pieceDown);
+        else if(!alternate_row && alternate_col || alternate_row && !alternate_col){
+            setBoxBlue(out, piece);
         }
 
-        else if (row == 1){
-            setBoxWhite(out, pawnUp);
-        }
+    }
 
-        else if (row == 6){
-            setBoxBlue(out, pawnDown);
-        }
-
-        else if (!alternate){
-            setWhite(out);
-            out.print(EMPTY);
-            setBlue(out);
+    private static void setBoxBlue(PrintStream out, String piece){
+        setBlue(out);
+        if (piece == null){
             out.print(EMPTY);
         }
-
         else{
-            setBlue(out);
-            out.print(EMPTY);
-            setWhite(out);
+            printPlayer(out, piece);
+        }
+
+    }
+
+    private static void setBoxWhite(PrintStream out, String piece){
+        setWhite(out);
+        if (piece == null){
             out.print(EMPTY);
         }
-    }
-
-    private static void setBoxBlue(PrintStream out, String[] piece){
-        setBlue(out);
-        printPlayer(out, piece[0]);
-        setWhite(out);
-        printPlayer(out, piece[1]);
-    }
-
-    private static void setBoxWhite(PrintStream out, String[] piece){
-        setWhite(out);
-        printPlayer(out, piece[0]);
-        setBlue(out);
-        printPlayer(out, piece[1]);
+        else{
+            printPlayer(out, piece);
+        }
     }
 
 
