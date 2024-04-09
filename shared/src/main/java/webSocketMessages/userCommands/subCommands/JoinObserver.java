@@ -9,6 +9,7 @@ public class JoinObserver extends UserGameCommand {
         super(authToken);
 
         this.gameID = gameID;
+        this.commandType = CommandType.JOIN_OBSERVER;
     }
 
 }

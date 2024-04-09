@@ -144,7 +144,6 @@ public class WebSocketHandler {
         Gson gson = new Gson();
 
         UserGameCommand command = gson.fromJson(msg, UserGameCommand.class);
-
         Connection conn = new Connection(command.getAuthString(), session);
         if (command.getAuthString() != null) {
             switch (command.getCommandType()) {
@@ -331,12 +330,6 @@ public class WebSocketHandler {
         Resign resign_command = gson.fromJson(msg, Resign.class);
         int gameID = resign_command.getGameID();
         ChessGame game = getChessGame(gameID);
-
-
-        //removing from connections
-
-//        connections.removeAll(gameID);
-
 
         //setting up error scenarios
 

@@ -1,5 +1,7 @@
 package webSocketMessages.serverMessages;
 
+import chess.ChessGame;
+
 import java.util.Objects;
 
 /**
@@ -10,11 +12,30 @@ import java.util.Objects;
  */
 public class ServerMessage {
     ServerMessageType serverMessageType;
+    private String error_message;
+
+    private ChessGame game;
+
+    private String message;
+
 
     public enum ServerMessageType {
         LOAD_GAME,
         ERROR,
         NOTIFICATION
+    }
+
+
+    public String getErrorMessage(){
+        return error_message;
+    }
+
+    public ChessGame getGame(){
+        return game;
+    }
+
+    public String getMessage(){
+        return message;
     }
 
     public ServerMessage(ServerMessageType type) {

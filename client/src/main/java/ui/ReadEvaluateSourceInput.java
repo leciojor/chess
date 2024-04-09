@@ -182,7 +182,7 @@ public class ReadEvaluateSourceInput {
                 client_call.list();
             }
             else if (input.equals("join")){
-                input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE|OBSERVE): ", false);
+                input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE): ", false);
                 input = input.toLowerCase();
                 String[] input_words = input.split("\\s+");
 

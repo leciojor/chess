@@ -28,22 +28,22 @@ public class WebSocketCommunicator extends Endpoint {
     private static void notify(ServerMessage message) {
         switch (message.getServerMessageType()) {
             //cant cast here (deserialize again)
-            case NOTIFICATION -> displayNotification((Notification) message);
-            case ERROR -> displayError((ErrorMessage) message);
-            case LOAD_GAME -> loadGame((LoadGame) message);
+            case NOTIFICATION -> displayNotification(message);
+            case ERROR -> displayError(message);
+            case LOAD_GAME -> loadGame(message);
         }
     }
     //just print out messages
-    private static void displayNotification(Notification message){
+    private static void displayNotification(ServerMessage message){
         System.out.println(message.getMessage());
     }
 
-    private static void displayError(ErrorMessage message){
+    private static void displayError(ServerMessage message){
         ServerFacade.returned_error = true;
         System.out.println(message.getErrorMessage());
     }
 
-    private static void loadGame(LoadGame message){
+    private static void loadGame(ServerMessage message){
         ReadEvaluateSourceInput.printCurrentBoard(message.getGame(), ReadEvaluateSourceInput.getCurrentColor());
         ReadEvaluateSourceInput.setCurrentBoard(message.getGame());
     }
