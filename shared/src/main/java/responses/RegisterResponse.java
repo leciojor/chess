@@ -1,23 +1,23 @@
-package server.responses;
+package responses;
 
-import services.Err;
+import services.*;
 
-public class LoginResponse {
+public class RegisterResponse {
+
     private String username;
 
     private String authToken;
-
     private String message;
-
     private transient int status;
 
-    public LoginResponse(String username, String authToken){
+
+
+    public RegisterResponse(String username, String authToken){
         this.username = username;
         this.authToken = authToken;
-
     }
 
-    public LoginResponse(Err error){
+    public RegisterResponse(Err error){
         this.message = error.getError().message();
         this.status = error.getError().status();
     }

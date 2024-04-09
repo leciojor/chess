@@ -4,8 +4,8 @@ package services;
 import dataAccess.*;
 import model.AuthData;
 import model.*;
-import server.requests.JoinGameRequest;
-import server.responses.JoinGameResponse;
+import requests.JoinGameRequest;
+import responses.JoinGameResponse;
 
 import java.sql.SQLException;
 import java.util.Objects;

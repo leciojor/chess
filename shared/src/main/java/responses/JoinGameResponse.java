@@ -1,20 +1,20 @@
-package server.responses;
+package responses;
 
 import services.Err;
 
-public class LogoutResponse {
+public class JoinGameResponse {
 
     private String message;
 
     private transient int status;
 
 
-    public LogoutResponse(Err error){
+    public JoinGameResponse(Err error){
         this.message = error.getError().message();
         this.status = error.getError().status();
     }
 
-    public LogoutResponse(){
+    public JoinGameResponse(){
 
     }
 
@@ -25,6 +25,4 @@ public class LogoutResponse {
     public void setStatus(int status){
         this.status = status;
     }
-
-
 }

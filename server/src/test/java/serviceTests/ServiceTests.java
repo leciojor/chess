@@ -1,6 +1,8 @@
 package serviceTests;
 
 import dataAccess.*;
+import requests.*;
+import responses.*;
 import server.requests.*;
 import server.responses.*;
 import services.*;

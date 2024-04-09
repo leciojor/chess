@@ -1,4 +1,4 @@
-package server.responses;
+package responses;
 
 import services.Err;
 public class CreateGameResponse {

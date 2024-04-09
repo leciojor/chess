@@ -1,20 +1,20 @@
-package server.responses;
+package responses;
 
 import services.Err;
 
-public class ClearResponse {
+public class LogoutResponse {
 
     private String message;
 
     private transient int status;
 
 
-    public ClearResponse(Err error){
+    public LogoutResponse(Err error){
         this.message = error.getError().message();
         this.status = error.getError().status();
     }
 
-    public ClearResponse(){
+    public LogoutResponse(){
 
     }
 
@@ -25,4 +25,6 @@ public class ClearResponse {
     public void setStatus(int status){
         this.status = status;
     }
+
+
 }

@@ -9,8 +9,8 @@ import java.util.Random;
 import java.util.Vector;
 
 import chess.*;
-import server.requests.CreateGameRequest;
-import server.responses.CreateGameResponse;
+import requests.CreateGameRequest;
+import responses.CreateGameResponse;
 
 
 public class CreateGameService {

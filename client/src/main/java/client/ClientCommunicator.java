@@ -9,10 +9,13 @@ import java.util.Objects;
 
 import com.google.gson.Gson;
 import model.GameData;
+import requests.CreateGameRequest;
+import requests.JoinGameRequest;
+import requests.LoginRequest;
+import requests.RegisterRequest;
+import responses.*;
 import server.requests.*;
 import server.responses.*;
-import server.responses.RegisterResponse;
-
 
 
 public class ClientCommunicator {

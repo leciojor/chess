@@ -2,15 +2,12 @@ package dataAccess;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
-import model.AuthData;
 import model.GameData;
-import server.requests.RegisterRequest;
 
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.Vector;
 
 public class SQLGameDAO implements GameDAO{
     @Override
