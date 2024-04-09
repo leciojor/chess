@@ -16,6 +16,14 @@ public class ChessBoard {
         this.structure = new ChessPiece[8][8];
     }
 
+    public ChessPiece[][] getStructure(){
+        return structure;
+    }
+
+    public void setStructure(ChessPiece[][] newStructure){
+        structure = newStructure;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -115,6 +123,8 @@ public class ChessBoard {
         }
         return copy;
     }
+
+
 
 
 }

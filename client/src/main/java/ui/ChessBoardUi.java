@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
 import chess.ChessPosition;
@@ -47,8 +48,6 @@ public class ChessBoardUi {
     private static boolean alternate_row = true;
     private static boolean alternate_col = true;
 
-    private static ChessGame current_game;
-
 
 
 
@@ -59,14 +58,14 @@ public class ChessBoardUi {
         game.setBoard(loadBoard("""
                 | | | | | | |q| |
                 | | | | |n| | | |
-                | | | | | | | | |
                 | | | | | | |p| |
+                | | | | | | | | |
                 | | | | | | | | |
                 | | | | | | | |R|
                 | | | | | | | | |
                 |K|B| | | | | | |
                 """));
-        game.setTeamTurn(ChessGame.TeamColor.BLACK);
+        game.setTeamTurn(ChessGame.TeamColor.WHITE);
 
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
@@ -80,30 +79,67 @@ public class ChessBoardUi {
 
 
 
-    public static void drawBoard(PrintStream out, ChessGame game, ChessGame.TeamColor color) {
-        current_game = game;
-        drawBorders(out, game, color);
-    }
+    public static void drawBoard(PrintStream out, ChessGame game, ChessGame.TeamColor currentColor) {
+        ChessGame temp_game_copy = new ChessGame();
+        ChessGame temp_game_copy_two = new ChessGame();
+        ChessBoard flipped_white = flipWhite(game.getBoard().getStructure());
+        ChessBoard flipped_array = flipArray(flipped_white.getStructure());
 
+        temp_game_copy.setBoard(flipped_array);
+        temp_game_copy_two.setBoard(flipped_white);
 
-    private static void drawBorders(PrintStream out, ChessGame game, ChessGame.TeamColor color){
-        drawTopBottom(out);
-        drawTextTopBottom(out);
-        if (color == ChessGame.TeamColor.WHITE){
-            Map<ChessPiece.PieceType, String> temp_black = PIECES_BLACK;
-            PIECES_BLACK = PIECES_WHITE;
-            PIECES_WHITE = temp_black;
+        if (currentColor == ChessGame.TeamColor.BLACK){
+            drawBorders(out, temp_game_copy_two);
+        }
+        else{
+            drawBorders(out, temp_game_copy);
         }
 
+    }
+
+
+    private static void drawBorders(PrintStream out, ChessGame game){
+        drawTopBottom(out);
+        drawTextTopBottom(out);
 
         out.println();
-        drawSides(out);
 
+        drawSides(out, game);
 
         drawTextTopBottom(out);
         out.println();
         drawTopBottom(out);
     }
+
+    private static ChessBoard flipArray(ChessPiece[][] structure){
+        ChessPiece[][] flipped_array = new ChessPiece[8][8];
+        ChessBoard new_board = new ChessBoard();
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                flipped_array[7 - i][7 - j] = structure[i][j];
+            }
+        }
+
+        new_board.setStructure(flipped_array);
+        return new_board;
+    }
+
+    private static ChessBoard flipWhite(ChessPiece[][] structure){
+        ChessPiece[][] flipped_array = new ChessPiece[8][8];
+        ChessBoard new_board = new ChessBoard();
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                flipped_array[i][7 - j] = structure[i][j];
+            }
+        }
+
+        new_board.setStructure(flipped_array);
+        return new_board;
+    }
+
+
 
     private static void drawTopBottom(PrintStream out){
         for(int col = 0; col < BOARD_SIZE_CHAR; col++){
@@ -123,13 +159,13 @@ public class ChessBoardUi {
 
 
 
-    private static void drawSides(PrintStream out){
+    private static void drawSides(PrintStream out, ChessGame game){
 
         for(int row = 0; row < DIGITS_SIDES.length; row++){
             out.print(SIDE_COMPLIMENT);
             out.print(DIGITS_SIDES[row]);
 
-            drawInside(out, row);
+            drawInside(out, row, game);
 
             out.print(DIGITS_SIDES[row]);
             out.print(SIDE_COMPLIMENT);
@@ -139,10 +175,10 @@ public class ChessBoardUi {
         }
     }
 
-    private static void drawInside(PrintStream out, int row) {
+    private static void drawInside(PrintStream out, int row, ChessGame game) {
         out.print(EMPTY);
 
-        drawBoxes(out, row);
+        drawBoxes(out, row, game);
 
         setRegular(out);
         out.print(EMPTY);
@@ -150,25 +186,33 @@ public class ChessBoardUi {
         alternate_row = !alternate_row;
     }
 
-    private static void drawBoxes(PrintStream out, int row){
+
+    private static String addingBoxes(ChessGame.TeamColor color, ChessPiece chess_piece){
+        String piece;
+        if (color == ChessGame.TeamColor.WHITE){
+            piece = PIECES_WHITE.get(chess_piece.getPieceType());
+        }
+        else{
+            piece = PIECES_BLACK.get(chess_piece.getPieceType());
+        }
+
+        return piece;
+    }
+    private static void drawBoxes(PrintStream out, int row, ChessGame game){
 
         for (int col = 0; col < BOARD_SIZE; col++){
 
+
             ChessPosition position = new ChessPosition(row + 1, col + 1);
-            ChessPiece chess_piece = current_game.getBoard().getPiece(position);
+            ChessPiece chess_piece = game.getBoard().getPiece(position);
             if (chess_piece != null){
                 ChessGame.TeamColor color = chess_piece.getTeamColor();
                 String piece;
-                if (color == ChessGame.TeamColor.WHITE){
-                    piece = PIECES_WHITE.get(chess_piece.getPieceType());
-                }
-                else{
-                    piece = PIECES_BLACK.get(chess_piece.getPieceType());
-                }
+                piece = addingBoxes(color, chess_piece);
+
                 addPieces(out, piece);
             }
             else{
-
                 addPieces(out, null);
             }
             alternate_col = !alternate_col;
