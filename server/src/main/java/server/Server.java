@@ -2,8 +2,6 @@ package server;
 
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
-import requests.*;
-import responses.*;
 import server.requests.*;
 import server.responses.*;
 import services.*;

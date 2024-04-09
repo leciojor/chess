@@ -1,7 +1,7 @@
 package services;
 
 import dataAccess.*;
-import responses.ClearResponse;
+import server.responses.ClearResponse;
 
 import java.sql.SQLException;
 

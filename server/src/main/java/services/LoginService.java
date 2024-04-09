@@ -1,12 +1,15 @@
 package services;
 
 import dataAccess.*;
+import model.AuthData;
 import model.UserData;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import requests.LoginRequest;
-import responses.LoginResponse;
+import server.requests.LoginRequest;
+import server.responses.LoginResponse;
 
 import java.sql.SQLException;
+import java.util.Objects;
+import java.util.Vector;
 
 public class LoginService {
     private final LoginRequest request;

@@ -7,6 +7,9 @@ import model.*;
 import org.junit.jupiter.api.*;
 
 import server.Server;
+import server.requests.*;
+import server.responses.RegisterResponse;
+import services.*;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;

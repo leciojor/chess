@@ -1,4 +1,4 @@
-package responses;
+package server.responses;
 
 import model.GameData;
 import services.Err;

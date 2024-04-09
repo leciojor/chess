@@ -1,4 +1,4 @@
-package requests;
+package server.requests;
 
 public class ListGamesRequest {
 

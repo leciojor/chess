@@ -1,25 +1,34 @@
-package responses;
+package server.responses;
 
 import services.Err;
+public class CreateGameResponse {
 
-public class LogoutResponse {
 
+    private String gameID;
     private String message;
-
     private transient int status;
 
 
-    public LogoutResponse(Err error){
+
+
+    public CreateGameResponse(String gameID){
+        this.gameID = gameID;
+
+    }
+
+    public CreateGameResponse(Err error){
         this.message = error.getError().message();
         this.status = error.getError().status();
     }
 
-    public LogoutResponse(){
 
-    }
 
     public int getStatus(){
         return this.status;
+    }
+
+    public String getGameID(){
+        return this.gameID;
     }
 
     public void setStatus(int status){
