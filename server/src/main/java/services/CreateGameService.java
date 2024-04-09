@@ -45,6 +45,7 @@ public class CreateGameService {
 
                 ChessGame chessGame = new ChessGame();
                 chessGame.getBoard().resetBoard();
+                chessGame.setIsOver(false);
 
                 game.createGame(randomNumber, "", "", gameName, chessGame);
                 CreateGameResponse response = new CreateGameResponse(String.valueOf(randomNumber));

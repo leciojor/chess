@@ -96,10 +96,6 @@ public class ChessBoard {
             ChessPiece pieceBlackPawn = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN);
             resetBoard[positionWhitePawn.getRow()][positionWhitePawn.getColumn()] = pieceWhitePawn;
             resetBoard[positionBlackPawn.getRow()][positionBlackPawn.getColumn()] = pieceBlackPawn;
-            System.out.println(positionBlackPawn);
-            System.out.println(pieceBlackPawn);
-            System.out.println(positionWhitePawn);
-            System.out.println(pieceWhitePawn);
         }
 
 
