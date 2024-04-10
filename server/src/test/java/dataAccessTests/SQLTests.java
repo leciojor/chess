@@ -7,7 +7,7 @@ import model.*;
 import org.junit.jupiter.api.*;
 
 import server.Server;
-import server.requests.*;
+import requests.*;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -23,8 +23,6 @@ public class SQLTests {
     String password = "123";
 
     String email = "@";
-
-
 
     String token = "dfoom322o3mpom";
 
