@@ -4,11 +4,9 @@ import chess.*;
 
 
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static ui.EscapeSequences.*;
-import static ui.TestFactory.*;
 
 
 public class ChessBoardUi {
@@ -51,37 +49,6 @@ public class ChessBoardUi {
 
 //add method that takes the current board and changes it with the necessary piece changes
 
-    public static void main(String[] args) {
-        var game = getNewGame();
-        game.setBoard(loadBoard("""
-                        |r|n|b|q|k|b|n|r|
-                        |p|p|p|p|p|p|p|p|
-                        | | | | | | | | |
-                        | | | | | | | | |
-                        | | | | | | | | |
-                        | | | | | | | | |
-                        |P|P|P|P|P|P|P|P|
-                        |R|N|B|Q|K|B|N|R|
-                        """));
-        game.setTeamTurn(ChessGame.TeamColor.WHITE);
-
-        var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-
-        out.print(ERASE_SCREEN);
-
-        drawBoard(out, game, ChessGame.TeamColor.BLACK);
-
-        ArrayList<ChessMove> allowed = (ArrayList<ChessMove>) game.validMoves(new ChessPosition(8,8));
-//        System.out.println(allowed.isEmpty());
-        for (ChessMove move : allowed){
-            allowed_positions.add(move.getEndPosition());
-        }
-
-        //testing highlight
-        highlight(out, game, ChessGame.TeamColor.BLACK);
-
-
-    }
 
     public static void setAllowedPositions(ArrayList<ChessPosition> positions){
         allowed_positions = positions;
@@ -89,19 +56,19 @@ public class ChessBoardUi {
 
 
     public static void drawBoard(PrintStream out, ChessGame game, ChessGame.TeamColor currentColor) {
-        ChessGame temp_game_copy = new ChessGame();
+        ChessGame tempGameCopy = new ChessGame();
         ChessGame temp_game_copy_two = new ChessGame();
         ChessBoard flipped_white = flipWhite(game.getBoard().getStructure());
         ChessBoard flipped_array = flipArray(flipped_white.getStructure());
 
-        temp_game_copy.setBoard(flipped_array);
+        tempGameCopy.setBoard(flipped_array);
         temp_game_copy_two.setBoard(flipped_white);
 
         if (currentColor == ChessGame.TeamColor.BLACK){
             drawBorders(out, temp_game_copy_two);
         }
         else{
-            drawBorders(out, temp_game_copy);
+            drawBorders(out, tempGameCopy);
         }
 
     }

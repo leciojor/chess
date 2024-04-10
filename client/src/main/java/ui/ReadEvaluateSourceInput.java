@@ -19,9 +19,9 @@ public class ReadEvaluateSourceInput {
 
     private String input;
 
-    private int current_game_id;
+    private static int current_game_id;
 
-    private ServerFacade client_call = new ServerFacade(8080);
+    private static ServerFacade client_call = new ServerFacade(8080);
 
     private static PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
@@ -237,6 +237,7 @@ public class ReadEvaluateSourceInput {
                 }
 
                 else{
+                    current_game_id = Integer.parseInt(input_words[0]);
                     client_call.join(input_words[0], "OBSERVER");
                     client_call.webSoc("join_observer", new Object[]{Integer.parseInt(input_words[0]), ClientCommunicator.current_auth_token});
                     if (!ServerFacade.returned_error){
