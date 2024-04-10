@@ -2,8 +2,10 @@ package server;
 
 import dataAccess.DataAccessException;
 import dataAccess.DatabaseManager;
-import server.requests.*;
-import server.responses.*;
+import requests.*;
+import responses.*;
+import requests.*;
+import responses.*;
 import services.*;
 import spark.*;
 import com.google.gson.Gson;

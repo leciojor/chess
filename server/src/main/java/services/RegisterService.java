@@ -1,15 +1,14 @@
 package services;
 
-import model.AuthData;
 import model.UserData;
-import server.requests.RegisterRequest;
+import requests.RegisterRequest;
 
 import dataAccess.*;
-import server.responses.RegisterResponse;
+import responses.Err;
+import responses.RegisterResponse;
 
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.Vector;
 
 public class RegisterService {
 

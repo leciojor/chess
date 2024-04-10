@@ -2,8 +2,9 @@ package services;
 
 import dataAccess.*;
 import model.AuthData;
-import server.requests.ListGamesRequest;
-import server.responses.ListGamesResponse;
+import requests.ListGamesRequest;
+import responses.Err;
+import responses.ListGamesResponse;
 
 import java.sql.SQLException;
 

@@ -1,4 +1,4 @@
-package services;
+package responses;
 
 public class Err {
 

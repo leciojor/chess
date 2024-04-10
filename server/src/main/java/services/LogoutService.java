@@ -2,8 +2,9 @@ package services;
 
 import dataAccess.*;
 import model.AuthData;
-import server.requests.LogoutRequest;
-import server.responses.LogoutResponse;
+import requests.LogoutRequest;
+import responses.Err;
+import responses.LogoutResponse;
 
 import java.sql.SQLException;
 

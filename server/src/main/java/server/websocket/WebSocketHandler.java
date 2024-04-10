@@ -262,7 +262,7 @@ public class WebSocketHandler {
 
 
         else if (game.getTeamTurn() != user_color){
-            sendError(conn, "YOU ARE JUST AN OBSERVER");
+            sendError(conn, "NOT YOUR TURN");
             return;
         }
 

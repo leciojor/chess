@@ -1,10 +1,8 @@
-package server.responses;
+package responses;
 
 import model.GameData;
-import services.Err;
 
 import java.util.HashSet;
-import java.util.Vector;
 
 public class ListGamesResponse {
 

@@ -59,6 +59,13 @@ public class ReadEvaluateSourceInput {
     private boolean checkIdType(String input){
         String[] inputsArray = input.split(" ");
 
+        for (String input_ : inputsArray){
+            if (input_.charAt(0) == '-'){
+                return false;
+            }
+        }
+
+
         try {
             int intValue = Integer.parseInt(inputsArray[0]);
         } catch (NumberFormatException e) {
@@ -150,7 +157,7 @@ public class ReadEvaluateSourceInput {
             possible_positions = null;
         }
         ChessBoardUi.setAllowedPositions(possible_positions);
-        ChessBoardUi.drawBoard(out, current_board, current_color);
+        ChessBoardUi.highlight(out, current_board, current_color);
     }
 
     private void runPostLogin() throws Exception {
@@ -196,7 +203,7 @@ public class ReadEvaluateSourceInput {
                 }
 
                 else if (!checkIdType(input_words[0])){
-                    System.out.println("Game ID has to be a number");
+                    System.out.println("Game ID has to be a positive number");
                 }
 
                 else if (Objects.equals(input_words[1], "black") || Objects.equals(input_words[1], "white")){
@@ -226,7 +233,7 @@ public class ReadEvaluateSourceInput {
                 }
 
                 else if (!checkIdType(input)){
-                    System.out.println("Game ID has to be a number");
+                    System.out.println("Game ID has to be a positive number");
                 }
 
                 else{
@@ -299,7 +306,7 @@ public class ReadEvaluateSourceInput {
                 }
 
                 else if (!checkIdType(start_positions[0]) || !checkIdType(start_positions[1]) || !checkIdType(end_positions[0]) || !checkIdType(end_positions[1] )){
-                    System.out.println("The coordinates have to be have to be a numbers. It is still your turn");
+                    System.out.println("The coordinates have to be have to be positive numbers");
                 }
                 else{
                     ChessPosition start_position = new ChessPosition(Integer.parseInt(start_positions[0]), Integer.parseInt(start_positions[1]));
@@ -328,7 +335,7 @@ public class ReadEvaluateSourceInput {
                 }
 
                 else if (!checkIdType(start_positions[0]) || !checkIdType(start_positions[1] )){
-                    System.out.println("The coordinates have to be have to be a numbers. It is still your turn");
+                    System.out.println("The coordinates have to be have to be positive numbers");
                 }
                 else{
                     ChessPosition piece_position = new ChessPosition(Integer.parseInt(start_positions[0]), Integer.parseInt(start_positions[1]));

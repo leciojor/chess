@@ -1,6 +1,4 @@
-package server.responses;
-
-import services.Err;
+package responses;
 
 public class ErrorResponse {
 

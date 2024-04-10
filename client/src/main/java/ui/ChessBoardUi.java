@@ -215,7 +215,7 @@ public class ChessBoardUi {
     }
 
     private static boolean checkIfWithinAllowedOnes(int row, int col){
-        ChessPosition curr_position = new ChessPosition(row, col);
+        ChessPosition curr_position = new ChessPosition(row + 1, col + 1);
         for (ChessPosition position : allowed_positions){
             if (curr_position.equals(position)){
                 return true;

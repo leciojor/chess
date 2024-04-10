@@ -2,15 +2,12 @@ package dataAccess;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
-import model.AuthData;
 import model.GameData;
-import server.requests.RegisterRequest;
 
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.Vector;
 
 public class SQLGameDAO implements GameDAO{
     @Override
@@ -163,14 +160,15 @@ public class SQLGameDAO implements GameDAO{
 
                     if (newUsername != null){
                         updated_username = gson.toJson(newUsername);
+                        preparedStatement.setString(1, updated_username);
+                        preparedStatement.setString(2, String.valueOf(gameId));
+                        preparedStatement.executeUpdate();
                     }
                     else{
-                        updated_username = null;
+                        preparedStatement.setNull(1, java.sql.Types.VARCHAR);
+                        preparedStatement.setString(2, String.valueOf(gameId));
+                        preparedStatement.executeUpdate();
                     }
-
-                    preparedStatement.setString(1, updated_username);
-                    preparedStatement.setString(2, String.valueOf(gameId));
-                    preparedStatement.executeUpdate();
 
                 }
             }
@@ -179,10 +177,17 @@ public class SQLGameDAO implements GameDAO{
                     Gson gson = new Gson();
                     String updated_username = gson.toJson(newUsername);
 
-                    preparedStatement.setString(1, updated_username);
-                    preparedStatement.setString(2, String.valueOf(gameId));
-                    preparedStatement.executeUpdate();
-
+                    if (newUsername != null){
+                        updated_username = gson.toJson(newUsername);
+                        preparedStatement.setString(1, updated_username);
+                        preparedStatement.setString(2, String.valueOf(gameId));
+                        preparedStatement.executeUpdate();
+                    }
+                    else{
+                        preparedStatement.setNull(1, java.sql.Types.VARCHAR);
+                        preparedStatement.setString(2, String.valueOf(gameId));
+                        preparedStatement.executeUpdate();
+                    }
                 }
             }
 
