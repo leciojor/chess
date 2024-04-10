@@ -231,7 +231,7 @@ public class ReadEvaluateSourceInput {
 
                 else{
                     client_call.join(input_words[0], "OBSERVER");
-                    client_call.webSoc("join_observer", new Object[]{current_game_id, ClientCommunicator.current_auth_token});
+                    client_call.webSoc("join_observer", new Object[]{Integer.parseInt(input_words[0]), ClientCommunicator.current_auth_token});
                     if (!ServerFacade.returned_error){
                         runGameplay();
                         break;

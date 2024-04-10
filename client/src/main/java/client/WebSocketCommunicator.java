@@ -47,17 +47,14 @@ public class WebSocketCommunicator extends Endpoint {
     }
     //just print out messages
     private static void displayNotification(Notification message){
-        ServerFacade.returned_error = false;
         System.out.println("NOTIFICATION: " + message.getMessage());
     }
 
     private static void displayError(ErrorMessage message){
-        ServerFacade.returned_error = true;
         System.out.println("ERROR: " + message.getErrorMessage());
     }
 
     private static void loadGame(LoadGame message){
-        ServerFacade.returned_error = false;
         System.out.println();
         System.out.println("CURRENT GAME:");
         System.out.println();

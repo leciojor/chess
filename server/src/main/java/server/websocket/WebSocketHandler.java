@@ -255,9 +255,14 @@ public class WebSocketHandler {
         }
         //Verifying move validity
 
+        if (user_color == null){
+            sendError(conn, "YOU ARE JUST AN OBSERVER, NO MOVEMENT ALLOWED");
+            return;
+        }
 
-        if (game.getTeamTurn() != user_color){
-            sendError(conn, "IT IS NOT YOUR TURN");
+
+        else if (game.getTeamTurn() != user_color){
+            sendError(conn, "YOU ARE JUST AN OBSERVER");
             return;
         }
 
