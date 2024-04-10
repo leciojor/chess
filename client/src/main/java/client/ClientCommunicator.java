@@ -14,8 +14,6 @@ import requests.JoinGameRequest;
 import requests.LoginRequest;
 import requests.RegisterRequest;
 import responses.*;
-import requests.*;
-import responses.*;
 
 
 public class ClientCommunicator {

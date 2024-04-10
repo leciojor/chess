@@ -3,7 +3,6 @@ package client;
 import chess.ChessGame;
 import chess.ChessMove;
 import com.google.gson.Gson;
-import server.websocket.Connection;
 import ui.ReadEvaluateSourceInput;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.serverMessages.subMessages.ErrorMessage;
@@ -21,7 +20,7 @@ public class WebSocketCommunicator extends Endpoint {
 
     private Gson gson = new Gson();
     private URL url;
-    private Connection connection;
+
     private Session session;
 
     //logic to receive msg from server
