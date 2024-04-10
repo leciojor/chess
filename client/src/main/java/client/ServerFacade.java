@@ -46,7 +46,7 @@ public class ServerFacade {
             communicator = setWebSocketCommunication("connect");
         }
         catch (IOException|DeploymentException|URISyntaxException e){
-
+            System.out.println("ERROR: WEB SOCKET ERROR");
         }
 
     }

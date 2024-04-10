@@ -135,15 +135,20 @@ public class ReadEvaluateSourceInput {
 
     public static void printCurrentBoard(ChessGame game, ChessGame.TeamColor currentColor){
         ChessBoardUi.drawBoard(out, current_board, currentColor);
+
     }
 
     private void printHighlightedBoard(ArrayList<ChessMove> possibleMoves){
         ArrayList<ChessPosition> possible_positions = new ArrayList<>();
 
-        for (ChessMove move : possibleMoves){
-            possible_positions.add(move.getEndPosition());
+        if (possibleMoves != null){
+            for (ChessMove move : possibleMoves){
+                possible_positions.add(move.getEndPosition());
+            }
         }
-
+        else{
+            possible_positions = null;
+        }
         ChessBoardUi.setAllowedPositions(possible_positions);
         ChessBoardUi.drawBoard(out, current_board, current_color);
     }
@@ -200,7 +205,6 @@ public class ReadEvaluateSourceInput {
                     client_call.join(input_words[0], input_words[1].toUpperCase());
 
                         current_color = getUserColor(input_words[1]);
-
                         client_call.webSoc("join_player", new Object[]{current_game_id, current_color, ClientCommunicator.current_auth_token});
                         if (!ServerFacade.returned_error){
                             runGameplay();
@@ -328,7 +332,10 @@ public class ReadEvaluateSourceInput {
                 }
                 else{
                     ChessPosition piece_position = new ChessPosition(Integer.parseInt(start_positions[0]), Integer.parseInt(start_positions[1]));
-                    printHighlightedBoard((ArrayList<ChessMove>) current_board.validMoves(piece_position));
+                    if (current_board != null){
+                        printHighlightedBoard((ArrayList<ChessMove>) current_board.validMoves(piece_position));
+                    }
+
                 }
 
             }

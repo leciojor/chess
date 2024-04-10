@@ -49,7 +49,7 @@ public class WebSocketHandler {
         ErrorMessage error = new ErrorMessage(errorMessage, ServerMessage.ServerMessageType.ERROR);
         String error_json = gson.toJson(error);
         conn.session.getRemote().sendString(error_json);
-        return;
+
     }
 
     private void checkStalCases(SQLGameDAO game_sql, ChessGame game, Connection conn, String white_username, String black_username, int gameID) throws IOException, SQLException, DataAccessException {
@@ -214,7 +214,7 @@ public class WebSocketHandler {
 
         ChessGame game = getChessGame(gameID);
 
-        if (game == null || checkEmptyGame(gameID, join_command.getPlayerColor(), username)){
+        if (game == null){
             sendError(conn, "Game does not exist or is empty");
             return;
         }
@@ -285,7 +285,7 @@ public class WebSocketHandler {
         //Sending notifications
         String username = getUsername(move_command);
 
-        connections.sendNotifications(gameID, username + "moved from " + move.getStartPosition().toString() + " to " + move.getEndPosition().toString(), conn.session, false);
+        connections.sendNotifications(gameID, username + " moved from " + move.getStartPosition().toString() + " to " + move.getEndPosition().toString(), conn.session, false);
 
         //checking check/stal cases
         checkStalCases(game_sql, game, conn, white_username, black_username, gameID);

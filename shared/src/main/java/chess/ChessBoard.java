@@ -76,7 +76,6 @@ public class ChessBoard {
 
         ChessPiece[][] resetBoard = new ChessPiece[8][8];
 
-
         ChessPiece.PieceType[] pieceSequence = {ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK};
 
         for (int i = 0; i < pieceSequence.length; i++){
@@ -86,8 +85,6 @@ public class ChessBoard {
             ChessPiece pieceBlack = new ChessPiece(ChessGame.TeamColor.BLACK, pieceSequence[i]);
             resetBoard[positionWhite.getRow()][positionWhite.getColumn()] = pieceWhite;
             resetBoard[positionBlack.getRow()][positionBlack.getColumn()] = pieceBlack;
-
-
 
 
             ChessPosition positionWhitePawn = new ChessPosition(1, i);
