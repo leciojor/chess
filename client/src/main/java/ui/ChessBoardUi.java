@@ -244,7 +244,7 @@ public class ChessBoardUi {
             else{
                 addPieces(out, null);
             }
-            alternate_col = !alternate_col;
+;            alternate_col = !alternate_col;
         }
 
     }
