@@ -63,8 +63,8 @@ public class WebSocketCommunicator extends Endpoint {
         System.out.println("CURRENT GAME:");
         System.out.println();
 //        System.out.println("TEST LOAD " + message.getGame() == null);
-        ReadEvaluateSourceInput.printCurrentBoard(message.getGame(), ReadEvaluateSourceInput.getCurrentColor());
         ReadEvaluateSourceInput.setCurrentBoard(message.getGame());
+        ReadEvaluateSourceInput.printCurrentBoard(message.getGame(), ReadEvaluateSourceInput.getCurrentColor());
     }
 
     //needs to add logic so it can send messages to server any type and something to get the server messages and answer it (notify)

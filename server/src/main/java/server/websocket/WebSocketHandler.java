@@ -196,7 +196,7 @@ public class WebSocketHandler {
         connections.sendNotifications(join_command.getGameID(), username + " joined game as " + join_command.getPlayerColor(), conn.session, false);
 
         //sending loadgame message to added user
-        LoadGame game_command = new LoadGame(getChessGame(join_command.getGameID()), ServerMessage.ServerMessageType.LOAD_GAME);
+        LoadGame game_command = new LoadGame(game, ServerMessage.ServerMessageType.LOAD_GAME);
         String game_json = gson.toJson(game_command);
 
         conn.session.getRemote().sendString(game_json);

@@ -17,12 +17,14 @@ public class ServerFacade {
 
     private String webSocString = "ws://localhost:";
 
+    private WebSocketCommunicator communicator;
+
     private ClientCommunicator setClientCommunication(String path) throws IOException {
         URL url = new URL(urlString + this.port + "/" +  path);
         return new ClientCommunicator(url);
     }
 
-    private void determineWebSocketMethod(String webSocketMethod, WebSocketCommunicator communicator, Object[] requiredParameters) throws Exception {
+    private void determineWebSocketMethod(String webSocketMethod, Object[] requiredParameters) throws Exception {
         switch (webSocketMethod) {
             case "join_player" -> communicator.sendJoin((Integer) requiredParameters[0], (ChessGame.TeamColor) requiredParameters[1], (String) requiredParameters[2]);
             case "join_observer" -> communicator.sendObserve((Integer) requiredParameters[0], (String) requiredParameters[1]);
@@ -40,6 +42,13 @@ public class ServerFacade {
 
     public ServerFacade(int port){
         this.port = port;
+        try{
+            communicator = setWebSocketCommunication("connect");
+        }
+        catch (IOException|DeploymentException|URISyntaxException e){
+
+        }
+
     }
 
     public static boolean returned_error = false;
@@ -80,8 +89,7 @@ public class ServerFacade {
     }
 
     public void webSoc(String webSocketMethod, Object[] requiredParameters) throws Exception {
-        WebSocketCommunicator communicator = setWebSocketCommunication("connect");
-        determineWebSocketMethod(webSocketMethod, communicator, requiredParameters);
+        determineWebSocketMethod(webSocketMethod, requiredParameters);
     }
 
 
