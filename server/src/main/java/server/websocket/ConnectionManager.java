@@ -17,12 +17,12 @@ public class ConnectionManager {
     private static final HashMap<Integer, List<Session>> connections = new HashMap<>();
 
     //sessionLoop may not be excluding the current user (REVIEW LOGIC)
-    private void sessionLoop(int gameID, String json, Session user_session) throws IOException {
-        List<Session> game_sessions = connections.get(gameID);
+    private void sessionLoop(int gameID, String json, Session userSession) throws IOException {
+        List<Session> gameSessions = connections.get(gameID);
 
-        for (Session session : game_sessions){
+        for (Session session : gameSessions){
 
-            if (session != user_session){
+            if (session != userSession){
                 session.getRemote().sendString(json);
             }
 
@@ -30,9 +30,9 @@ public class ConnectionManager {
     }
 
     private void sessionLoopAll(int gameID, String json) throws IOException {
-        List<Session> game_sessions = connections.get(gameID);
+        List<Session> gameSessions = connections.get(gameID);
 
-        for (Session session : game_sessions){
+        for (Session session : gameSessions){
             session.getRemote().sendString(json);
         }
     }
@@ -40,45 +40,35 @@ public class ConnectionManager {
     public void add(int gameID, Session session){
 
         if (connections.containsKey(gameID)){
-            List<Session> game_connections = connections.get(gameID);
-            game_connections.add(session);
+            List<Session> gameConnections = connections.get(gameID);
+            gameConnections.add(session);
         }
         else{
-            List<Session> game_connections = new ArrayList<>();
-            game_connections.add(session);
-            connections.put(gameID, game_connections);
+            List<Session> gameConnections = new ArrayList<>();
+            gameConnections.add(session);
+            connections.put(gameID, gameConnections);
         }
 
     }
 
     public void remove(int gameID, Session session){
         if (connections.containsKey(gameID)){
-            List<Session> game_connections = connections.get(gameID);
-            game_connections.remove(session);
+            List<Session> gameConnections = connections.get(gameID);
+            gameConnections.remove(session);
         }
 
     }
 
-
-    public void removeAll(int gameID) {
-        if (connections.containsKey(gameID)){
-            List<Session> game_sessions = connections.get(gameID);
-            for (Session session : game_sessions){
-                game_sessions.remove(session);
-            }
-        }
-    }
-
-    public void sendNotifications(int gameID, String msg, Session user_session, boolean all) throws IOException {
+    public void sendNotifications(int gameID, String msg, Session userSession, boolean all) throws IOException {
         Gson gson = new Gson();
         //sessionLoop may not be excluding the current user (REVIEW LOGIC)
         Notification notification = new Notification(msg, ServerMessage.ServerMessageType.NOTIFICATION);
-        String notification_json = gson.toJson(notification);
+        String notificationJson = gson.toJson(notification);
         if (all){
-            sessionLoopAll(gameID, notification_json);
+            sessionLoopAll(gameID, notificationJson);
         }
         else{
-            sessionLoop(gameID, notification_json, user_session);
+            sessionLoop(gameID, notificationJson, userSession);
         }
 
 
@@ -89,9 +79,9 @@ public class ConnectionManager {
         Gson gson = new Gson();
 
         LoadGame load = new LoadGame(game, ServerMessage.ServerMessageType.LOAD_GAME);
-        String load_json = gson.toJson(load);
+        String loadJson = gson.toJson(load);
 
-        sessionLoopAll(gameID, load_json);
+        sessionLoopAll(gameID, loadJson);
 
     }
 }

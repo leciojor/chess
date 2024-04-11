@@ -62,7 +62,7 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     @Override
-    public void updateGame(int gameId, ChessGame UpdatedGame) throws DataAccessException, SQLException {
+    public void updateGame(int gameId, ChessGame updatedGame) throws DataAccessException, SQLException {
 
     }
 

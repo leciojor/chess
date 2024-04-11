@@ -47,7 +47,7 @@ public class SQLAuthDAO implements AuthDAO{
 
     @Override
     public Vector<AuthData> getCurrentAuths() throws DataAccessException, SQLException {
-        Vector<AuthData> current_auths = new Vector<AuthData>();
+        Vector<AuthData> currentAuths = new Vector<AuthData>();
         try (var conn = DatabaseManager.getConnection()){
             try (var preparedStatement = conn.prepareStatement("SELECT authtoken, username FROM Auth")) {
                 try (var rs = preparedStatement.executeQuery()) {
@@ -56,12 +56,12 @@ public class SQLAuthDAO implements AuthDAO{
                         var authtoken = rs.getString("authtoken");
 
                         AuthData auth = new AuthData(authtoken, name);
-                        current_auths.add(auth);
+                        currentAuths.add(auth);
                     }
                 }
             }
         }
-        return current_auths;
+        return currentAuths;
     }
 
     @Override

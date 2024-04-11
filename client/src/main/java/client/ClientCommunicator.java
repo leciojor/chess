@@ -49,12 +49,12 @@ public class ClientCommunicator {
 
     private void printErrorMessage() throws IOException {
         responseBody = connection.getErrorStream();
-        StringBuilder response_builder = readingInputStream(responseBody);
+        StringBuilder responseBuilder = readingInputStream(responseBody);
 
-        ErrorResponse response = gson.fromJson(response_builder.toString(), ErrorResponse.class);
-        String error_message = response.getMessage();
+        ErrorResponse response = gson.fromJson(responseBuilder.toString(), ErrorResponse.class);
+        String errorMessage = response.getMessage();
         System.out.println();
-        System.out.print(error_message.toUpperCase());
+        System.out.print(errorMessage.toUpperCase());
     }
 
     private void serializationPost(OutputStream requestBody, String[] inputsArray, String endpointType) throws IOException {
@@ -74,23 +74,23 @@ public class ClientCommunicator {
 
     private void deserializationPost(String endpointType) throws IOException {
         responseBody = connection.getInputStream();
-        StringBuilder response_builder = readingInputStream(responseBody);
+        StringBuilder responseBuilder = readingInputStream(responseBody);
 
 
         if (Objects.equals(endpointType, "register")){
-            RegisterResponse response = gson.fromJson(response_builder.toString(), RegisterResponse.class);
+            RegisterResponse response = gson.fromJson(responseBuilder.toString(), RegisterResponse.class);
             System.out.println("Username: " + response.getUsername() );
             System.out.println("AuthToken: " + response.getAuthToken() );
             ClientCommunicator.current_auth_token = response.getAuthToken();
         }
         else if (Objects.equals(endpointType, "login")){
-            LoginResponse response = gson.fromJson(response_builder.toString(), LoginResponse.class);
+            LoginResponse response = gson.fromJson(responseBuilder.toString(), LoginResponse.class);
             System.out.println("Username: " + response.getUsername() );
             System.out.println("AuthToken: " + response.getAuthToken() );
             ClientCommunicator.current_auth_token = response.getAuthToken();
         }
         else if (Objects.equals(endpointType, "create")){
-            CreateGameResponse response = gson.fromJson(response_builder.toString(), CreateGameResponse.class);
+            CreateGameResponse response = gson.fromJson(responseBuilder.toString(), CreateGameResponse.class);
             System.out.println("GameID: " + response.getGameID() );
 
         }
@@ -162,9 +162,9 @@ public class ClientCommunicator {
 
         if (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             responseBody = this.connection.getInputStream();
-            StringBuilder response_builder = readingInputStream(responseBody);
+            StringBuilder responseBuilder = readingInputStream(responseBody);
 
-            ListGamesResponse response = gson.fromJson(response_builder.toString(), ListGamesResponse.class);
+            ListGamesResponse response = gson.fromJson(responseBuilder.toString(), ListGamesResponse.class);
             HashSet<GameData> games = response.getGames();
             System.out.println();
             System.out.println("Games List: ");

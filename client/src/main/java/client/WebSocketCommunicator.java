@@ -26,22 +26,22 @@ public class WebSocketCommunicator extends Endpoint {
     //logic to receive msg from server
     private static void notify(String message) {
         Gson gson = new Gson();
-        ServerMessage message_server = gson.fromJson(message, ServerMessage.class);
+        ServerMessage messageServer = gson.fromJson(message, ServerMessage.class);
 
-        switch (message_server.getServerMessageType()) {
+        switch (messageServer.getServerMessageType()) {
             case NOTIFICATION -> {
 
-                Notification final_message = gson.fromJson(message, Notification.class);
-                displayNotification(final_message);
+                Notification finalMessage = gson.fromJson(message, Notification.class);
+                displayNotification(finalMessage);
             }
             case ERROR -> {
 
-                ErrorMessage final_message = gson.fromJson(message, ErrorMessage.class);
-                displayError(final_message);}
+                ErrorMessage finalMessage = gson.fromJson(message, ErrorMessage.class);
+                displayError(finalMessage);}
             case LOAD_GAME -> {
 
-                LoadGame final_message = gson.fromJson(message, LoadGame.class);
-                loadGame(final_message);}
+                LoadGame finalMessage = gson.fromJson(message, LoadGame.class);
+                loadGame(finalMessage);}
         }
     }
     //just print out messages
@@ -71,13 +71,14 @@ public class WebSocketCommunicator extends Endpoint {
 
 
         this.session.addMessageHandler(new MessageHandler.Whole<String>() {
+            @Override
             public void onMessage(String message) {
                 Gson gson = new Gson();
                 try {
                     WebSocketCommunicator.notify(message);
                 } catch(Exception ex) {
-                    String error_json = gson.toJson(new ErrorMessage(ex.getMessage(), ServerMessage.ServerMessageType.ERROR));
-                    WebSocketCommunicator.notify(error_json);
+                    String errorJson = gson.toJson(new ErrorMessage(ex.getMessage(), ServerMessage.ServerMessageType.ERROR));
+                    WebSocketCommunicator.notify(errorJson);
                 }
             }        });
 
@@ -85,6 +86,7 @@ public class WebSocketCommunicator extends Endpoint {
 
     public void send(String msg) throws Exception {this.session.getBasicRemote().sendText(msg);}
 
+    @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
     }
 
@@ -92,38 +94,38 @@ public class WebSocketCommunicator extends Endpoint {
     //send messages to server with current authtoken and the requested command (use SEND local method for that)
 
     public void sendJoin(int gameID, ChessGame.TeamColor playerColor, String authToken) throws Exception {
-        JoinPlayer join_command = new JoinPlayer(gameID, playerColor, authToken);
-        String join_json = gson.toJson(join_command);
+        JoinPlayer joinCommand = new JoinPlayer(gameID, playerColor, authToken);
+        String joinJson = gson.toJson(joinCommand);
 
-        send(join_json);
+        send(joinJson);
     }
 
     public void sendObserve(int gameID, String authToken) throws Exception {
-        JoinObserver observe_command = new JoinObserver(gameID, authToken);
-        String observe_json = gson.toJson(observe_command);
+        JoinObserver observeCommand = new JoinObserver(gameID, authToken);
+        String observeJson = gson.toJson(observeCommand);
 
-        send(observe_json);
+        send(observeJson);
     }
 
     public void sendMove(int gameID, ChessMove move, String authToken) throws Exception {
-        MakeMove move_command = new MakeMove(gameID, move, authToken);
-        String move_json = gson.toJson(move_command);
+        MakeMove moveCommand = new MakeMove(gameID, move, authToken);
+        String move_json = gson.toJson(moveCommand);
 
         send(move_json);
     }
 
     public void sendLeave(int gameID, String authToken) throws Exception {
-        Leave leave_command = new Leave(gameID, authToken);
-        String leave_json = gson.toJson(leave_command);
+        Leave leaveCommand = new Leave(gameID, authToken);
+        String leaveJson = gson.toJson(leaveCommand);
 
-        send(leave_json);
+        send(leaveJson);
     }
 
     public void sendResign(int gameID, String authToken) throws Exception {
-        Resign resign_command = new Resign(gameID, authToken);
-        String resign_json = gson.toJson(resign_command);
+        Resign resignCommand = new Resign(gameID, authToken);
+        String resignJson = gson.toJson(resignCommand);
 
-        send(resign_json);
+        send(resignJson);
 
     }
 

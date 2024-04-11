@@ -27,9 +27,9 @@ public class SQLGameDAO implements GameDAO{
                 preparedStatement.setString(4, gameName);
 
                 Gson gson = new Gson();
-                String serialized_game = gson.toJson(game);
+                String serializedGame = gson.toJson(game);
 
-                preparedStatement.setString(5, serialized_game);
+                preparedStatement.setString(5, serializedGame);
 
                 preparedStatement.executeUpdate();
 
@@ -52,10 +52,10 @@ public class SQLGameDAO implements GameDAO{
                         var game = rs.getString("game");
 
                         Gson gson = new Gson();
-                        ChessGame deserialized_game = gson.fromJson(game, ChessGame.class);
+                        ChessGame deserializedGame = gson.fromJson(game, ChessGame.class);
 
 
-                        return new GameData(gameID, whiteUsername, blackUsername, gameName, deserialized_game);
+                        return new GameData(gameID, whiteUsername, blackUsername, gameName, deserializedGame);
                     }
                 }
             }
@@ -73,9 +73,9 @@ public class SQLGameDAO implements GameDAO{
                 preparedStatement.setString(4, newGame.gameName());
 
                 Gson gson = new Gson();
-                String serialized_game = gson.toJson(newGame.game());
+                String serializedGame = gson.toJson(newGame.game());
 
-                preparedStatement.setString(5, serialized_game);
+                preparedStatement.setString(5, serializedGame);
                 preparedStatement.setInt(6, oldGame.gameID());
 
                 preparedStatement.executeUpdate();
@@ -99,10 +99,10 @@ public class SQLGameDAO implements GameDAO{
                         var game = rs.getString("game");
 
                         Gson gson = new Gson();
-                        ChessGame deserialized_game = gson.fromJson(game, ChessGame.class);
+                        ChessGame deserializedGame = gson.fromJson(game, ChessGame.class);
 
 
-                        return new GameData(gameID, whiteUsername, blackUsername, gameName, deserialized_game);
+                        return new GameData(gameID, whiteUsername, blackUsername, gameName, deserializedGame);
                     }
                 }
             }
@@ -112,7 +112,7 @@ public class SQLGameDAO implements GameDAO{
 
     @Override
     public HashSet<GameData> getListGames() throws DataAccessException, SQLException {
-        HashSet<GameData> current_games = new HashSet<GameData>();
+        HashSet<GameData> currentGames = new HashSet<GameData>();
         try (var conn = DatabaseManager.getConnection()){
             try (var preparedStatement = conn.prepareStatement("SELECT gameid, whiteUsername, blackUsername, gameName, game FROM Game")) {
                 try (var rs = preparedStatement.executeQuery()) {
@@ -124,25 +124,25 @@ public class SQLGameDAO implements GameDAO{
                         var game = rs.getString("game");
 
                         Gson gson = new Gson();
-                        ChessGame deserialized_game = gson.fromJson(game, ChessGame.class);
+                        ChessGame deserializedGame = gson.fromJson(game, ChessGame.class);
 
-                        GameData final_game = new GameData(gameid, whiteUsername, blackUsername, gameName, deserialized_game);
-                        current_games.add(final_game);
+                        GameData finalGame = new GameData(gameid, whiteUsername, blackUsername, gameName, deserializedGame);
+                        currentGames.add(finalGame);
                     }
                 }
             }
         }
-        return current_games;
+        return currentGames;
     }
 
     @Override
-    public void updateGame(int gameId, ChessGame UpdatedGame) throws DataAccessException, SQLException {
+    public void updateGame(int gameId, ChessGame updatedGame) throws DataAccessException, SQLException {
         try (var conn = DatabaseManager.getConnection()){
             try (var preparedStatement = conn.prepareStatement("UPDATE Game SET game = ? WHERE gameId = ?")) {
                 Gson gson = new Gson();
-                String updated_game = gson.toJson(UpdatedGame);
+                String updatedGameString = gson.toJson(updatedGame);
 
-                preparedStatement.setString(1, updated_game);
+                preparedStatement.setString(1, updatedGameString);
                 preparedStatement.setString(2, String.valueOf(gameId));
                 preparedStatement.executeUpdate();
 
@@ -156,11 +156,11 @@ public class SQLGameDAO implements GameDAO{
             if (color == ChessGame.TeamColor.WHITE){
                 try (var preparedStatement = conn.prepareStatement("UPDATE Game SET whiteUsername = ? WHERE gameId = ?")) {
                     Gson gson = new Gson();
-                    String updated_username;
+                    String updatedUsername;
 
                     if (newUsername != null){
-                        updated_username = gson.toJson(newUsername);
-                        preparedStatement.setString(1, updated_username);
+                        updatedUsername = gson.toJson(newUsername);
+                        preparedStatement.setString(1, updatedUsername);
                         preparedStatement.setString(2, String.valueOf(gameId));
                         preparedStatement.executeUpdate();
                     }
@@ -175,11 +175,11 @@ public class SQLGameDAO implements GameDAO{
             else{
                 try (var preparedStatement = conn.prepareStatement("UPDATE Game SET blackUsername = ? WHERE gameId = ?")) {
                     Gson gson = new Gson();
-                    String updated_username = gson.toJson(newUsername);
+                    String updatedUsername = gson.toJson(newUsername);
 
                     if (newUsername != null){
-                        updated_username = gson.toJson(newUsername);
-                        preparedStatement.setString(1, updated_username);
+                        updatedUsername = gson.toJson(newUsername);
+                        preparedStatement.setString(1, updatedUsername);
                         preparedStatement.setString(2, String.valueOf(gameId));
                         preparedStatement.executeUpdate();
                     }

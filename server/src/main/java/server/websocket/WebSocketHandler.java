@@ -1,6 +1,5 @@
 package server.websocket;
 
-import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessMove;
 import chess.InvalidMoveException;
@@ -47,94 +46,94 @@ public class WebSocketHandler {
         Gson gson = new Gson();
 
         ErrorMessage error = new ErrorMessage(errorMessage, ServerMessage.ServerMessageType.ERROR);
-        String error_json = gson.toJson(error);
-        conn.session.getRemote().sendString(error_json);
+        String errorJson = gson.toJson(error);
+        conn.session.getRemote().sendString(errorJson);
 
     }
 
-    private void checkStalCases(SQLGameDAO game_sql, ChessGame game, Connection conn, String white_username, String black_username, int gameID) throws IOException, SQLException, DataAccessException {
+    private void checkStalCases(SQLGameDAO gameSql, ChessGame game, Connection conn, String whiteUsername, String blackUsername, int gameID) throws IOException, SQLException, DataAccessException {
         if (game.isInCheck(ChessGame.TeamColor.WHITE)){
-            connections.sendNotifications(gameID, white_username + " is in Check", conn.session, true);
+            connections.sendNotifications(gameID, whiteUsername + " is in Check", conn.session, true);
         }
 
         if (game.isInCheck(ChessGame.TeamColor.BLACK)){
-            connections.sendNotifications(gameID, black_username + " is in Check", conn.session, true);
+            connections.sendNotifications(gameID, blackUsername + " is in Check", conn.session, true);
         }
 
         if (game.isInCheckmate(ChessGame.TeamColor.WHITE)){
             game.setIsOver(true);
-            game_sql.updateGame(gameID, game);
-            connections.sendNotifications(gameID, white_username + " is in Check Mate", conn.session, true);
+            gameSql.updateGame(gameID, game);
+            connections.sendNotifications(gameID, whiteUsername + " is in Check Mate", conn.session, true);
         }
 
         if (game.isInCheckmate(ChessGame.TeamColor.BLACK)){
             game.setIsOver(true);
-            game_sql.updateGame(gameID, game);
-            connections.sendNotifications(gameID, black_username + " is in Check Mate", conn.session, true);
+            gameSql.updateGame(gameID, game);
+            connections.sendNotifications(gameID, blackUsername + " is in Check Mate", conn.session, true);
         }
 
         if (game.isInStalemate(ChessGame.TeamColor.WHITE)){
 
             game.setIsOver(true);
-            game_sql.updateGame(gameID, game);
-            connections.sendNotifications(gameID, white_username + " is in StallMate", conn.session, true);
+            gameSql.updateGame(gameID, game);
+            connections.sendNotifications(gameID, whiteUsername + " is in StallMate", conn.session, true);
         }
 
         if (game.isInStalemate(ChessGame.TeamColor.BLACK)){
 
             game.setIsOver(true);
-            game_sql.updateGame(gameID, game);
-            connections.sendNotifications(gameID, black_username + " is in StallMate", conn.session, true);
+            gameSql.updateGame(gameID, game);
+            connections.sendNotifications(gameID, blackUsername + " is in StallMate", conn.session, true);
         }
     }
 
 
     private String getAuthToken(UserGameCommand command) throws SQLException, DataAccessException {
         SQLAuthDAO auth = new SQLAuthDAO();
-        AuthData auth_data = auth.getCurrentToken(command.getAuthString());
-        if (auth_data == null){
+        AuthData authData = auth.getCurrentToken(command.getAuthString());
+        if (authData == null){
             return null;
         }
-        return auth_data.authToken();
+        return authData.authToken();
     }
 
     private String getUsername(UserGameCommand command) throws SQLException, DataAccessException {
         SQLAuthDAO auth = new SQLAuthDAO();
-        AuthData auth_data = auth.getCurrentToken(command.getAuthString());
-        if (auth_data == null){
+        AuthData authData = auth.getCurrentToken(command.getAuthString());
+        if (authData == null){
             return null;
         }
-        return auth_data.username();
+        return authData.username();
     }
 
     private ChessGame getChessGame(int gameID) throws SQLException, DataAccessException {
         SQLGameDAO game = new SQLGameDAO();
-        GameData game_data = game.getGameByID(String.valueOf(gameID));
-        if (game_data == null){
+        GameData gameData = game.getGameByID(String.valueOf(gameID));
+        if (gameData == null){
             return null;
         }
-        return game_data.game();
+        return gameData.game();
 
     }
 
 
     private String getWhiteUsername(int gameID) throws SQLException, DataAccessException {
         SQLGameDAO game = new SQLGameDAO();
-        GameData game_data = game.getGameByID(String.valueOf(gameID));
-        if (game_data == null){
+        GameData gameData = game.getGameByID(String.valueOf(gameID));
+        if (gameData == null){
             return null;
         }
-        return game_data.whiteUsername();
+        return gameData.whiteUsername();
 
     }
 
     private String getBlackUsername(int gameID) throws SQLException, DataAccessException {
         SQLGameDAO game = new SQLGameDAO();
-        GameData game_data = game.getGameByID(String.valueOf(gameID));
-        if (game_data == null){
+        GameData gameData = game.getGameByID(String.valueOf(gameID));
+        if (gameData == null){
             return null;
         }
-        return game_data.blackUsername();
+        return gameData.blackUsername();
 
     }
 
@@ -166,51 +165,51 @@ public class WebSocketHandler {
         ErrorMessage error = null;
         Gson gson = new Gson();
 
-        JoinPlayer join_command = gson.fromJson(msg, JoinPlayer.class);
-        connections.add(join_command.getGameID(), conn.session);
+        JoinPlayer joinCommand = gson.fromJson(msg, JoinPlayer.class);
+        connections.add(joinCommand.getGameID(), conn.session);
 
-        int gameID = join_command.getGameID();
+        int gameID = joinCommand.getGameID();
         String white_username = getWhiteUsername(gameID);
-        String black_username = getBlackUsername(gameID);
-        String username = getUsername(join_command);
+        String blackUsername = getBlackUsername(gameID);
+        String username = getUsername(joinCommand);
 
-        if((join_command.getPlayerColor() == ChessGame.TeamColor.WHITE && white_username != null && !white_username.equals(username))){
+        if((joinCommand.getPlayerColor() == ChessGame.TeamColor.WHITE && white_username != null && !white_username.equals(username))){
             sendError(conn, "SPOT ALREADY HAS USER " + white_username);
             return;
         }
 
-        else if((join_command.getPlayerColor() == ChessGame.TeamColor.BLACK && black_username != null && !black_username.equals(username))){
-            sendError(conn, "SPOT ALREADY HAS USER " + black_username);
+        else if((joinCommand.getPlayerColor() == ChessGame.TeamColor.BLACK && blackUsername != null && !blackUsername.equals(username))){
+            sendError(conn, "SPOT ALREADY HAS USER " + blackUsername);
             return;
         }
 
         ChessGame game = getChessGame(gameID);
 
-        if (game == null || checkEmptyGame(gameID, join_command.getPlayerColor(), username)){
+        if (game == null || checkEmptyGame(gameID, joinCommand.getPlayerColor(), username)){
             sendError(conn, "Game does not exist or is empty");
             return;
         }
 
         //send ServerMessageObject (JSON TEXT)
 
-        connections.sendNotifications(join_command.getGameID(), username + " joined game as " + join_command.getPlayerColor(), conn.session, false);
+        connections.sendNotifications(joinCommand.getGameID(), username + " joined game as " + joinCommand.getPlayerColor(), conn.session, false);
 
         //sending loadgame message to added user
-        LoadGame game_command = new LoadGame(game, ServerMessage.ServerMessageType.LOAD_GAME);
-        String game_json = gson.toJson(game_command);
+        LoadGame gameCommand = new LoadGame(game, ServerMessage.ServerMessageType.LOAD_GAME);
+        String gameJson = gson.toJson(gameCommand);
 
-        conn.session.getRemote().sendString(game_json);
+        conn.session.getRemote().sendString(gameJson);
 
     }
 
     public void observe(Connection conn, String msg) throws IOException, SQLException, DataAccessException {
         Gson gson = new Gson();
-        JoinPlayer join_command = gson.fromJson(msg, JoinPlayer.class);
-        connections.add(join_command.getGameID(), conn.session);
+        JoinPlayer joinCommand = gson.fromJson(msg, JoinPlayer.class);
+        connections.add(joinCommand.getGameID(), conn.session);
         //send ServerMessageObject (JSON TEXT)
 
-        int gameID = join_command.getGameID();
-        String username = getUsername(join_command);
+        int gameID = joinCommand.getGameID();
+        String username = getUsername(joinCommand);
 
         ChessGame game = getChessGame(gameID);
 
@@ -219,49 +218,49 @@ public class WebSocketHandler {
             return;
         }
 
-        if (!Objects.equals(getAuthToken(join_command), join_command.getAuthString())){
+        if (!Objects.equals(getAuthToken(joinCommand), joinCommand.getAuthString())){
             sendError(conn, "Wrong AuthToken");
             return;
         }
 
-        connections.sendNotifications(join_command.getGameID(), username + " joined game as observer", conn.session, false);
+        connections.sendNotifications(joinCommand.getGameID(), username + " joined game as observer", conn.session, false);
 
         //sending loadgame message to added user
-        LoadGame game_command = new LoadGame(getChessGame(join_command.getGameID()), ServerMessage.ServerMessageType.LOAD_GAME);
-        String game_json = gson.toJson(game_command);
+        LoadGame gameCommand = new LoadGame(getChessGame(joinCommand.getGameID()), ServerMessage.ServerMessageType.LOAD_GAME);
+        String gameJson = gson.toJson(gameCommand);
 
-        conn.session.getRemote().sendString(game_json);
+        conn.session.getRemote().sendString(gameJson);
     }
 
     public void move(Connection conn, String msg) throws IOException, SQLException, DataAccessException, InvalidMoveException {
         Gson gson = new Gson();
-        SQLGameDAO game_sql = new SQLGameDAO();
-        ChessGame.TeamColor user_color = null;
+        SQLGameDAO gameSql = new SQLGameDAO();
+        ChessGame.TeamColor userColor = null;
 
 
-        MakeMove move_command = gson.fromJson(msg, MakeMove.class);
-        ChessMove move = move_command.getMove();
-        int gameID = move_command.getGameID();
+        MakeMove moveCommand = gson.fromJson(msg, MakeMove.class);
+        ChessMove move = moveCommand.getMove();
+        int gameID = moveCommand.getGameID();
         ChessGame game = getChessGame(gameID);
-        String white_username = getWhiteUsername(gameID);
+        String whiteUsername = getWhiteUsername(gameID);
         String black_username = getBlackUsername(gameID);
 
         //getting user color
-        if (Objects.equals(getWhiteUsername(gameID), getUsername(move_command))) {
-            user_color = ChessGame.TeamColor.WHITE;
+        if (Objects.equals(getWhiteUsername(gameID), getUsername(moveCommand))) {
+            userColor = ChessGame.TeamColor.WHITE;
         }
-        else if (Objects.equals(getBlackUsername(gameID), getUsername(move_command))){
-            user_color = ChessGame.TeamColor.BLACK;
+        else if (Objects.equals(getBlackUsername(gameID), getUsername(moveCommand))){
+            userColor = ChessGame.TeamColor.BLACK;
         }
         //Verifying move validity
 
-        if (user_color == null){
+        if (userColor == null){
             sendError(conn, "YOU ARE JUST AN OBSERVER, NO MOVEMENT ALLOWED");
             return;
         }
 
 
-        else if (game.getTeamTurn() != user_color){
+        else if (game.getTeamTurn() != userColor){
             sendError(conn, "NOT YOUR TURN");
             return;
         }
@@ -281,34 +280,34 @@ public class WebSocketHandler {
             return;
         }
 
-        game_sql.updateGame(gameID, game);
+        gameSql.updateGame(gameID, game);
 
         //Sending load_game message
 
         connections.sendLoad(getChessGame(gameID), gameID);
 
         //Sending notifications
-        String username = getUsername(move_command);
+        String username = getUsername(moveCommand);
 
         connections.sendNotifications(gameID, username + " moved from " + move.getStartPosition().toString() + " to " + move.getEndPosition().toString(), conn.session, false);
 
         //checking check/stal cases
-        checkStalCases(game_sql, game, conn, white_username, black_username, gameID);
+        checkStalCases(gameSql, game, conn, whiteUsername, black_username, gameID);
 
     }
 
     public void leave(Connection conn, String msg) throws IOException, SQLException, DataAccessException {
         Gson gson = new Gson();
-        Leave leave_command = gson.fromJson(msg, Leave.class);
+        Leave leaveCommand = gson.fromJson(msg, Leave.class);
 
         //removing from connections
-        int gameID = leave_command.getGameID();
+        int gameID = leaveCommand.getGameID();
         connections.remove(gameID, conn.session);
 
         ChessGame game = getChessGame(gameID);
 
         //updating game
-        String username = getUsername(leave_command);
+        String username = getUsername(leaveCommand);
         SQLGameDAO game_sql = new SQLGameDAO();
 
         ChessGame.TeamColor color;
@@ -329,15 +328,15 @@ public class WebSocketHandler {
 
     public void resign(Connection conn, String msg) throws IOException, SQLException, DataAccessException {
         Gson gson = new Gson();
-        SQLGameDAO game_sql = new SQLGameDAO();
+        SQLGameDAO gameSql = new SQLGameDAO();
 
-        Resign resign_command = gson.fromJson(msg, Resign.class);
-        int gameID = resign_command.getGameID();
+        Resign resignCommand = gson.fromJson(msg, Resign.class);
+        int gameID = resignCommand.getGameID();
         ChessGame game = getChessGame(gameID);
 
         //setting up error scenarios
 
-        if (!Objects.equals(getWhiteUsername(gameID), getUsername(resign_command)) && !Objects.equals(getBlackUsername(gameID), getUsername(resign_command))){
+        if (!Objects.equals(getWhiteUsername(gameID), getUsername(resignCommand)) && !Objects.equals(getBlackUsername(gameID), getUsername(resignCommand))){
             sendError(conn, "OBSERVERS ARE NOT ALLOWED TO RESIGN");
             return;
         }
@@ -349,10 +348,10 @@ public class WebSocketHandler {
 
         //updating game
         game.setIsOver(true);
-        game_sql.updateGame(gameID, game);
+        gameSql.updateGame(gameID, game);
 
         //sending notifications
-        String  username = getUsername(resign_command);
+        String  username = getUsername(resignCommand);
         connections.sendNotifications(gameID, username + " resigned. The game is over", conn.session, true);
 
     }

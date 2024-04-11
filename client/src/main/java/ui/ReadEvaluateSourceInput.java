@@ -59,8 +59,8 @@ public class ReadEvaluateSourceInput {
     private boolean checkIdType(String input){
         String[] inputsArray = input.split(" ");
 
-        for (String input_ : inputsArray){
-            if (input_.charAt(0) == '-'){
+        for (String inputLoop : inputsArray){
+            if (inputLoop.charAt(0) == '-'){
                 return false;
             }
         }
@@ -74,23 +74,6 @@ public class ReadEvaluateSourceInput {
 
         return true;
     }
-
-// for future generalization of run methods
-//    private void mainEndpointsGeneralization(String prompt, boolean formatted, int requiredSize, lamba) throws IOException {
-//        input = readInput("Type desired USERNAME PASSWORD EMAIL: ", false);
-//        if (!checkInputSize(input, 3)){
-//            System.out.println("You forgot some required information");
-//        }
-//        else{
-//            client_call.clientEndpointMethod(input);
-//            if (!ServerFacade.returned_error){
-//                runPostLogin();
-//                break;
-//            }
-//        }
-//    }
-
-
 
     private void runPreLogin() throws Exception {
         while (true){
@@ -146,17 +129,17 @@ public class ReadEvaluateSourceInput {
     }
 
     private void printHighlightedBoard(ArrayList<ChessMove> possibleMoves){
-        ArrayList<ChessPosition> possible_positions = new ArrayList<>();
+        ArrayList<ChessPosition> possiblePositions = new ArrayList<>();
 
         if (possibleMoves != null){
             for (ChessMove move : possibleMoves){
-                possible_positions.add(move.getEndPosition());
+                possiblePositions.add(move.getEndPosition());
             }
         }
         else{
-            possible_positions = null;
+            possiblePositions = null;
         }
-        ChessBoardUi.setAllowedPositions(possible_positions);
+        ChessBoardUi.setAllowedPositions(possiblePositions);
         ChessBoardUi.highlight(out, current_board, current_color);
     }
 
@@ -196,22 +179,22 @@ public class ReadEvaluateSourceInput {
             else if (input.equals("join")){
                 input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE): ", false);
                 input = input.toLowerCase();
-                String[] input_words = input.split("\\s+");
+                String[] inputWords = input.split("\\s+");
 
                 if (!checkInputSize(input, 2)){
                     System.out.println("You forgot some required information");
                 }
 
-                else if (!checkIdType(input_words[0])){
+                else if (!checkIdType(inputWords[0])){
                     System.out.println("Game ID has to be a positive number");
                 }
 
-                else if (Objects.equals(input_words[1], "black") || Objects.equals(input_words[1], "white")){
-                    current_game_id = Integer.parseInt(input_words[0]);
+                else if (Objects.equals(inputWords[1], "black") || Objects.equals(inputWords[1], "white")){
+                    current_game_id = Integer.parseInt(inputWords[0]);
 
-                    client_call.join(input_words[0], input_words[1].toUpperCase());
+                    client_call.join(inputWords[0], inputWords[1].toUpperCase());
 
-                        current_color = getUserColor(input_words[1]);
+                        current_color = getUserColor(inputWords[1]);
                         client_call.webSoc("join_player", new Object[]{current_game_id, current_color, ClientCommunicator.current_auth_token});
                         if (!ServerFacade.returned_error){
                             runGameplay();
@@ -226,7 +209,7 @@ public class ReadEvaluateSourceInput {
             else if (input.equals("observe")){
                 input = readInput("Type desired game ID: ", false);
                 input = input.toLowerCase();
-                String[] input_words = input.split("\\s+");
+                String[] inputWords = input.split("\\s+");
 
                 if (!checkInputSize(input, 1)){
                     System.out.println("You can only add the game's ID and nothing else");
@@ -237,9 +220,9 @@ public class ReadEvaluateSourceInput {
                 }
 
                 else{
-                    current_game_id = Integer.parseInt(input_words[0]);
-                    client_call.join(input_words[0], "OBSERVER");
-                    client_call.webSoc("join_observer", new Object[]{Integer.parseInt(input_words[0]), ClientCommunicator.current_auth_token});
+                    current_game_id = Integer.parseInt(inputWords[0]);
+                    client_call.join(inputWords[0], "OBSERVER");
+                    client_call.webSoc("join_observer", new Object[]{Integer.parseInt(inputWords[0]), ClientCommunicator.current_auth_token});
                     if (!ServerFacade.returned_error){
                         runGameplay();
                         break;
@@ -294,28 +277,28 @@ public class ReadEvaluateSourceInput {
             }
 
             else if (input.equals("move")){
-                String input_start_position = readInput("Type desired piece coordinates(row - col): ", false);
-                String input_end_position = readInput("Type desired end coordinates(row - col): ", false);
+                String inputStartPosition = readInput("Type desired piece coordinates(row - col): ", false);
+                String inputEndPosition = readInput("Type desired end coordinates(row - col): ", false);
 
-                input_start_position = input_start_position.toLowerCase();
-                input_end_position = input_end_position.toLowerCase();
-                String[] start_positions = input_start_position.split("\\s+");
-                String[] end_positions = input_end_position.split("\\s+");
+                inputStartPosition = inputStartPosition.toLowerCase();
+                inputEndPosition = inputEndPosition.toLowerCase();
+                String[] startPositions = inputStartPosition.split("\\s+");
+                String[] endPositions = inputEndPosition.split("\\s+");
 
-                if (!checkInputSize(input_start_position, 2) || !checkInputSize(input_end_position,2)){
+                if (!checkInputSize(inputStartPosition, 2) || !checkInputSize(inputEndPosition,2)){
                     System.out.println("You forgot some required information or gave positions with wrong format");
                 }
 
-                else if (!checkIdType(start_positions[0]) || !checkIdType(start_positions[1]) || !checkIdType(end_positions[0]) || !checkIdType(end_positions[1] )){
+                else if (!checkIdType(startPositions[0]) || !checkIdType(startPositions[1]) || !checkIdType(endPositions[0]) || !checkIdType(endPositions[1] )){
                     System.out.println("The coordinates have to be have to be positive numbers");
                 }
                 else{
-                    ChessPosition start_position = new ChessPosition(Integer.parseInt(start_positions[0]), Integer.parseInt(start_positions[1]));
-                    ChessPosition end_position = new ChessPosition(Integer.parseInt(end_positions[0]), Integer.parseInt(end_positions[1]));
+                    ChessPosition startPosition = new ChessPosition(Integer.parseInt(startPositions[0]), Integer.parseInt(startPositions[1]));
+                    ChessPosition endPosition = new ChessPosition(Integer.parseInt(endPositions[0]), Integer.parseInt(endPositions[1]));
 
-                    ChessMove user_move = new ChessMove(start_position, end_position, null);
+                    ChessMove userMove = new ChessMove(startPosition, endPosition, null);
 
-                    client_call.webSoc("make_move", new Object[] {current_game_id, user_move, ClientCommunicator.current_auth_token});
+                    client_call.webSoc("make_move", new Object[] {current_game_id, userMove, ClientCommunicator.current_auth_token});
 
                 }
 
@@ -328,20 +311,20 @@ public class ReadEvaluateSourceInput {
             }
 
             else if (input.equals("highlight")){
-                String input_piece = readInput("Type desired piece coordinates(row - col): ", false);
-                String[] start_positions = input_piece.split("\\s+");
+                String inputPiece = readInput("Type desired piece coordinates(row - col): ", false);
+                String[] startPositions = inputPiece.split("\\s+");
 
-                if (!checkInputSize(input_piece, 2)){
+                if (!checkInputSize(inputPiece, 2)){
                     System.out.println("You forgot some required information or gave positions with wrong format");
                 }
 
-                else if (!checkIdType(start_positions[0]) || !checkIdType(start_positions[1] )){
+                else if (!checkIdType(startPositions[0]) || !checkIdType(startPositions[1] )){
                     System.out.println("The coordinates have to be have to be positive numbers");
                 }
                 else{
-                    ChessPosition piece_position = new ChessPosition(Integer.parseInt(start_positions[0]), Integer.parseInt(start_positions[1]));
+                    ChessPosition piecePosition = new ChessPosition(Integer.parseInt(startPositions[0]), Integer.parseInt(startPositions[1]));
                     if (current_board != null){
-                        printHighlightedBoard((ArrayList<ChessMove>) current_board.validMoves(piece_position));
+                        printHighlightedBoard((ArrayList<ChessMove>) current_board.validMoves(piecePosition));
                     }
 
                 }
@@ -373,8 +356,8 @@ public class ReadEvaluateSourceInput {
 
     }
 
-    public static void setCurrentBoard(ChessGame current_board) {
-        ReadEvaluateSourceInput.current_board = current_board;
+    public static void setCurrentBoard(ChessGame currentBoard) {
+        ReadEvaluateSourceInput.current_board = currentBoard;
     }
 
     public static ChessGame.TeamColor getCurrentColor() {

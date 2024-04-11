@@ -57,15 +57,15 @@ public class ChessBoardUi {
 
     public static void drawBoard(PrintStream out, ChessGame game, ChessGame.TeamColor currentColor) {
         ChessGame tempGameCopy = new ChessGame();
-        ChessGame temp_game_copy_two = new ChessGame();
-        ChessBoard flipped_white = flipWhite(game.getBoard().getStructure());
-        ChessBoard flipped_array = flipArray(flipped_white.getStructure());
+        ChessGame tempGameCopyTwo = new ChessGame();
+        ChessBoard flippedWhite = flipWhite(game.getBoard().getStructure());
+        ChessBoard flipped_array = flipArray(flippedWhite.getStructure());
 
         tempGameCopy.setBoard(flipped_array);
-        temp_game_copy_two.setBoard(flipped_white);
+        tempGameCopyTwo.setBoard(flippedWhite);
 
         if (currentColor == ChessGame.TeamColor.BLACK){
-            drawBorders(out, temp_game_copy_two);
+            drawBorders(out, tempGameCopyTwo);
         }
         else{
             drawBorders(out, tempGameCopy);
@@ -94,31 +94,31 @@ public class ChessBoardUi {
     }
 
     private static ChessBoard flipArray(ChessPiece[][] structure){
-        ChessPiece[][] flipped_array = new ChessPiece[8][8];
-        ChessBoard new_board = new ChessBoard();
+        ChessPiece[][] flippedArray = new ChessPiece[8][8];
+        ChessBoard newBoard = new ChessBoard();
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                flipped_array[7 - i][7 - j] = structure[i][j];
+                flippedArray[7 - i][7 - j] = structure[i][j];
             }
         }
 
-        new_board.setStructure(flipped_array);
-        return new_board;
+        newBoard.setStructure(flippedArray);
+        return newBoard;
     }
 
     private static ChessBoard flipWhite(ChessPiece[][] structure){
-        ChessPiece[][] flipped_array = new ChessPiece[8][8];
-        ChessBoard new_board = new ChessBoard();
+        ChessPiece[][] flippedArray = new ChessPiece[8][8];
+        ChessBoard newBoard = new ChessBoard();
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                flipped_array[i][7 - j] = structure[i][j];
+                flippedArray[i][7 - j] = structure[i][j];
             }
         }
 
-        new_board.setStructure(flipped_array);
-        return new_board;
+        newBoard.setStructure(flippedArray);
+        return newBoard;
     }
 
 
@@ -130,8 +130,8 @@ public class ChessBoardUi {
 
             }
             else{
-                int random_index = rand.nextInt(DIGITS_SIDES.length);
-                String value = DIGITS_SIDES[random_index];
+                int randomIndex = rand.nextInt(DIGITS_SIDES.length);
+                String value = DIGITS_SIDES[randomIndex];
                 out.print(value);
             }
         }
@@ -169,22 +169,22 @@ public class ChessBoardUi {
     }
 
 
-    private static String addingBoxes(ChessGame.TeamColor color, ChessPiece chess_piece){
+    private static String addingBoxes(ChessGame.TeamColor color, ChessPiece chessPiece){
         String piece;
         if (color == ChessGame.TeamColor.WHITE){
-            piece = PIECES_WHITE.get(chess_piece.getPieceType());
+            piece = PIECES_WHITE.get(chessPiece.getPieceType());
         }
         else{
-            piece = PIECES_BLACK.get(chess_piece.getPieceType());
+            piece = PIECES_BLACK.get(chessPiece.getPieceType());
         }
 
         return piece;
     }
 
     private static boolean checkIfWithinAllowedOnes(int row, int col){
-        ChessPosition curr_position = new ChessPosition(row + 1, col + 1);
+        ChessPosition currPosition = new ChessPosition(row + 1, col + 1);
         for (ChessPosition position : allowed_positions){
-            if (curr_position.equals(position)){
+            if (currPosition.equals(position)){
                 return true;
             }
         }
@@ -196,15 +196,15 @@ public class ChessBoardUi {
 
         for (int col = 0; col < BOARD_SIZE; col++){
             ChessPosition position = new ChessPosition(row + 1, col + 1);
-            ChessPiece chess_piece = game.getBoard().getPiece(position);
+            ChessPiece chessPiece = game.getBoard().getPiece(position);
             if (highlight && allowed_positions != null && checkIfWithinAllowedOnes(row, col)){
                 setBoxRed(out);
             }
 
-            else if (chess_piece != null){
-                ChessGame.TeamColor color = chess_piece.getTeamColor();
+            else if (chessPiece != null){
+                ChessGame.TeamColor color = chessPiece.getTeamColor();
                 String piece;
-                piece = addingBoxes(color, chess_piece);
+                piece = addingBoxes(color, chessPiece);
 
                 addPieces(out, piece);
             }
@@ -266,10 +266,6 @@ public class ChessBoardUi {
             out.print(HEADER_LETTERS[col]);
         }
 
-    }
-
-    private static void setBlack(PrintStream out) {
-        out.print(SET_BG_COLOR_BLACK);
     }
 
     private static void setTextBlack(PrintStream out) {

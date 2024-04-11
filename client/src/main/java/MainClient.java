@@ -6,8 +6,8 @@ public class MainClient {
         System.out.println();
         System.out.println();
 
-        ReadEvaluateSourceInput client_loop = new ReadEvaluateSourceInput();
-        client_loop.run();
+        ReadEvaluateSourceInput clientLoop = new ReadEvaluateSourceInput();
+        clientLoop.run();
 
     }
 }
