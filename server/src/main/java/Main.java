@@ -14,7 +14,5 @@ public class Main {
         System.out.println("LECIO ♕ 240 Chess Server");
     }
 
-    }
-
 
 }
