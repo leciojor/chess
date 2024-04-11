@@ -51,7 +51,7 @@ public class ServerFacade {
 
     }
 
-    public static boolean returned_error = false;
+    public static boolean returnedError = false;
 
     public void register(String input) throws IOException {
         ClientCommunicator communicator = setClientCommunication("/user");

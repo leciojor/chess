@@ -58,7 +58,7 @@ public class ServerFacadeTests {
     @DisplayName("Register Good")
     public void registerGood() throws Exception{
         server_call.register("lecio 123 leciojor@gmail.com");
-        Assertions.assertFalse(ServerFacade.returned_error);
+        Assertions.assertFalse(ServerFacade.returnedError);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class ServerFacadeTests {
     public void registerBad() throws Exception{
         server_call.register("lecio 123 leciojor@gmail.com");
         server_call.register("lecio 123 leciojor@gmail.com");
-        Assertions.assertTrue(ServerFacade.returned_error);
+        Assertions.assertTrue(ServerFacade.returnedError);
 
     }
 
@@ -77,7 +77,7 @@ public class ServerFacadeTests {
     public void loginGood() throws Exception{
         server_call.register("lecio 123 leciojor@gmail.com");
         server_call.login("lecio 123");
-        Assertions.assertFalse(ServerFacade.returned_error);
+        Assertions.assertFalse(ServerFacade.returnedError);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class ServerFacadeTests {
     @DisplayName("Login Bad")
     public void loginBad() throws Exception{
         server_call.login("lecio 123");
-        Assertions.assertTrue(ServerFacade.returned_error);
+        Assertions.assertTrue(ServerFacade.returnedError);
     }
 
     @Test
@@ -94,16 +94,16 @@ public class ServerFacadeTests {
     public void logoutGood() throws Exception{
         server_call.register("lecio 123 leciojor@gmail.com");
         server_call.logout();
-        Assertions.assertFalse(ServerFacade.returned_error);
+        Assertions.assertFalse(ServerFacade.returnedError);
     }
 
     @Test
     @Order(6)
     @DisplayName("Logout Bad")
     public void logoutBad() throws Exception{
-        ClientCommunicator.current_auth_token = "123";
+        ClientCommunicator.currentAuthToken = "123";
         server_call.logout();
-        Assertions.assertTrue(ServerFacade.returned_error);
+        Assertions.assertTrue(ServerFacade.returnedError);
     }
 
 
@@ -113,7 +113,7 @@ public class ServerFacadeTests {
     public void createGood() throws Exception{
         server_call.register("lecio 123 leciojor@gmail.com");
         server_call.create("game");
-        Assertions.assertFalse(ServerFacade.returned_error);
+        Assertions.assertFalse(ServerFacade.returnedError);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class ServerFacadeTests {
     @DisplayName("Create Bad")
     public void createBad() throws Exception{
         server_call.create("game");
-        Assertions.assertTrue(ServerFacade.returned_error);
+        Assertions.assertTrue(ServerFacade.returnedError);
 
     }
 
@@ -167,7 +167,7 @@ public class ServerFacadeTests {
         server_call.register("lecio 123 leciojor@gmail.com");
         server_call.clear();
         server_call.create("game");
-        Assertions.assertTrue(ServerFacade.returned_error);
+        Assertions.assertTrue(ServerFacade.returnedError);
     }
 
     @Test
@@ -202,7 +202,7 @@ public class ServerFacadeTests {
         server_call.create("game");
 
         server_call.join("123" ,"BLACK");
-        Assertions.assertTrue(ServerFacade.returned_error);
+        Assertions.assertTrue(ServerFacade.returnedError);
     }
 
 

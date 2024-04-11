@@ -15,7 +15,7 @@ public class ChessBoardUi {
     private static final int BOARD_SIZE_CHAR = BOARD_SIZE + 29;
     private static final String[] DIGITS_SIDES = {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT};
 
-    private static Map<ChessPiece.PieceType, String> PIECES_WHITE = new HashMap<>() {{
+    private static final Map<ChessPiece.PieceType, String> PIECES_WHITE = new HashMap<>() {{
         put(ChessPiece.PieceType.ROOK, WHITE_ROOK);
         put(ChessPiece.PieceType.KNIGHT, WHITE_KNIGHT);
         put(ChessPiece.PieceType.BISHOP, WHITE_BISHOP);
@@ -24,7 +24,7 @@ public class ChessBoardUi {
         put(ChessPiece.PieceType.PAWN, WHITE_PAWN);
     }};
 
-    private static Map<ChessPiece.PieceType, String> PIECES_BLACK = new HashMap<>() {{
+    private static final Map<ChessPiece.PieceType, String> PIECES_BLACK = new HashMap<>() {{
         put(ChessPiece.PieceType.ROOK, BLACK_ROOK);
         put(ChessPiece.PieceType.KNIGHT, BLACK_KNIGHT);
         put(ChessPiece.PieceType.BISHOP, BLACK_BISHOP);
@@ -37,12 +37,12 @@ public class ChessBoardUi {
 
     private static Random rand = new Random();
 
-    private static boolean alternate_row = true;
-    private static boolean alternate_col = true;
+    private static boolean alternateRow = true;
+    private static boolean alternateCol = true;
 
     private static boolean highlight;
 
-    private static ArrayList<ChessPosition> allowed_positions;
+    private static ArrayList<ChessPosition> allowedPositions;
 
 
 
@@ -51,7 +51,7 @@ public class ChessBoardUi {
 
 
     public static void setAllowedPositions(ArrayList<ChessPosition> positions){
-        allowed_positions = positions;
+        allowedPositions = positions;
     }
 
 
@@ -165,7 +165,7 @@ public class ChessBoardUi {
         setRegular(out);
         out.print(EMPTY);
 
-        alternate_row = !alternate_row;
+        alternateRow = !alternateRow;
     }
 
 
@@ -183,7 +183,7 @@ public class ChessBoardUi {
 
     private static boolean checkIfWithinAllowedOnes(int row, int col){
         ChessPosition currPosition = new ChessPosition(row + 1, col + 1);
-        for (ChessPosition position : allowed_positions){
+        for (ChessPosition position : allowedPositions){
             if (currPosition.equals(position)){
                 return true;
             }
@@ -197,7 +197,7 @@ public class ChessBoardUi {
         for (int col = 0; col < BOARD_SIZE; col++){
             ChessPosition position = new ChessPosition(row + 1, col + 1);
             ChessPiece chessPiece = game.getBoard().getPiece(position);
-            if (highlight && allowed_positions != null && checkIfWithinAllowedOnes(row, col)){
+            if (highlight && allowedPositions != null && checkIfWithinAllowedOnes(row, col)){
                 setBoxRed(out);
             }
 
@@ -211,7 +211,7 @@ public class ChessBoardUi {
             else{
                 addPieces(out, null);
             }
-;            alternate_col = !alternate_col;
+;            alternateCol = !alternateCol;
         }
 
     }
@@ -219,12 +219,12 @@ public class ChessBoardUi {
     private static void addPieces(PrintStream out, String piece){
 
 
-        if (!alternate_row && !alternate_col || alternate_row && alternate_col){
+        if (!alternateRow && !alternateCol || alternateRow && alternateCol){
             setBoxWhite(out, piece);
 
         }
 
-        else if(!alternate_row && alternate_col || alternate_row && !alternate_col){
+        else if(!alternateRow && alternateCol || alternateRow && !alternateCol){
             setBoxBlue(out, piece);
         }
 

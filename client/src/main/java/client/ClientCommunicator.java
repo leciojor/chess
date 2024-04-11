@@ -18,7 +18,7 @@ import responses.*;
 
 public class ClientCommunicator {
 
-    public static String current_auth_token;
+    public static String currentAuthToken;
 
     private InputStream responseBody;
 
@@ -81,13 +81,13 @@ public class ClientCommunicator {
             RegisterResponse response = gson.fromJson(responseBuilder.toString(), RegisterResponse.class);
             System.out.println("Username: " + response.getUsername() );
             System.out.println("AuthToken: " + response.getAuthToken() );
-            ClientCommunicator.current_auth_token = response.getAuthToken();
+            ClientCommunicator.currentAuthToken = response.getAuthToken();
         }
         else if (Objects.equals(endpointType, "login")){
             LoginResponse response = gson.fromJson(responseBuilder.toString(), LoginResponse.class);
             System.out.println("Username: " + response.getUsername() );
             System.out.println("AuthToken: " + response.getAuthToken() );
-            ClientCommunicator.current_auth_token = response.getAuthToken();
+            ClientCommunicator.currentAuthToken = response.getAuthToken();
         }
         else if (Objects.equals(endpointType, "create")){
             CreateGameResponse response = gson.fromJson(responseBuilder.toString(), CreateGameResponse.class);
@@ -107,7 +107,7 @@ public class ClientCommunicator {
     public void post(String input, String endpointType) throws IOException {
 
         setConfigs("POST", true);
-        this.connection.addRequestProperty("Authorization", ClientCommunicator.current_auth_token);
+        this.connection.addRequestProperty("Authorization", ClientCommunicator.currentAuthToken);
         this.connection.connect();
 
         String[] inputsArray = input.split(" ");
@@ -120,12 +120,12 @@ public class ClientCommunicator {
         if (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             System.out.println();
             deserializationPost(endpointType);
-            ServerFacade.returned_error = false;
+            ServerFacade.returnedError = false;
         }
         else{
             printErrorMessage();
             System.out.println();
-            ServerFacade.returned_error = true;
+            ServerFacade.returnedError = true;
         }
 
         this.connection.disconnect();
@@ -134,20 +134,20 @@ public class ClientCommunicator {
 
     public void delete() throws IOException{
         setConfigs("DELETE", false);
-        this.connection.addRequestProperty("Authorization",  ClientCommunicator.current_auth_token);
+        this.connection.addRequestProperty("Authorization",  ClientCommunicator.currentAuthToken);
         this.connection.connect();
 
         if (this.connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             //still to add logic for clear endpoint
             System.out.println();
             System.out.println("Successfully Logged Out");
-            ServerFacade.returned_error = false;
+            ServerFacade.returnedError = false;
 
         }
         else {
             printErrorMessage();
             System.out.println();
-            ServerFacade.returned_error = true;
+            ServerFacade.returnedError = true;
         }
 
         this.connection.disconnect();
@@ -156,7 +156,7 @@ public class ClientCommunicator {
 
     public void get() throws IOException{
         setConfigs("GET", false);
-        this.connection.addRequestProperty("Authorization",  ClientCommunicator.current_auth_token);
+        this.connection.addRequestProperty("Authorization",  ClientCommunicator.currentAuthToken);
         this.connection.connect();
         int i = 0;
 
@@ -183,13 +183,13 @@ public class ClientCommunicator {
 
                 i++;
             }
-            ServerFacade.returned_error = false;
+            ServerFacade.returnedError = false;
 
         }
         else {
             printErrorMessage();
             System.out.println();
-            ServerFacade.returned_error = true;;
+            ServerFacade.returnedError = true;;
         }
 
         this.connection.disconnect();
@@ -198,7 +198,7 @@ public class ClientCommunicator {
 
     public void put(String gameID, String perspective) throws IOException{
         setConfigs("PUT", true);
-        this.connection.addRequestProperty("Authorization",  ClientCommunicator.current_auth_token);
+        this.connection.addRequestProperty("Authorization",  ClientCommunicator.currentAuthToken);
         this.connection.connect();
 
         try(OutputStream requestBody = connection.getOutputStream()) {
@@ -209,10 +209,10 @@ public class ClientCommunicator {
         if (this.connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
             printErrorMessage();
             System.out.println();
-            ServerFacade.returned_error = true;;
+            ServerFacade.returnedError = true;;
         }
         else{
-            ServerFacade.returned_error = false;
+            ServerFacade.returnedError = false;
             System.out.println();
         }
 

@@ -19,15 +19,15 @@ public class ReadEvaluateSourceInput {
 
     private String input;
 
-    private static int current_game_id;
+    private static int currentGameId;
 
-    private static ServerFacade client_call = new ServerFacade(8080);
+    private static ServerFacade clientCall = new ServerFacade(8080);
 
     private static PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
-    private static ChessGame current_board;
+    private static ChessGame currentBoard;
 
-    private static ChessGame.TeamColor current_color;
+    private static ChessGame.TeamColor currentColor;
 
 
     private String readInput(String prompt, boolean formatted){
@@ -91,8 +91,8 @@ public class ReadEvaluateSourceInput {
                     System.out.println("You forgot some required information");
                 }
                 else{
-                    client_call.register(input);
-                    if (!ServerFacade.returned_error){
+                    clientCall.register(input);
+                    if (!ServerFacade.returnedError){
                         runPostLogin();
                         break;
                     }
@@ -104,8 +104,8 @@ public class ReadEvaluateSourceInput {
                     System.out.println("You forgot some required information");
                 }
                 else{
-                    client_call.login(input);
-                    if (!ServerFacade.returned_error){
+                    clientCall.login(input);
+                    if (!ServerFacade.returnedError){
                         runPostLogin();
                         break;
                     }
@@ -124,7 +124,7 @@ public class ReadEvaluateSourceInput {
     }
 
     public static void printCurrentBoard(ChessGame game, ChessGame.TeamColor currentColor){
-        ChessBoardUi.drawBoard(out, current_board, currentColor);
+        ChessBoardUi.drawBoard(out, currentBoard, currentColor);
 
     }
 
@@ -140,7 +140,7 @@ public class ReadEvaluateSourceInput {
             possiblePositions = null;
         }
         ChessBoardUi.setAllowedPositions(possiblePositions);
-        ChessBoardUi.highlight(out, current_board, current_color);
+        ChessBoardUi.highlight(out, currentBoard, currentColor);
     }
 
     private void runPostLogin() throws Exception {
@@ -156,8 +156,8 @@ public class ReadEvaluateSourceInput {
                                 - help (for more info)""", true);
 
             if (input.equals("logout")){
-                client_call.logout();
-                if (!ServerFacade.returned_error){
+                clientCall.logout();
+                if (!ServerFacade.returnedError){
                     runPreLogin();
                     break;
                 }
@@ -170,11 +170,11 @@ public class ReadEvaluateSourceInput {
                     System.out.println("A game's name can only have one word");
                 }
                 else{
-                    client_call.create(input);
+                    clientCall.create(input);
                 }
             }
             else if (input.equals("list")){
-                client_call.list();
+                clientCall.list();
             }
             else if (input.equals("join")){
                 input = readInput("Type desired game ID and PIECE COLOR (BLACK|WHITE): ", false);
@@ -190,13 +190,13 @@ public class ReadEvaluateSourceInput {
                 }
 
                 else if (Objects.equals(inputWords[1], "black") || Objects.equals(inputWords[1], "white")){
-                    current_game_id = Integer.parseInt(inputWords[0]);
+                    currentGameId = Integer.parseInt(inputWords[0]);
 
-                    client_call.join(inputWords[0], inputWords[1].toUpperCase());
+                    clientCall.join(inputWords[0], inputWords[1].toUpperCase());
 
-                        current_color = getUserColor(inputWords[1]);
-                        client_call.webSoc("join_player", new Object[]{current_game_id, current_color, ClientCommunicator.current_auth_token});
-                        if (!ServerFacade.returned_error){
+                        currentColor = getUserColor(inputWords[1]);
+                        clientCall.webSoc("join_player", new Object[]{currentGameId, currentColor, ClientCommunicator.currentAuthToken});
+                        if (!ServerFacade.returnedError){
                             runGameplay();
                             break;
                         }
@@ -220,10 +220,10 @@ public class ReadEvaluateSourceInput {
                 }
 
                 else{
-                    current_game_id = Integer.parseInt(inputWords[0]);
-                    client_call.join(inputWords[0], "OBSERVER");
-                    client_call.webSoc("join_observer", new Object[]{Integer.parseInt(inputWords[0]), ClientCommunicator.current_auth_token});
-                    if (!ServerFacade.returned_error){
+                    currentGameId = Integer.parseInt(inputWords[0]);
+                    clientCall.join(inputWords[0], "OBSERVER");
+                    clientCall.webSoc("join_observer", new Object[]{Integer.parseInt(inputWords[0]), ClientCommunicator.currentAuthToken});
+                    if (!ServerFacade.returnedError){
                         runGameplay();
                         break;
                     }
@@ -267,11 +267,11 @@ public class ReadEvaluateSourceInput {
             }
 
             else if (input.equals("redraw")){
-                printCurrentBoard(current_board, current_color);
+                printCurrentBoard(currentBoard, currentColor);
             }
 
             else if (input.equals("leave")){
-                client_call.webSoc("leave", new Object[] {current_game_id, ClientCommunicator.current_auth_token});
+                clientCall.webSoc("leave", new Object[] {currentGameId, ClientCommunicator.currentAuthToken});
                 runPostLogin();
                 break;
             }
@@ -298,14 +298,14 @@ public class ReadEvaluateSourceInput {
 
                     ChessMove userMove = new ChessMove(startPosition, endPosition, null);
 
-                    client_call.webSoc("make_move", new Object[] {current_game_id, userMove, ClientCommunicator.current_auth_token});
+                    clientCall.webSoc("make_move", new Object[] {currentGameId, userMove, ClientCommunicator.currentAuthToken});
 
                 }
 
             }
 
             else if (input.equals("resign")){
-                client_call.webSoc("resign", new Object[] {current_game_id, ClientCommunicator.current_auth_token});
+                clientCall.webSoc("resign", new Object[] {currentGameId, ClientCommunicator.currentAuthToken});
                 runPostLogin();
                 break;
             }
@@ -323,8 +323,8 @@ public class ReadEvaluateSourceInput {
                 }
                 else{
                     ChessPosition piecePosition = new ChessPosition(Integer.parseInt(startPositions[0]), Integer.parseInt(startPositions[1]));
-                    if (current_board != null){
-                        printHighlightedBoard((ArrayList<ChessMove>) current_board.validMoves(piecePosition));
+                    if (currentBoard != null){
+                        printHighlightedBoard((ArrayList<ChessMove>) currentBoard.validMoves(piecePosition));
                     }
 
                 }
@@ -357,11 +357,11 @@ public class ReadEvaluateSourceInput {
     }
 
     public static void setCurrentBoard(ChessGame currentBoard) {
-        ReadEvaluateSourceInput.current_board = currentBoard;
+        ReadEvaluateSourceInput.currentBoard = currentBoard;
     }
 
     public static ChessGame.TeamColor getCurrentColor() {
-        return current_color;
+        return currentColor;
     }
 
 }
