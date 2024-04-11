@@ -21,21 +21,23 @@ public class RegisterResponse {
     }
 
 
-    public String getUsername(){
-        return username;
-    }
-
     public int getStatus(){
         return this.status;
+    }
+
+    public void setStatus(int status){
+        this.status = status;
+    }
+
+    public String getUsername(){
+        return username;
     }
 
     public String getAuthToken(){
         return this.authToken;
     }
 
-    public void setStatus(int status){
-        this.status = status;
-    }
+
 
 
 

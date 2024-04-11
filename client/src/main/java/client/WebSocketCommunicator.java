@@ -109,9 +109,9 @@ public class WebSocketCommunicator extends Endpoint {
 
     public void sendMove(int gameID, ChessMove move, String authToken) throws Exception {
         MakeMove moveCommand = new MakeMove(gameID, move, authToken);
-        String move_json = gson.toJson(moveCommand);
+        String moveJson = gson.toJson(moveCommand);
 
-        send(move_json);
+        send(moveJson);
     }
 
     public void sendLeave(int gameID, String authToken) throws Exception {

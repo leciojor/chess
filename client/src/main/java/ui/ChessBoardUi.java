@@ -59,9 +59,9 @@ public class ChessBoardUi {
         ChessGame tempGameCopy = new ChessGame();
         ChessGame tempGameCopyTwo = new ChessGame();
         ChessBoard flippedWhite = flipWhite(game.getBoard().getStructure());
-        ChessBoard flipped_array = flipArray(flippedWhite.getStructure());
+        ChessBoard flippedArray = flipArray(flippedWhite.getStructure());
 
-        tempGameCopy.setBoard(flipped_array);
+        tempGameCopy.setBoard(flippedArray);
         tempGameCopyTwo.setBoard(flippedWhite);
 
         if (currentColor == ChessGame.TeamColor.BLACK){

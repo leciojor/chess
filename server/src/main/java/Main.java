@@ -14,52 +14,6 @@ public class Main {
         System.out.println("LECIO ♕ 240 Chess Server");
     }
 
-
-    private static void createTables() throws DataAccessException, SQLException {
-        try (var conn = DatabaseManager.getConnection()){
-            var createUserTable = """
-            CREATE TABLE  IF NOT EXISTS User (
-                id INT NOT NULL AUTO_INCREMENT,
-                username VARCHAR(255) NOT NULL,
-                password VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL,
-                authtoken VARCHAR(255),
-                FOREIGN KEY (authtoken) REFERENCES Auth(authtoken),
-                PRIMARY KEY (id)
-            )""";
-
-            var createAuthTable = """
-            CREATE TABLE  IF NOT EXISTS Auth (
-                authtoken VARCHAR(255) NOT NULL,
-                created_at TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3),
-                username VARCHAR(255) NOT NULL,
-                PRIMARY KEY (authtoken)
-            )""";
-
-            var createGameTable = """
-            CREATE TABLE  IF NOT EXISTS Game (
-                gameid INT NOT NULL,
-                whiteUsername VARCHAR(255),
-                blackUsername VARCHAR(255),
-                gameName VARCHAR(255),
-                game TEXT NOT NULL,
-                PRIMARY KEY (gameid)
-            )""";
-
-            try (var createTableStatement = conn.prepareStatement(createAuthTable)) {
-                createTableStatement.executeUpdate();
-            }
-
-            try (var createTableStatement = conn.prepareStatement(createUserTable)) {
-                createTableStatement.executeUpdate();
-            }
-
-            try (var createTableStatement = conn.prepareStatement(createGameTable)) {
-                createTableStatement.executeUpdate();
-            }
-        }
-
-
     }
 
 

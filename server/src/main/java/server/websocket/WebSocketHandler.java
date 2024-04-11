@@ -169,12 +169,12 @@ public class WebSocketHandler {
         connections.add(joinCommand.getGameID(), conn.session);
 
         int gameID = joinCommand.getGameID();
-        String white_username = getWhiteUsername(gameID);
+        String whiteUsername = getWhiteUsername(gameID);
         String blackUsername = getBlackUsername(gameID);
         String username = getUsername(joinCommand);
 
-        if((joinCommand.getPlayerColor() == ChessGame.TeamColor.WHITE && white_username != null && !white_username.equals(username))){
-            sendError(conn, "SPOT ALREADY HAS USER " + white_username);
+        if((joinCommand.getPlayerColor() == ChessGame.TeamColor.WHITE && whiteUsername != null && !whiteUsername.equals(username))){
+            sendError(conn, "SPOT ALREADY HAS USER " + whiteUsername);
             return;
         }
 
@@ -243,7 +243,7 @@ public class WebSocketHandler {
         int gameID = moveCommand.getGameID();
         ChessGame game = getChessGame(gameID);
         String whiteUsername = getWhiteUsername(gameID);
-        String black_username = getBlackUsername(gameID);
+        String blackUsername = getBlackUsername(gameID);
 
         //getting user color
         if (Objects.equals(getWhiteUsername(gameID), getUsername(moveCommand))) {
@@ -292,7 +292,7 @@ public class WebSocketHandler {
         connections.sendNotifications(gameID, username + " moved from " + move.getStartPosition().toString() + " to " + move.getEndPosition().toString(), conn.session, false);
 
         //checking check/stal cases
-        checkStalCases(gameSql, game, conn, whiteUsername, black_username, gameID);
+        checkStalCases(gameSql, game, conn, whiteUsername, blackUsername, gameID);
 
     }
 
@@ -308,7 +308,7 @@ public class WebSocketHandler {
 
         //updating game
         String username = getUsername(leaveCommand);
-        SQLGameDAO game_sql = new SQLGameDAO();
+        SQLGameDAO gameSql = new SQLGameDAO();
 
         ChessGame.TeamColor color;
 
@@ -319,7 +319,7 @@ public class WebSocketHandler {
             color = ChessGame.TeamColor.BLACK;
         }
 
-        game_sql.updateUser(color, null, gameID);
+        gameSql.updateUser(color, null, gameID);
 
         //sending notifications
 
